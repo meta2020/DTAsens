@@ -2,6 +2,8 @@
 
 export(optim1)
 export(optim2)
+export(sROC)
+export(sROC.bunch)
 importFrom(grDevices,gray.colors)
 importFrom(graphics,curve)
 importFrom(graphics,lines)

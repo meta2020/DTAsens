@@ -1,6 +1,25 @@
-##
-## sROC
-##
+#' ROC plot
+#'
+#' @description ROC plot
+#'
+#' @param u1 u1
+#' @param u2 u2
+#' @param t22 t22
+#' @param t12 t12
+#' @param par c(u1, u2, t22, t12)
+#' @param add par
+#' @param s.point par
+#' @param ... par
+#'
+#' @return plot
+#'
+#' @importFrom grDevices gray.colors
+#' @importFrom graphics curve lines points
+
+#' @examples
+#' sROC(1,1,0.5, -0.5)
+#'
+#' @export
 
 sROC <- function(u1, u2, t22, t12,
                  par = NULL,
@@ -26,11 +45,23 @@ sROC <- function(u1, u2, t22, t12,
 
 }
 
-
-
-##
-## sROC for par matrix
-##
+#' ROC bunch plot
+#'
+#' @description ROC plot in bunch
+#' @param par.matrix rbind(u1, u2, t22, t12)
+#' @param s.point s.point
+#' @param s.line s.line
+#' @param new.plot new.plot
+#' @param ... par
+#'
+#' @return plot
+#'
+#' @examples
+#' par.matrix <-matrix(c(1,1,0.5, -0.5,
+#'                    1,1,0.5, -0.3), 4,2)
+#' sROC.bunch(par.matrix)
+#'
+#' @export
 
 sROC.bunch <- function(par.matrix,  ## u1 u2 t22 t12
                        s.point=TRUE, s.line = FALSE,
@@ -61,47 +92,3 @@ sROC.bunch <- function(par.matrix,  ## u1 u2 t22 t12
 }
 
 
-##
-## sAUC for par matrix
-##
-sAUC.bunch <- function(par.matrix){
-
-  #par.matrix <- x
-
-  sapply(1:ncol(par.matrix), function(i) {
-
-
-    u1 = par.matrix[1,i]
-    u2 = par.matrix[2,i]
-
-    t12 = par.matrix[5,i]
-    t22  = par.matrix[4,i]
-
-    if (NA %in% par.matrix[c(1,2,5,4),i]) {auc <- NA} else{
-
-      auc.try <- try(integrate(function(x) {
-
-        plogis(u1 + (t12/t22) * (-qlogis(x) - u2))
-
-      }, 0, 1), silent = TRUE)
-
-      if(!class(auc.try)=="try-error") auc.try$value else NA
-
-    }
-
-  })
-
-}
-
-#sAUC.bunch(x)
-
-##
-## The second ttpe
-##
-
-sROC.bunch.add2 <- function(Lambda, Beta) {
-
-  auc <- function(x) plogis(Lambda*exp(-Beta/2) + exp(-Beta)*qlogis(x))
-    curve(auc, 0,1, col = 2, add = TRUE, lty = 6)
-
-}

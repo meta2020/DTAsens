@@ -19,8 +19,6 @@
 #'
 #' @return convergence list
 #'
-#' @importFrom grDevices gray.colors
-#' @importFrom graphics curve lines points
 #' @importFrom stats integrate nlminb optim plogis pnorm qlogis uniroot
 #' @importFrom mvmeta mvmeta
 
