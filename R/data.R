@@ -4,8 +4,13 @@
 #'
 #' @format A data frame with 20 rows and 7 variables:
 #' \describe{
-#'   \item{se}{Participant's group, A or B.}
-#'   \item{sp}{The participant's score in hypothetical task.}
+#'   \item{se}{}
+#'   \item{sp}{}
+#'   \item{y1}{}
+#'   \item{y2}{}
+#'   \item{v1}{}
+#'   \item{v2}{}
+#'   \item{ldor.t}{}
 #' }
 #@source <https://www.github.com/mvuorre/exampleRPackage>
 #'

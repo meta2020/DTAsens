@@ -3,6 +3,18 @@
 #' @description optim2 function
 #'
 #' @param data data
+#' @param p p
+#' @param start7 par
+#' @param b.wid par
+#' @param c.value par
+#' @param c.type par
+#' @param opt.type par
+#' @param warn par
+#' @param show.data par
+#' @param p.hat par
+#' @param auc.all par
+#' @param interval par
+#' @param ... par
 #'
 #' @return convergence list
 #' @export

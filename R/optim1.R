@@ -3,13 +3,32 @@
 #' @description optim1 function
 #'
 #' @param data data
+#' @param p p
+#' @param c1 c1
+#' @param start6 par
+#' @param b.wid par
+#' @param c.value par
+#' @param c.type par
+#' @param opt.type par
+#' @param warn par
+#' @param show.data par
+#' @param p.hat par
+#' @param auc.all par
+#' @param interval par
+#' @param ... par
 #'
 #' @return convergence list
-#' @export
 #'
+#' @importFrom grDevices gray.colors
+#' @importFrom graphics curve lines points
+#' @importFrom stats integrate nlminb optim plogis pnorm qlogis uniroot
+#' @importFrom mvmeta mvmeta
+
 #' @examples
 #' optim1(dta, p = 0.7)
 #'
+#' @export
+
 optim1 <- function(data,   ## 2 FORMAT: N OR Y, make data name as format
                   p,
                   c1 = sqrt(1), ##  0<=c11<=1
