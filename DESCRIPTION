@@ -1,11 +1,12 @@
 Package: DTAsens
 Type: Package
-Title:x
+Title: Sensitivity Analysis for Diagnostic Test Accuracy Meta-Analysis
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Authors@R: person("Yi", " ", email = "zhouyi0426@126.com",
+                  role = c("aut", "cre"))
+Description: Sensitivity Analysis for Diagnostic Test Accuracy Meta-Analysis
+    (Logit transformation only)
+License: GPLv3 license 
+Depends: R (>= 3.1.0)
 Encoding: UTF-8
 LazyData: true
