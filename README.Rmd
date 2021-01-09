@@ -33,7 +33,6 @@ devtools::install_git("meta2020/DTAsens")
 This is a basic example which shows you how to solve a common problem:
 
 ```{r}
-devtools::install_git("meta2020/DTAsens")
 library(DTAsens)
 ## basic example code
 ```
@@ -101,5 +100,37 @@ head(AuditC)
 
 optim1(AuditC, 0.8)
 optim2(AuditC, 0.8)
+```
+
+### Plot ROC
+
+One ROC
+
+```{r, fig.height=5, fig.width=5}
+par1 <- optim1(AuditC, 0.7)$par[c(1,2,4,5)]
+par2 <- optim2(AuditC, 0.7)$par[c(1,2,4,5)]
+
+sROC(par = par1, pch = 19)
+sROC(par = par2, add = TRUE, col=2, pch = 19)
+with(AuditC, points(FP/(FP+TN), TP/(TP+FN)))
+legend("bottomright", c("optim1", "optim2"), col = c(1,2), lty = c(1,1))
+```
+
+A series of ROC
+
+```{r, fig.height=5, fig.width=10}
+
+p.seq <- seq(0.9, 0.1, -0.1)
+estimates1 <- sapply(p.seq, function(p) optim1(AuditC, p)$par)[c(1,2,3,5),]
+estimates2 <- sapply(p.seq, function(p) optim2(AuditC, p)$par)[c(1,2,3,5),]
+
+par(mfrow = c(1,2))
+sROC.bunch(par.matrix = estimates1)
+title("optim1")
+sROC.bunch(par.matrix = estimates2)
+title("optim2")
+par(mfrow = c(1,1))
+
+
 ```
 

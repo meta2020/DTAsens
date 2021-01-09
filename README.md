@@ -339,3 +339,40 @@ optim2(AuditC, 0.8)
 #> $message
 #> [1] "CONVERGENCE: REL_REDUCTION_OF_F <= FACTR*EPSMCH"
 ```
+
+### Plot ROC
+
+One ROC
+
+``` r
+par1 <- optim1(AuditC, 0.7)$par[c(1,2,4,5)]
+par2 <- optim2(AuditC, 0.7)$par[c(1,2,4,5)]
+
+sROC(par = par1, pch = 19)
+sROC(par = par2, add = TRUE, col=2, pch = 19)
+with(AuditC, points(FP/(FP+TN), TP/(TP+FN)))
+legend("bottomright", c("optim1", "optim2"), col = c(1,2), lty = c(1,1))
+```
+
+<img src="man/figures/README-unnamed-chunk-9-1.png" width="100%" />
+
+A series of ROC
+
+``` r
+
+p.seq <- seq(0.9, 0.1, -0.1)
+estimates1 <- sapply(p.seq, function(p) optim1(AuditC, p)$par)[c(1,2,3,5),]
+estimates2 <- sapply(p.seq, function(p) optim2(AuditC, p)$par)[c(1,2,3,5),]
+
+par(mfrow = c(1,2))
+sROC.bunch(par.matrix = estimates1)
+title("optim1")
+sROC.bunch(par.matrix = estimates2)
+title("optim2")
+```
+
+<img src="man/figures/README-unnamed-chunk-10-1.png" width="100%" />
+
+``` r
+par(mfrow = c(1,1))
+```
