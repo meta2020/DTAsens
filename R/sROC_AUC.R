@@ -52,6 +52,8 @@ sROC <- function(u1, u2, t22, t12,
 #' @param s.point s.point
 #' @param s.line s.line
 #' @param new.plot new.plot
+#' @param legend legend
+#' @param p.vec p.vec
 #' @param ... par
 #'
 #' @return plot
@@ -59,13 +61,13 @@ sROC <- function(u1, u2, t22, t12,
 #' @examples
 #' par.matrix <-matrix(c(1,1,0.5, -0.5,
 #'                    1,1,0.5, -0.3), 4,2)
-#' sROC.bunch(par.matrix)
+#' sROC.bunch(par.matrix, p.vec = c(0.9, 0.5))
 #'
 #' @export
 
 sROC.bunch <- function(par.matrix,  ## u1 u2 t22 t12
                        s.point=TRUE, s.line = FALSE,
-                       new.plot =TRUE,legend = TRUE, p,...) {
+                       new.plot =TRUE,legend = TRUE, p.vec,...) {
 
   if (new.plot) plot(NULL, xlim=c(0,1), ylim=c(0,1), xlab = "FPR", ylab = "TPR")
 
@@ -84,7 +86,7 @@ sROC.bunch <- function(par.matrix,  ## u1 u2 t22 t12
   }
 
   if (legend) legend("bottomright",
-                      legend = p,
+                      legend = p.vec,
                       col = cols[1:ncol(par.matrix)],
                      lty = rep(1, ncol(par.matrix)))
 

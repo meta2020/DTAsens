@@ -10,7 +10,7 @@ sROC.bunch(
   s.line = FALSE,
   new.plot = TRUE,
   legend = TRUE,
-  p,
+  p.vec,
   ...
 )
 }
@@ -23,6 +23,10 @@ sROC.bunch(
 
 \item{new.plot}{new.plot}
 
+\item{legend}{legend}
+
+\item{p.vec}{p.vec}
+
 \item{...}{par}
 }
 \value{
@@ -34,6 +38,6 @@ ROC plot in bunch
 \examples{
 par.matrix <-matrix(c(1,1,0.5, -0.5,
                    1,1,0.5, -0.3), 4,2)
-sROC.bunch(par.matrix)
+sROC.bunch(par.matrix, p.vec = c(0.9, 0.5))
 
 }
