@@ -65,7 +65,7 @@ sROC <- function(u1, u2, t22, t12,
 
 sROC.bunch <- function(par.matrix,  ## u1 u2 t22 t12
                        s.point=TRUE, s.line = FALSE,
-                       new.plot =TRUE,...) {
+                       new.plot =TRUE,legend = TRUE, p,...) {
 
   if (new.plot) plot(NULL, xlim=c(0,1), ylim=c(0,1), xlab = "FPR", ylab = "TPR")
 
@@ -83,10 +83,17 @@ sROC.bunch <- function(par.matrix,  ## u1 u2 t22 t12
     curve(auc, 0, 1, col = cols[i], add = TRUE, xlab = "FPR", ylab = "TPR", ...)
   }
 
-  sens <- plogis(par.matrix[1,])
-  spec <- plogis(par.matrix[2,])
+  if (legend) legend("bottomright",
+                      legend = p,
+                      col = cols[1:ncol(par.matrix)],
+                     lty = rep(1, ncol(par.matrix)))
 
-  if (s.point) points(1-spec, sens, col=cols, pch = 19)
+  if (s.point) {
+    sens <- plogis(par.matrix[1,])
+    spec <- plogis(par.matrix[2,])
+    points(1-spec, sens, col=cols, pch = 19)
+  }
+
   if (s.line)  lines(1-spec, sens)
 
 }

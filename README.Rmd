@@ -1,5 +1,7 @@
 ---
 output: github_document
+editor_options: 
+  chunk_output_type: console
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -98,8 +100,10 @@ data("AuditC")
 
 head(AuditC)
 
-optim1(AuditC, 0.8)
-optim2(AuditC, 0.8)
+reitsma(AuditC)
+optim1(AuditC, 0.7)
+optim2(AuditC, 0.7)
+
 ```
 
 ### Plot ROC
@@ -107,13 +111,17 @@ optim2(AuditC, 0.8)
 One ROC
 
 ```{r, fig.height=5, fig.width=5}
+fit <- reitsma(AuditC)
+par0 <- c(fit$coefficients[1], -fit$coefficients[2], fit$vcov[4], -fit$vcov[3])
 par1 <- optim1(AuditC, 0.7)$par[c(1,2,4,5)]
 par2 <- optim2(AuditC, 0.7)$par[c(1,2,4,5)]
 
 sROC(par = par1, pch = 19)
 sROC(par = par2, add = TRUE, col=2, pch = 19)
+sROC(par = par0, add = TRUE, col=2, pch = 1, lty =3)
+
 with(AuditC, points(FP/(FP+TN), TP/(TP+FN)))
-legend("bottomright", c("optim1", "optim2"), col = c(1,2), lty = c(1,1))
+legend("bottomright", c("optim1", "optim2", "reitsma"), col = c(1,2,2), lty = c(1,1,3), pch = c(19,19,1))
 ```
 
 A series of ROC
@@ -121,13 +129,17 @@ A series of ROC
 ```{r, fig.height=5, fig.width=10}
 
 p.seq <- seq(0.9, 0.1, -0.1)
-estimates1 <- sapply(p.seq, function(p) optim1(AuditC, p)$par)[c(1,2,3,5),]
-estimates2 <- sapply(p.seq, function(p) optim2(AuditC, p)$par)[c(1,2,3,5),]
+estimates1 <- sapply(p.seq, function(p) optim1(AuditC, p)$par)[c(1,2,4,5),]
+estimates2 <- sapply(p.seq, function(p) optim2(AuditC, p)$par)[c(1,2,4,5),]
 
 par(mfrow = c(1,2))
-sROC.bunch(par.matrix = estimates1)
+sROC.bunch(par.matrix = estimates1, p = p.seq)
+sROC(par = par0, add = TRUE, col =2, pch = 1, lty =3)
+
 title("optim1")
-sROC.bunch(par.matrix = estimates2)
+sROC.bunch(par.matrix = estimates2, p = p.seq)
+sROC(par = par0, add = TRUE, col = 2, pch = 1, lty =3)
+
 title("optim2")
 par(mfrow = c(1,1))
 

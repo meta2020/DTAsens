@@ -300,38 +300,48 @@ head(AuditC)
 #> 5 130 19 211  959
 #> 6  84  2  68   89
 
-optim1(AuditC, 0.8)
+reitsma(AuditC)
+#> Call:  reitsma.default(data = AuditC)
+#> 
+#> Fixed-effects coefficients:
+#>               tsens     tfpr
+#> (Intercept)  2.0997  -1.2637
+#> 
+#> 14 studies, 2 fixed and 3 random-effects parameters
+#>   logLik       AIC       BIC  
+#>  31.5640  -53.1279  -46.4669
+optim1(AuditC, 0.7)
 #> $par
 #>         u1         u2        t11        t22        t12          r        auc 
-#>  2.0504342  1.3151459  1.5945139  0.4033924 -0.6955955 -0.8673188  0.8929369 
+#>  1.9420454  1.3591178  1.6934795  0.4199978 -0.7379118 -0.8749656  0.8906057 
 #>          b          a 
-#>  1.0000000 -1.1182449 
+#>  1.0000000 -1.6652240 
 #> 
 #> $value
-#> [1] 4.991503
+#> [1] 4.012178
 #> 
 #> $counts
 #> function gradient 
-#>       41       41 
+#>       45       45 
 #> 
 #> $convergence
 #> [1] 0
 #> 
 #> $message
 #> [1] "CONVERGENCE: REL_REDUCTION_OF_F <= FACTR*EPSMCH"
-optim2(AuditC, 0.8)
+optim2(AuditC, 0.7)
 #> $par
 #>          u1          u2         t11         t22         t12           r 
-#>  2.11010808  1.28960224  1.53030700  0.39148855 -0.66686359 -0.86156528 
+#>  2.04618028  1.31443244  1.60456084  0.40106440 -0.69519931 -0.86661097 
 #>         auc           b           a         c11         c22 
-#>  0.89425400  1.00000000 -1.60917853  0.95773699  0.04226301 
+#>  0.89244364  1.00000000 -2.19687692  0.94569946  0.05430054 
 #> 
 #> $value
-#> [1] 4.821417
+#> [1] 3.690833
 #> 
 #> $counts
 #> function gradient 
-#>       34       34 
+#>       41       41 
 #> 
 #> $convergence
 #> [1] 0
@@ -345,13 +355,17 @@ optim2(AuditC, 0.8)
 One ROC
 
 ``` r
+fit <- reitsma(AuditC)
+par0 <- c(fit$coefficients[1], -fit$coefficients[2], fit$vcov[4], -fit$vcov[3])
 par1 <- optim1(AuditC, 0.7)$par[c(1,2,4,5)]
 par2 <- optim2(AuditC, 0.7)$par[c(1,2,4,5)]
 
 sROC(par = par1, pch = 19)
 sROC(par = par2, add = TRUE, col=2, pch = 19)
+sROC(par = par0, add = TRUE, col=2, pch = 1, lty =3)
+
 with(AuditC, points(FP/(FP+TN), TP/(TP+FN)))
-legend("bottomright", c("optim1", "optim2"), col = c(1,2), lty = c(1,1))
+legend("bottomright", c("optim1", "optim2", "reitsma"), col = c(1,2,2), lty = c(1,1,3), pch = c(19,19,1))
 ```
 
 <img src="man/figures/README-unnamed-chunk-9-1.png" width="100%" />
@@ -361,13 +375,17 @@ A series of ROC
 ``` r
 
 p.seq <- seq(0.9, 0.1, -0.1)
-estimates1 <- sapply(p.seq, function(p) optim1(AuditC, p)$par)[c(1,2,3,5),]
-estimates2 <- sapply(p.seq, function(p) optim2(AuditC, p)$par)[c(1,2,3,5),]
+estimates1 <- sapply(p.seq, function(p) optim1(AuditC, p)$par)[c(1,2,4,5),]
+estimates2 <- sapply(p.seq, function(p) optim2(AuditC, p)$par)[c(1,2,4,5),]
 
 par(mfrow = c(1,2))
-sROC.bunch(par.matrix = estimates1)
+sROC.bunch(par.matrix = estimates1, p = p.seq)
+sROC(par = par0, add = TRUE, col =2, pch = 1, lty =3)
+
 title("optim1")
-sROC.bunch(par.matrix = estimates2)
+sROC.bunch(par.matrix = estimates2, p = p.seq)
+sROC(par = par0, add = TRUE, col = 2, pch = 1, lty =3)
+
 title("optim2")
 ```
 
