@@ -4,7 +4,15 @@
 \alias{sROC.bunch}
 \title{ROC bunch plot}
 \usage{
-sROC.bunch(par.matrix, s.point = TRUE, s.line = FALSE, new.plot = TRUE, ...)
+sROC.bunch(
+  par.matrix,
+  s.point = TRUE,
+  s.line = FALSE,
+  new.plot = TRUE,
+  legend = TRUE,
+  p,
+  ...
+)
 }
 \arguments{
 \item{par.matrix}{rbind(u1, u2, t22, t12)}
