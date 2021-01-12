@@ -2,8 +2,10 @@
 
 export(dtasens1)
 export(dtasens2)
+export(mAUC)
+export(mROC)
+export(sAUC)
 export(sROC)
-export(sROC.bunch)
 importFrom(grDevices,gray.colors)
 importFrom(graphics,curve)
 importFrom(graphics,lines)

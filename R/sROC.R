@@ -1,6 +1,6 @@
-#' ROC plot
+#' Single ROC plot
 #'
-#' @description ROC plot
+#' @description Single ROC plot
 #'
 #' @param par.vec c(u1, u2, t1, t2, r)
 #' @param add par
@@ -13,7 +13,8 @@
 #' @importFrom graphics curve lines points
 
 #' @examples
-#' sROC(c(1,1, 0.5, 0.5, -0.6))
+#' par.vec <- c(1,1, 0.5, 0.5, -0.6)
+#' sROC(par.vec)
 #'
 #' @export
 
@@ -41,10 +42,10 @@ sROC <- function(par.vec = NULL,
 
 }
 
-#' ROC bunch plot
+#' Multiple ROC curves
 #'
-#' @description ROC plot in bunch
-#' @param par.matrix rbind(u1, u2, t1, t2, r)
+#' @description Multiple ROC curves
+#' @param par.matrix cbind(u1, u2, t1, t2, r)
 #' @param s.point s.point
 #' @param s.line s.line
 #' @param new.plot new.plot
@@ -55,13 +56,12 @@ sROC <- function(par.vec = NULL,
 #' @return plot
 #'
 #' @examples
-#' par.matrix <-matrix(c(1,1,0.5, 0.5, -0.6,
-#'                    1,1,1, 2, -0.6), 5,2)
-#' sROC.bunch(par.matrix, legend = TRUE, p.vec = c(0.9, 0.5))
+#' par.matrix <-matrix(c(1,1,0.5, 0.5, -0.6, 1,1,1, 2, -0.6), 5,2)
+#' mROC(par.matrix, legend = TRUE, p.vec = c(0.9, 0.5))
 #'
 #' @export
 
-sROC.bunch <- function(par.matrix,  ## u1 u2 t12 t22
+mROC <- function(par.matrix,  ## u1 u2 t12 t22
                        s.point=TRUE, s.line = FALSE,
                        new.plot =TRUE,legend = FALSE, p.vec,...) {
 
