@@ -4,18 +4,10 @@
 \alias{sROC}
 \title{ROC plot}
 \usage{
-sROC(u1, u2, t22, t12, par = NULL, add = FALSE, s.point = TRUE, ...)
+sROC(par.vec = NULL, add = FALSE, s.point = TRUE, ...)
 }
 \arguments{
-\item{u1}{u1}
-
-\item{u2}{u2}
-
-\item{t22}{t22}
-
-\item{t12}{t12}
-
-\item{par}{c(u1, u2, t22, t12)}
+\item{par.vec}{c(u1, u2, t1, t2, r)}
 
 \item{add}{par}
 
@@ -30,6 +22,6 @@ plot
 ROC plot
 }
 \examples{
-sROC(1,1,0.5, -0.5)
+sROC(c(1,1, 0.5, 0.5, -0.6))
 
 }

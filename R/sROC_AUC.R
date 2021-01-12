@@ -2,11 +2,7 @@
 #'
 #' @description ROC plot
 #'
-#' @param u1 u1
-#' @param u2 u2
-#' @param t22 t22
-#' @param t12 t12
-#' @param par c(u1, u2, t22, t12)
+#' @param par.vec c(u1, u2, t1, t2, r)
 #' @param add par
 #' @param s.point par
 #' @param ... par
@@ -17,26 +13,26 @@
 #' @importFrom graphics curve lines points
 
 #' @examples
-#' sROC(1,1,0.5, -0.5)
+#' sROC(c(1,1, 0.5, 0.5, -0.6))
 #'
 #' @export
 
-sROC <- function(u1, u2, t22, t12,
-                 par = NULL,
+sROC <- function(par.vec = NULL,
                  add = FALSE,
                  s.point = TRUE,
                  ...) {
 
-  if (!is.null(par)) {
+  if (!is.null(par.vec)) {
 
-    u1  <- par[1]
-    u2  <- par[2]
-    t12 <- par[4]
-    t22  <- par[3]
+    u1 <- par.vec[1]
+    u2 <- par.vec[2]
+    t1 <- par.vec[3]
+    t2 <- par.vec[4]
+    r  <- par.vec[5]
 
   }
 
-  auc <- function(x) plogis(u1 + (t12/t22) * (-qlogis(x) - u2))
+  auc <- function(x) plogis(u1 - (r*t1/t2) * (qlogis(x) + u2))
 
   curve(auc, xlab = "FPR", ylab = "TPR", add = add, ...)
 
@@ -48,7 +44,7 @@ sROC <- function(u1, u2, t22, t12,
 #' ROC bunch plot
 #'
 #' @description ROC plot in bunch
-#' @param par.matrix rbind(u1, u2, t22, t12)
+#' @param par.matrix rbind(u1, u2, t1, t2, r)
 #' @param s.point s.point
 #' @param s.line s.line
 #' @param new.plot new.plot
@@ -59,15 +55,15 @@ sROC <- function(u1, u2, t22, t12,
 #' @return plot
 #'
 #' @examples
-#' par.matrix <-matrix(c(1,1,0.5, -0.5,
-#'                    1,1,0.5, -0.3), 4,2)
-#' sROC.bunch(par.matrix, p.vec = c(0.9, 0.5))
+#' par.matrix <-matrix(c(1,1,0.5, 0.5, -0.6,
+#'                    1,1,1, 2, -0.6), 5,2)
+#' sROC.bunch(par.matrix, legend = TRUE, p.vec = c(0.9, 0.5))
 #'
 #' @export
 
-sROC.bunch <- function(par.matrix,  ## u1 u2 t22 t12
+sROC.bunch <- function(par.matrix,  ## u1 u2 t12 t22
                        s.point=TRUE, s.line = FALSE,
-                       new.plot =TRUE,legend = TRUE, p.vec,...) {
+                       new.plot =TRUE,legend = FALSE, p.vec,...) {
 
   if (new.plot) plot(NULL, xlim=c(0,1), ylim=c(0,1), xlab = "FPR", ylab = "TPR")
 
@@ -77,11 +73,11 @@ sROC.bunch <- function(par.matrix,  ## u1 u2 t22 t12
 
     u1 = par.matrix[1,i]
     u2 = par.matrix[2,i]
+    t1 = par.matrix[3,i]
+    t2 = par.matrix[4,i]
+    r  = par.matrix[5,i]
 
-    t22 = par.matrix[3,i]
-    t12 = par.matrix[4,i]
-
-    auc <- function(x) plogis(u1 + (t12/t22) * (-qlogis(x) - u2))
+    auc <- function(x) plogis(u1 - (r*t1/t2) * (qlogis(x) + u2))
     curve(auc, 0, 1, col = cols[i], add = TRUE, xlab = "FPR", ylab = "TPR", ...)
   }
 

@@ -9,7 +9,7 @@
 
 bn.data <- function(S,          ## HOW MANY STUDIES
                     se, sp,       ## SENS AND SPEC
-                    t11, t22, r   ## t1^2, t2^2, t12=r*t1*t2
+                    t1, t2, r   ## t1^2, t2^2, t12=r*t1*t2
 ){
 
   # v1 <- rchisq(S, v1.df)
@@ -33,7 +33,9 @@ bn.data <- function(S,          ## HOW MANY STUDIES
   u2 <- qlogis(sp)
 
   u  <- c(u1, u2)
-  t12<- r*sqrt(t11*t22)
+  t12<- r*t1*t2
+  t11 <- t1^2
+  t22 <- t2^2
 
   ## Sigma+Omega
 
@@ -72,7 +74,7 @@ bn.data <- function(S,          ## HOW MANY STUDIES
   return(DT)
 }
 
-dta <- bn.data(20,0.8,0.8,0.5,0.5, -0.6)
+dta <- bn.data(30, 0.8, 0.8, 0.5, 0.5, -0.6)
 
 
 usethis::use_data(dta, overwrite = TRUE)

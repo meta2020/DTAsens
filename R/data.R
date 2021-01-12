@@ -1,6 +1,6 @@
-#' @title DTA data
+#' @title Manual DTA data
 #'
-#' @description DTA simuation data
+#' @description Simulated DTA data
 #'
 #' @format A data frame with 20 rows and 7 variables:
 #' \describe{
@@ -16,3 +16,21 @@
 #'
 
 "dta"
+
+
+#' @title IVD data
+#'
+#' @description IVD data
+#'
+#' @format A data frame with 33 rows and 5 variables:
+#' \describe{
+#'   \item{study}{}
+#'   \item{TP}{}
+#'   \item{FN}{}
+#'   \item{FP}{}
+#'   \item{TN}{}
+#' }
+#@source <https://www.github.com/mvuorre/exampleRPackage>
+#'
+
+"IVD"

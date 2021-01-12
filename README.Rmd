@@ -7,12 +7,14 @@ editor_options:
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 ```{r, include = FALSE}
+library(knitr)
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
   fig.path = "man/figures/README-",
-  out.width = "100%"
-)
+  out.width = "100%")
+
+options(knitr.kable.NA = '.', digits = 3)
 ```
 
 # DTAsens
@@ -44,40 +46,43 @@ library(DTAsens)
 ```{r}
 
 data(dta)
-head(dta)
+kable(head(dta))
 
 ```
 
-### Optim 1
+### Optim 1: dtasens1
 
 For a certain selection probability, e.g., p = 0.5
 
 ```{r}
-optim1(dta, p = 0.5)
+dtasens1(dta, p = 0.5)
+dtasens1(dta, p = 0.5, opt.type = "nlminb")
 
-optim1(dta, p = 0.5, p.hat = TRUE, auc.all = TRUE, show.data = TRUE)
+dtasens1(dta, p = 0.5, p.hat = TRUE, auc.all = TRUE, show.data = TRUE)
 ```
 
 For a series of selection probabilities, e.g., p = 0.9, 0,8, ...,0.1
 
 
 ```{r}
-p.seq <- seq(0.9, 0.4, -0.1)
+p.seq <- seq(0.9, 0.1, -0.1)
 
-estimates <- sapply(p.seq, function(p) optim2(dta, p)$par)
+estimates <- sapply(p.seq, function(p) dtasens1(dta, p)$par)
 colnames(estimates)<- paste0("p = ", p.seq)
-estimates
+kable(estimates)
 ```
 
-### Optim 2, estimate contrast
+### Optim 2: dtasens2
 
 For a certain selection probability, e.g., p = 0.5
 
 ```{r}
 
-optim2(dta, p = 0.5)
+dtasens2(dta, p = 0.5)
+dtasens2(dta, p = 0.5, opt.type = "nlminb")
 
-optim2(dta, p = 0.5, p.hat = TRUE, auc.all = TRUE, show.data = TRUE)
+
+dtasens2(dta, p = 0.5, p.hat = TRUE, auc.all = TRUE, show.data = TRUE)
 
 ```
 
@@ -85,43 +90,49 @@ For a series of selection probabilities, e.g., p = 0.9, 0.8, ...,0.1
 
 
 ```{r}
-p.seq <- seq(0.9, 0.4, -0.1)
+p.seq <- seq(0.9, 0.1, -0.1)
 
-estimates <- sapply(p.seq, function(p) optim2(dta, p)$par)
+estimates <- sapply(p.seq, function(p) dtasens2(dta, p)$par)
 colnames(estimates)<- paste0("p = ", p.seq)
-estimates
+kable(estimates)
 ```
 
 ### Example data 2 
 
 ```{r}
-library(mada)
-data("AuditC")
+data("IVD")
 
-head(AuditC)
-
-reitsma(AuditC)
-optim1(AuditC, 0.7)
-optim2(AuditC, 0.7)
+kable(head(IVD))
 
 ```
+
 
 ### Plot ROC
 
 One ROC
 
-```{r, fig.height=5, fig.width=5}
-fit <- reitsma(AuditC)
-par0 <- c(fit$coefficients[1], -fit$coefficients[2], fit$vcov[4], -fit$vcov[3])
-par1 <- optim1(AuditC, 0.7)$par[c(1,2,4,5)]
-par2 <- optim2(AuditC, 0.7)$par[c(1,2,4,5)]
+```{r, fig.height=5, fig.width=10}
+par(mfrow = c(1,2))
 
-sROC(par = par1, pch = 19)
-sROC(par = par2, add = TRUE, col=2, pch = 19)
-sROC(par = par0, add = TRUE, col=2, pch = 1, lty =3)
+library(mada)
+fit <- reitsma(IVD)
+plot(fit)
+title("Reistma model from mada")
 
-with(AuditC, points(FP/(FP+TN), TP/(TP+FN)))
-legend("bottomright", c("optim1", "optim2", "reitsma"), col = c(1,2,2), lty = c(1,1,3), pch = c(19,19,1))
+
+par0 <- c(fit$coefficients*c(1,-1), c(1,-1)*sqrt(fit$Psi[c(1,4)]), fit$Psi[3]/prod(sqrt(fit$Psi[c(1,4)])))
+par1 <- dtasens1(IVD, 0.9)$par[c(1:4,6)]
+par2 <- dtasens2(IVD, 0.9)$par[c(1:4,6)]
+
+sROC(par1, pch = 19)
+sROC(par2, add = TRUE, col=2, pch = 19)
+sROC(par0, add = TRUE, col=2, pch = 19, lty = 3)
+
+with(IVD, points(FP/(FP+TN), TP/(TP+FN), pch = 19, cex = 0.5))
+legend("bottomright", c("dtasens1", "dtasens2"), col = c(1,2,2), lty = c(1,1,3), pch = c(19,19,1))
+title("When selection prob = 0.9")
+par(mfrow = c(1,1))
+
 ```
 
 A series of ROC
@@ -129,18 +140,19 @@ A series of ROC
 ```{r, fig.height=5, fig.width=10}
 
 p.seq <- seq(0.9, 0.1, -0.1)
-estimates1 <- sapply(p.seq, function(p) optim1(AuditC, p)$par)[c(1,2,4,5),]
-estimates2 <- sapply(p.seq, function(p) optim2(AuditC, p)$par)[c(1,2,4,5),]
+estimates1 <- sapply(p.seq, function(p) dtasens1(IVD, p)$par)[c(1:4,6),]
+estimates2 <- sapply(p.seq, function(p) dtasens2(IVD, p)$par)[c(1:4,6),]
 
 par(mfrow = c(1,2))
-sROC.bunch(par.matrix = estimates1, p.vec  = p.seq)
-sROC(par = par0, add = TRUE, col =2, pch = 1, lty =3)
+sROC.bunch(par.matrix = estimates1)
+sROC(par0, add = TRUE, col = 2, pch = 19, lty =3)
 
-title("optim1")
+title("dtasens1")
+
 sROC.bunch(par.matrix = estimates2, p.vec = p.seq)
-sROC(par = par0, add = TRUE, col = 2, pch = 1, lty =3)
+sROC(par0, add = TRUE, col = 2, pch = 19, lty =3)
 
-title("optim2")
+title("dtasens2")
 par(mfrow = c(1,1))
 
 

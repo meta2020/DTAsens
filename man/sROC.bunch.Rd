@@ -9,13 +9,13 @@ sROC.bunch(
   s.point = TRUE,
   s.line = FALSE,
   new.plot = TRUE,
-  legend = TRUE,
+  legend = FALSE,
   p.vec,
   ...
 )
 }
 \arguments{
-\item{par.matrix}{rbind(u1, u2, t22, t12)}
+\item{par.matrix}{rbind(u1, u2, t1, t2, r)}
 
 \item{s.point}{s.point}
 
@@ -36,8 +36,8 @@ plot
 ROC plot in bunch
 }
 \examples{
-par.matrix <-matrix(c(1,1,0.5, -0.5,
-                   1,1,0.5, -0.3), 4,2)
-sROC.bunch(par.matrix, p.vec = c(0.9, 0.5))
+par.matrix <-matrix(c(1,1,0.5, 0.5, -0.6,
+                   1,1,1, 2, -0.6), 5,2)
+sROC.bunch(par.matrix, legend = TRUE, p.vec = c(0.9, 0.5))
 
 }

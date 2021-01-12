@@ -3,7 +3,7 @@
 \docType{data}
 \name{dta}
 \alias{dta}
-\title{DTA data}
+\title{Manual DTA data}
 \format{
 A data frame with 20 rows and 7 variables:
 \describe{
@@ -20,6 +20,6 @@ A data frame with 20 rows and 7 variables:
 dta
 }
 \description{
-DTA simuation data
+Simulated DTA data
 }
 \keyword{datasets}
