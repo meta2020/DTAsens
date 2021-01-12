@@ -288,7 +288,7 @@ dtasens1 <- function(data,   ## 2 FORMAT: N OR Y, make data name as format
 
       opt$par   <- c(u1, u2, t1, t2, t12, r, auc, b, a.opt, p.hat)
 
-      names(opt$par) <- c("u1", "u2", "t11", "t22", "t12", "r", "auc", "b", "a", "p.hat")
+      names(opt$par) <- c("u1", "u2", "t1", "t2", "t12", "r", "auc", "b", "a", "p.hat")
 
     }
 

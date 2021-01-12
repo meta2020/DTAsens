@@ -130,7 +130,7 @@ dtasens1(dta, p = 0.5, p.hat = TRUE, auc.all = TRUE, show.data = TRUE)
 #> 
 #> $opt
 #> $par
-#>     u1     u2    t11    t22    t12      r    auc      b      a  p.hat 
+#>     u1     u2     t1     t2    t12      r    auc      b      a  p.hat 
 #>  1.428  1.432  0.318  0.459 -0.146 -1.000  0.874  0.270 -0.867  0.500 
 #> 
 #> $value

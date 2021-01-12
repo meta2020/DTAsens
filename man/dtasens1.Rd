@@ -7,7 +7,7 @@
 dtasens1(
   data,
   p,
-  c1 = sqrt(1),
+  c1 = sqrt(0.5),
   start6 = NULL,
   b.wid = c(0, 1),
   c.value = 0.5,
