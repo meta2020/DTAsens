@@ -31,7 +31,7 @@ sAUC <- function(par.vec){
 
     plogis(u1 - (r*t1/t2) * (qlogis(x) + u2))
 
-  }, 0, 1)$value
+  }, 0, 1)
 }
 
 

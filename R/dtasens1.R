@@ -6,15 +6,16 @@
 #' @param p p
 #' @param c1 c1
 #' @param start6 par
-#' @param b.wid par
-#' @param c.value par
-#' @param c.type par
-#' @param opt.type par
-#' @param warn par
+#' @param correct.value par
+#' @param correct.type par
+#' @param optimize.type par
+#' @param show.warn.message par
 #' @param show.data par
-#' @param p.hat par
-#' @param auc.all par
-#' @param interval par
+#' @param show.p.hat par
+#' @param show.auc.all par
+#' @param b.interval par
+#' @param a.interval par
+#' @param a.root.extendInt par
 #' @param ... par
 #'
 #' @return convergence list
@@ -28,30 +29,25 @@
 #' @export
 
 dtasens1 <- function(data,   ## 2 FORMAT: N OR Y, make data name as format
-                  p,
-                  c1 = sqrt(0.5), ##  0<=c11<=1
+                     p,
+                     start6 = NULL,  ## u1, u2, t1, t2, r, b
 
-                  ## STARTING EST POINTS
-                  start6 = NULL,  ## u1, u2, t1, t2, r, b
+                     c1 = sqrt(0.5), ##  0<=c11<=1
 
-                  ## SET A POSITIVE OR NEGATIVE RANGE,  e.g. c(0,2)
-                  b.wid = c(0,1),
+                     correct.value = 0.5,
+                     correct.type = "single",
 
-                  ## CORRECTION
-                  c.value = 0.5,
-                  c.type = "single",
+                     optimize.type = c("optim", "nlminb"),  ## SAME
+                     show.warn.message = FALSE,
+                     show.data = FALSE,
+                     show.p.hat = FALSE,
+                     show.auc.all = FALSE,
 
-                  ## OTHERS
-                  opt.type = c("optim", "nlminb"),  ## SAME
-                  warn = FALSE,
-                  show.data = FALSE,
-                  p.hat = FALSE,
-                  auc.all = FALSE,
-
-                  ## UNIROOT
-                  interval = c(-1e2, 1e2),
-                  ...
-                  ){
+                     b.interval = c(0,2),
+                     a.interval = c(-10, 0),
+                     a.root.extendInt = "downX",
+                     ...
+){
 
   ##
   ## INPUT: DATA PREPROCESS  ----------------------------------------------------------
@@ -64,7 +60,7 @@ dtasens1 <- function(data,   ## 2 FORMAT: N OR Y, make data name as format
 
   if ("TP" %in% names(data)){
 
-    data <- correction(data, value = c.value, type= c.type)
+    data <- correction(data, value = correct.value, type= correct.type)
 
     data <- DOR.data(data)
 
@@ -85,7 +81,7 @@ dtasens1 <- function(data,   ## 2 FORMAT: N OR Y, make data name as format
 
   t        <- ldor/se.ldor
 
-  if (is.null(b.wid))  b.wid <- c(0,10/diff(range(t)))
+  #if (is.null(b.interval))  b.interval <- c(0,10/diff(range(t)))
 
   ##
   ## LIKELIHOOD FUNCTION (6 PARS)-----------------------------------------------
@@ -117,7 +113,7 @@ dtasens1 <- function(data,   ## 2 FORMAT: N OR Y, make data name as format
 
     f.b <- function(a){
 
-      if (!warn) sq <- suppressWarnings(sqrt(1 + b^2 * (1 + t.ldor/se.ldor2))) else sq <- sqrt(1 + b^2 * (1 + t.ldor/se.ldor2))
+      if (!show.warn.message) sq <- suppressWarnings(sqrt(1 + b^2 * (1 + t.ldor/se.ldor2))) else sq <- sqrt(1 + b^2 * (1 + t.ldor/se.ldor2))
 
       pnorm( (a + b * u.ldor/se.ldor) / sq )
 
@@ -130,7 +126,11 @@ dtasens1 <- function(data,   ## 2 FORMAT: N OR Y, make data name as format
 
     a.p <- function(a) {sum(1/f.b(a), na.rm = TRUE) - n/p}
 
-    if (!warn) a.opt.try <- suppressWarnings(try(uniroot(a.p, extendInt="downX",interval,...), silent = TRUE)) else a.opt.try <- try(uniroot(a.p, extendInt="downX",interval,...), silent = TRUE)
+    if (!show.warn.message) a.opt.try <- suppressWarnings(try(
+
+      uniroot(a.p,interval = a.interval, extendInt=c(a.root.extendInt),...), silent = TRUE
+
+    )) else a.opt.try <- try(uniroot(a.p, interval=a.interval, extendInt=c(a.root.extendInt),...), silent = TRUE)
 
     a.opt <- a.opt.try$root
 
@@ -141,8 +141,7 @@ dtasens1 <- function(data,   ## 2 FORMAT: N OR Y, make data name as format
 
     det.vec <- (v1+t11)*(v2+t22)-t12^2
 
-
-    if (!warn) log.det.vec <- suppressWarnings(log(det.vec)) else log.det.vec <- log(det.vec)
+    if (!show.warn.message) log.det.vec <- suppressWarnings(log(det.vec)) else log.det.vec <- log(det.vec)
 
     f.l1 <- ((y1-u1)^2*(v2+t22) - 2*(y2-u2)*(y1-u1)*t12 + (y2-u2)^2*(v1+t11)) / det.vec + log.det.vec
 
@@ -173,52 +172,52 @@ dtasens1 <- function(data,   ## 2 FORMAT: N OR Y, make data name as format
 
   }
 
-    ##
-    ##  INPUT: OPTIMIZATION LOGLIKELIHOOD FUNCTION --------------------------------------
-    ##
+  ##
+  ##  INPUT: OPTIMIZATION LOGLIKELIHOOD FUNCTION --------------------------------------
+  ##
 
-    opt.type <- match.arg(opt.type)
+  optimize.type <- match.arg(optimize.type)
 
-    ## AUTO-SET START POINTS
+  ## AUTO-SET START POINTS
 
-    if(is.null(start6)) {
+  if(is.null(start6)) {
 
-      fit.m <- mvmeta(cbind(y1,y2),S=cbind(v1, rep(0, n), v2), method="ml")
+    fit.m <- mvmeta(cbind(y1,y2),S=cbind(v1, rep(0, n), v2), method="ml")
 
-      if(!inherits(fit.m, "try-error")) {
+    if(!inherits(fit.m, "try-error")) {
 
-        p1 <- round(sqrt(fit.m$Psi[1]),1)
-        p2 <- round(sqrt(fit.m$Psi[4]),1)
-        p.r<- round(fit.m$Psi[3]/(p1*p2),1)
-        start6 <- c(round(fit.m$coefficients,1), p1, p2, p.r, 0)
+      p1 <- round(sqrt(fit.m$Psi[1]),1)
+      p2 <- round(sqrt(fit.m$Psi[4]),1)
+      p.r<- round(fit.m$Psi[3]/(p1*p2),1)
+      start6 <- c(round(fit.m$coefficients,1), p1, p2, p.r, 1)
 
-      } else start6 <- c(0, 0, 0.5, 0.5, -0.4, 0)
+    } else start6 <- c(0, 0, 0.5, 0.5, -0.4, 1)
 
-    }
-
-
-    if(opt.type == "optim"){
-
-      opt <- try(optim(start6,
-                       fn,
-                       method="L-BFGS-B",
-                       lower = c(-5, -5, 0, 0,-1, b.wid[1]),
-                       upper = c( 5,  5, 3, 3, 0, b.wid[2])
-      ), silent = TRUE)
+  }
 
 
-    } else{
+  if(optimize.type == "optim"){
 
-      opt <- try(nlminb(start6,
-                        fn,
-                        lower = c(-5, -5, 0, 0,-1, b.wid[1]), ## u1 u2 t1 t2 r b
-                        upper = c( 5,  5, 3, 3, 0, b.wid[2])
-      ),silent = TRUE)
+    opt <- try(optim(start6,
+                     fn,
+                     method="L-BFGS-B",
+                     lower = c(-5, -5, 0, 0,-1, b.interval[1]),
+                     upper = c( 5,  5, 3, 3, 0, b.interval[2])
+    ), silent = TRUE)
 
-    }
+
+  } else{
+
+    opt <- try(nlminb(start6,
+                      fn,
+                      lower = c(-5, -5, 0, 0,-1, b.interval[1]), ## u1 u2 t1 t2 r b
+                      upper = c( 5,  5, 3, 3, 0, b.interval[2])
+    ),silent = TRUE)
+
+  }
 
 
-  if(!class(opt)=="try-error") {
+  if(!inherits(opt,"try-error")) {
 
     #names(opt$convergence) <- c("conv")
 
@@ -253,7 +252,11 @@ dtasens1 <- function(data,   ## 2 FORMAT: N OR Y, make data name as format
 
     }
 
-    if (!warn) a.opt.try <- suppressWarnings(try(uniroot(a.p2, extendInt="downX",interval,...), silent = TRUE)) else a.opt.try <- try(uniroot(a.p2, extendInt="downX",interval,...), silent = TRUE)
+    if (!show.warn.message) a.opt.try <- suppressWarnings(try(
+
+      uniroot(a.p2, interval = a.interval, extendInt = a.root.extendInt,...), silent = TRUE
+
+    )) else a.opt.try <- try(uniroot(a.p2, interval = a.interval, extendInt=a.root.extendInt, ...), silent = TRUE)
 
     a.opt <- a.opt.try$root
 
@@ -261,34 +264,29 @@ dtasens1 <- function(data,   ## 2 FORMAT: N OR Y, make data name as format
     ## AUC CALC----------------------------------------
     ##
 
-    auc.try <- try(integrate(function(x) {
+    auc.try <- try(sAUC(c(u1,u2, t1, t2, r)), silent = TRUE)
 
-      plogis(u1 - (r*t1/t2) * (qlogis(x) + u2))
-
-    }, 0, 1), silent = TRUE)
-
-    if (auc.all) opt$auc <- auc.try
+    if (show.auc.all) opt$auc <- auc.try
 
     if (!inherits(auc.try, "try-error")) auc <- auc.try$value else auc <- NA
 
-    opt$par <- c(u1, u2, t1, t2, t12, r, auc, b, a.opt)
+    opt$par <- c(u1, u2, t1, t2, r, t12, auc, b, a.opt)
 
-    names(opt$par) <- c("u1", "u2", "t1", "t2", "t12", "r", "auc", "b", "a")
+    names(opt$par) <- c("u1", "u2", "t1", "t2", "r", "t12", "auc", "b", "a")
 
     ##
     ##  P.HAT CALC, FROM b FUNCTION ----------------------------------------
     ##
 
-    ##p.hat <- mean(pnorm(a.opt + opt$par[6]*t))
-    if (p.hat){
+    if (show.p.hat){
 
       bp <- pnorm( (a.opt + b * u.ldor/se.ldor) / sq )
 
       p.hat <- n/sum(1/bp)
 
-      opt$par   <- c(u1, u2, t1, t2, t12, r, auc, b, a.opt, p.hat)
+      opt$par   <- c(u1, u2, t1, t2, r, t12, auc, b, a.opt, p.hat)
 
-      names(opt$par) <- c("u1", "u2", "t1", "t2", "t12", "r", "auc", "b", "a", "p.hat")
+      names(opt$par) <- c("u1", "u2", "t1", "t2", "r", "t12", "auc", "b", "a", "p.hat")
 
     }
 

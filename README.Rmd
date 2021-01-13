@@ -55,19 +55,24 @@ kable(head(dta))
 For a certain selection probability, e.g., p = 0.5
 
 ```{r}
-dtasens1(dta, p = 0.5)
-dtasens1(dta, p = 0.5, opt.type = "nlminb")
+dtasens1(dta, p = 0.7)
 
-dtasens1(dta, p = 0.5, p.hat = TRUE, auc.all = TRUE, show.data = TRUE)
+dtasens1(dta, p = 0.7, 
+         show.p.hat = TRUE, show.auc.all = TRUE, show.data = TRUE)
 ```
 
 For a series of selection probabilities, e.g., p = 0.9, 0,8, ...,0.1
 
 
 ```{r}
-p.seq <- seq(0.9, 0.1, -0.1)
+p.seq <- seq(1, 0.1, -0.1)
 
-estimates <- sapply(p.seq, function(p) dtasens1(dta, p)$par)
+estimates <- sapply(p.seq, 
+                    function(p) dtasens1(dta, p, 
+                                         b.interval = c(0,2), 
+                                         a.interval = c(-5,0), 
+                                         a.root.extendInt = "downX")$par)
+
 colnames(estimates)<- paste0("p = ", p.seq)
 kable(estimates)
 ```
@@ -78,11 +83,10 @@ For a certain selection probability, e.g., p = 0.5
 
 ```{r}
 
-dtasens2(dta, p = 0.5)
-dtasens2(dta, p = 0.5, opt.type = "nlminb")
+dtasens2(dta, p = 0.7)
 
-
-dtasens2(dta, p = 0.5, p.hat = TRUE, auc.all = TRUE, show.data = TRUE)
+dtasens2(dta, p = 0.7, 
+         show.p.hat = TRUE, show.auc.all = TRUE, show.data = TRUE)
 
 ```
 
@@ -90,9 +94,14 @@ For a series of selection probabilities, e.g., p = 0.9, 0.8, ...,0.1
 
 
 ```{r}
-p.seq <- seq(0.9, 0.1, -0.1)
+p.seq <- seq(1, 0.1, -0.1)
 
-estimates <- sapply(p.seq, function(p) dtasens2(dta, p)$par)
+estimates <- sapply(p.seq, 
+                    function(p) dtasens1(dta, p, 
+                                         b.interval = c(0,2), 
+                                         a.interval = c(-5,0), 
+                                         a.root.extendInt = "downX")$par)
+
 colnames(estimates)<- paste0("p = ", p.seq)
 kable(estimates)
 ```
@@ -121,8 +130,9 @@ title("Reistma model from mada")
 
 
 par0 <- c(fit$coefficients*c(1,-1), c(1,-1)*sqrt(fit$Psi[c(1,4)]), fit$Psi[3]/prod(sqrt(fit$Psi[c(1,4)])))
-par1 <- dtasens1(IVD, 0.9)$par[c(1:4,6)]
-par2 <- dtasens2(IVD, 0.9)$par[c(1:4,6)]
+
+par1 <- dtasens1(IVD, 0.9)$par
+par2 <- dtasens2(IVD, 0.9)$par
 
 sROC(par1, pch = 19)
 sROC(par2, add = TRUE, col=2, pch = 19)
@@ -139,19 +149,23 @@ A series of ROC
 
 ```{r, fig.height=5, fig.width=10}
 
-p.seq <- seq(0.9, 0.1, -0.1)
-estimates1 <- sapply(p.seq, function(p) dtasens1(IVD, p)$par)[c(1:4,6),]
-estimates2 <- sapply(p.seq, function(p) dtasens2(IVD, p)$par)[c(1:4,6),]
+p.seq <- seq(1, 0.1, -0.1)
+estimates1 <- sapply(p.seq, 
+                     function(p) dtasens1(IVD, p,
+                                          b.interval = c(0,2),
+                                          a.interval = c(-5,0))$par)
+estimates2 <- sapply(p.seq, 
+                     function(p) dtasens2(IVD, p,
+                                          b.interval = c(0,2),
+                                          a.interval = c(-5,0))$par)
 
 par(mfrow = c(1,2))
-sROC.bunch(par.matrix = estimates1)
+mROC(par.matrix = estimates1)
 sROC(par0, add = TRUE, col = 2, pch = 19, lty =3)
-
 title("dtasens1")
 
-sROC.bunch(par.matrix = estimates2, p.vec = p.seq)
+mROC(par.matrix = estimates2, p.vec = p.seq)
 sROC(par0, add = TRUE, col = 2, pch = 19, lty =3)
-
 title("dtasens2")
 par(mfrow = c(1,1))
 

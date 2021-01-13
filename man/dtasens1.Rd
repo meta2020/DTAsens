@@ -7,17 +7,18 @@
 dtasens1(
   data,
   p,
-  c1 = sqrt(0.5),
   start6 = NULL,
-  b.wid = c(0, 1),
-  c.value = 0.5,
-  c.type = "single",
-  opt.type = c("optim", "nlminb"),
-  warn = FALSE,
+  c1 = sqrt(0.5),
+  correct.value = 0.5,
+  correct.type = "single",
+  optimize.type = c("optim", "nlminb"),
+  show.warn.message = FALSE,
   show.data = FALSE,
-  p.hat = FALSE,
-  auc.all = FALSE,
-  interval = c(-100, 100),
+  show.p.hat = FALSE,
+  show.auc.all = FALSE,
+  b.interval = c(0, 2),
+  a.interval = c(-10, 0),
+  a.root.extendInt = "downX",
   ...
 )
 }
@@ -26,27 +27,29 @@ dtasens1(
 
 \item{p}{p}
 
-\item{c1}{c1}
-
 \item{start6}{par}
 
-\item{b.wid}{par}
+\item{c1}{c1}
 
-\item{c.value}{par}
+\item{correct.value}{par}
 
-\item{c.type}{par}
+\item{correct.type}{par}
 
-\item{opt.type}{par}
+\item{optimize.type}{par}
 
-\item{warn}{par}
+\item{show.warn.message}{par}
 
 \item{show.data}{par}
 
-\item{p.hat}{par}
+\item{show.p.hat}{par}
 
-\item{auc.all}{par}
+\item{show.auc.all}{par}
 
-\item{interval}{par}
+\item{b.interval}{par}
+
+\item{a.interval}{par}
+
+\item{a.root.extendInt}{par}
 
 \item{...}{par}
 }

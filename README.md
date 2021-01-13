@@ -50,17 +50,17 @@ kable(head(dta))
 For a certain selection probability, e.g., p = 0.5
 
 ``` r
-dtasens1(dta, p = 0.5)
+dtasens1(dta, p = 0.7)
 #> $par
-#>     u1     u2     t1     t2    t12      r    auc      b      a 
-#>  1.428  1.432  0.318  0.459 -0.146 -1.000  0.874  0.270 -0.867 
+#>     u1     u2     t1     t2      r    t12    auc      b      a 
+#>  1.431  1.443  0.317  0.462 -1.000 -0.146  0.874  0.385 -0.618 
 #> 
 #> $value
-#> [1] -4.01
+#> [1] -3.97
 #> 
 #> $counts
 #> function gradient 
-#>       38       38 
+#>       21       21 
 #> 
 #> $convergence
 #> [1] 0
@@ -70,31 +70,9 @@ dtasens1(dta, p = 0.5)
 #> 
 #> attr(,"class")
 #> [1] "DTAsens"
-dtasens1(dta, p = 0.5, opt.type = "nlminb")
-#> $par
-#>     u1     u2     t1     t2    t12      r    auc      b      a 
-#>  1.428  1.432  0.318  0.459 -0.146 -1.000  0.874  0.270 -0.867 
-#> 
-#> $objective
-#> [1] -4.01
-#> 
-#> $convergence
-#> [1] 0
-#> 
-#> $iterations
-#> [1] 27
-#> 
-#> $evaluations
-#> function gradient 
-#>       39      186 
-#> 
-#> $message
-#> [1] "relative convergence (4)"
-#> 
-#> attr(,"class")
-#> [1] "DTAsens"
 
-dtasens1(dta, p = 0.5, p.hat = TRUE, auc.all = TRUE, show.data = TRUE)
+dtasens1(dta, p = 0.7, 
+         show.p.hat = TRUE, show.auc.all = TRUE, show.data = TRUE)
 #> $data
 #>       se    sp     y1    y2       v1       v2 ldor.t
 #> 1  0.819 0.746 1.5089 1.077 1.37e-01 5.45e-03  6.839
@@ -130,15 +108,15 @@ dtasens1(dta, p = 0.5, p.hat = TRUE, auc.all = TRUE, show.data = TRUE)
 #> 
 #> $opt
 #> $par
-#>     u1     u2     t1     t2    t12      r    auc      b      a  p.hat 
-#>  1.428  1.432  0.318  0.459 -0.146 -1.000  0.874  0.270 -0.867  0.500 
+#>     u1     u2     t1     t2      r    t12    auc      b      a  p.hat 
+#>  1.431  1.443  0.317  0.462 -1.000 -0.146  0.874  0.385 -0.618  0.700 
 #> 
 #> $value
-#> [1] -4.01
+#> [1] -3.97
 #> 
 #> $counts
 #> function gradient 
-#>       38       38 
+#>       21       21 
 #> 
 #> $convergence
 #> [1] 0
@@ -147,7 +125,7 @@ dtasens1(dta, p = 0.5, p.hat = TRUE, auc.all = TRUE, show.data = TRUE)
 #> [1] "CONVERGENCE: REL_REDUCTION_OF_F <= FACTR*EPSMCH"
 #> 
 #> $auc
-#> 0.874 with absolute error < 5.5e-05
+#> 0.874 with absolute error < 6.1e-05
 #> 
 #> attr(,"class")
 #> [1] "DTAsens"
@@ -156,24 +134,29 @@ dtasens1(dta, p = 0.5, p.hat = TRUE, auc.all = TRUE, show.data = TRUE)
 For a series of selection probabilities, e.g., p = 0.9, 0,8, …,0.1
 
 ``` r
-p.seq <- seq(0.9, 0.1, -0.1)
+p.seq <- seq(1, 0.1, -0.1)
 
-estimates <- sapply(p.seq, function(p) dtasens1(dta, p)$par)
+estimates <- sapply(p.seq, 
+                    function(p) dtasens1(dta, p, 
+                                         b.interval = c(0,2), 
+                                         a.interval = c(-5,0), 
+                                         a.root.extendInt = "downX")$par)
+
 colnames(estimates)<- paste0("p = ", p.seq)
 kable(estimates)
 ```
 
-|     | p = 0.9 | p = 0.8 | p = 0.7 | p = 0.6 | p = 0.5 | p = 0.4 | p = 0.3 | p = 0.2 | p = 0.1 |
-| :-- | ------: | ------: | ------: | ------: | ------: | ------: | ------: | ------: | ------: |
-| u1  |   1.434 |   1.432 |   1.431 |   1.429 |   1.428 |   1.427 |   1.426 |   1.425 |   1.422 |
-| u2  |   1.462 |   1.451 |   1.443 |   1.437 |   1.432 |   1.428 |   1.424 |   1.418 |   1.408 |
-| t1  |   0.315 |   0.316 |   0.317 |   0.317 |   0.318 |   0.318 |   0.319 |   0.320 |   0.321 |
-| t2  |   0.468 |   0.465 |   0.462 |   0.460 |   0.459 |   0.457 |   0.456 |   0.454 |   0.451 |
-| t12 | \-0.147 | \-0.147 | \-0.146 | \-0.146 | \-0.146 | \-0.146 | \-0.145 | \-0.145 | \-0.145 |
-| r   | \-1.000 | \-1.000 | \-1.000 | \-1.000 | \-1.000 | \-1.000 | \-1.000 | \-1.000 | \-1.000 |
-| auc |   0.876 |   0.875 |   0.874 |   0.874 |   0.874 |   0.873 |   0.873 |   0.873 |   0.872 |
-| b   |   0.570 |   0.475 |   0.385 |   0.318 |   0.270 |   0.232 |   0.202 |   0.179 |   0.158 |
-| a   | \-0.156 | \-0.478 | \-0.618 | \-0.734 | \-0.867 | \-1.017 | \-1.200 | \-1.448 | \-1.820 |
+|     |   p = 1 | p = 0.9 | p = 0.8 | p = 0.7 | p = 0.6 | p = 0.5 | p = 0.4 | p = 0.3 | p = 0.2 | p = 0.1 |
+| :-- | ------: | ------: | ------: | ------: | ------: | ------: | ------: | ------: | ------: | ------: |
+| u1  |   1.436 |   1.434 |   1.432 |   1.431 |   1.429 |   1.428 |   1.427 |   1.426 |   1.425 |   1.422 |
+| u2  |   1.479 |   1.462 |   1.451 |   1.443 |   1.437 |   1.432 |   1.428 |   1.424 |   1.418 |   1.408 |
+| t1  |   0.313 |   0.315 |   0.316 |   0.317 |   0.317 |   0.318 |   0.318 |   0.319 |   0.320 |   0.321 |
+| t2  |   0.472 |   0.468 |   0.465 |   0.462 |   0.460 |   0.459 |   0.457 |   0.456 |   0.454 |   0.451 |
+| r   | \-1.000 | \-1.000 | \-1.000 | \-1.000 | \-1.000 | \-1.000 | \-1.000 | \-1.000 | \-1.000 | \-1.000 |
+| t12 | \-0.148 | \-0.147 | \-0.147 | \-0.146 | \-0.146 | \-0.146 | \-0.146 | \-0.145 | \-0.145 | \-0.145 |
+| auc |   0.877 |   0.876 |   0.875 |   0.874 |   0.874 |   0.874 |   0.873 |   0.873 |   0.873 |   0.872 |
+| b   |   1.000 |   0.570 |   0.475 |   0.385 |   0.318 |   0.270 |   0.232 |   0.202 |   0.179 |   0.158 |
+| a   |  16.777 | \-0.156 | \-0.478 | \-0.618 | \-0.734 | \-0.867 | \-1.017 | \-1.200 | \-1.448 | \-1.820 |
 
 ### Optim 2: dtasens2
 
@@ -181,19 +164,17 @@ For a certain selection probability, e.g., p = 0.5
 
 ``` r
 
-dtasens2(dta, p = 0.5)
+dtasens2(dta, p = 0.7)
 #> $par
-#>      u1      u2      t1      t2     t12       r     auc       b       a     c11 
-#>  1.4867  1.3528  0.3227  0.4740 -0.1530 -1.0000  0.8738  0.4261 -1.0260  0.0127 
-#>     c22 
-#>  0.9873 
+#>     u1     u2     t1     t2      r    t12    auc      b      a    c11    c22 
+#>  1.478  1.387  0.323  0.483 -1.000 -0.156  0.875  0.526 -0.522  0.000  1.000 
 #> 
 #> $value
-#> [1] -5.09
+#> [1] -4.79
 #> 
 #> $counts
 #> function gradient 
-#>       40       40 
+#>       30       30 
 #> 
 #> $convergence
 #> [1] 0
@@ -203,34 +184,9 @@ dtasens2(dta, p = 0.5)
 #> 
 #> attr(,"class")
 #> [1] "DTAsens"
-dtasens2(dta, p = 0.5, opt.type = "nlminb")
-#> $par
-#>      u1      u2      t1      t2     t12       r     auc       b       a     c11 
-#>  1.4867  1.3528  0.3227  0.4740 -0.1530 -1.0000  0.8738  0.4260 -1.0261  0.0127 
-#>     c22 
-#>  0.9873 
-#> 
-#> $objective
-#> [1] -5.09
-#> 
-#> $convergence
-#> [1] 0
-#> 
-#> $iterations
-#> [1] 31
-#> 
-#> $evaluations
-#> function gradient 
-#>       47      250 
-#> 
-#> $message
-#> [1] "relative convergence (4)"
-#> 
-#> attr(,"class")
-#> [1] "DTAsens"
 
-
-dtasens2(dta, p = 0.5, p.hat = TRUE, auc.all = TRUE, show.data = TRUE)
+dtasens2(dta, p = 0.7, 
+         show.p.hat = TRUE, show.auc.all = TRUE, show.data = TRUE)
 #> $data
 #>       se    sp     y1    y2       v1       v2 ldor.t
 #> 1  0.819 0.746 1.5089 1.077 1.37e-01 5.45e-03  6.839
@@ -266,17 +222,17 @@ dtasens2(dta, p = 0.5, p.hat = TRUE, auc.all = TRUE, show.data = TRUE)
 #> 
 #> $opt
 #> $par
-#>      u1      u2      t1      t2     t12       r     auc       b       a     c11 
-#>  1.4867  1.3528  0.3227  0.4740 -0.1530 -1.0000  0.8738  0.4261 -1.0260  0.0127 
-#>     c22   p.hat 
-#>  0.9873  0.5000 
+#>     u1     u2     t1     t2      r    t12    auc      b      a    c11    c22 
+#>  1.478  1.387  0.323  0.483 -1.000 -0.156  0.875  0.526 -0.522  0.000  1.000 
+#>  p.hat 
+#>  0.700 
 #> 
 #> $value
-#> [1] -5.09
+#> [1] -4.79
 #> 
 #> $counts
 #> function gradient 
-#>       40       40 
+#>       30       30 
 #> 
 #> $convergence
 #> [1] 0
@@ -285,7 +241,7 @@ dtasens2(dta, p = 0.5, p.hat = TRUE, auc.all = TRUE, show.data = TRUE)
 #> [1] "CONVERGENCE: REL_REDUCTION_OF_F <= FACTR*EPSMCH"
 #> 
 #> $auc
-#> 0.874 with absolute error < 6.5e-05
+#> 0.875 with absolute error < 7.7e-05
 #> 
 #> attr(,"class")
 #> [1] "DTAsens"
@@ -294,26 +250,29 @@ dtasens2(dta, p = 0.5, p.hat = TRUE, auc.all = TRUE, show.data = TRUE)
 For a series of selection probabilities, e.g., p = 0.9, 0.8, …,0.1
 
 ``` r
-p.seq <- seq(0.9, 0.1, -0.1)
+p.seq <- seq(1, 0.1, -0.1)
 
-estimates <- sapply(p.seq, function(p) dtasens2(dta, p)$par)
+estimates <- sapply(p.seq, 
+                    function(p) dtasens1(dta, p, 
+                                         b.interval = c(0,2), 
+                                         a.interval = c(-5,0), 
+                                         a.root.extendInt = "downX")$par)
+
 colnames(estimates)<- paste0("p = ", p.seq)
 kable(estimates)
 ```
 
-|     | p = 0.9 | p = 0.8 | p = 0.7 | p = 0.6 | p = 0.5 | p = 0.4 | p = 0.3 | p = 0.2 | p = 0.1 |
-| :-- | ------: | ------: | ------: | ------: | ------: | ------: | ------: | ------: | ------: |
-| u1  |   1.455 |   1.465 |   1.478 |   1.488 |   1.487 |   1.494 |   1.506 |   1.520 |   1.540 |
-| u2  |   1.438 |   1.414 |   1.387 |   1.361 |   1.353 |   1.330 |   1.300 |   1.263 |   1.213 |
-| t1  |   0.319 |   0.321 |   0.323 |   0.324 |   0.323 |   0.324 |   0.325 |   0.327 |   0.329 |
-| t2  |   0.482 |   0.482 |   0.483 |   0.482 |   0.474 |   0.471 |   0.469 |   0.467 |   0.465 |
-| t12 | \-0.154 | \-0.155 | \-0.156 | \-0.156 | \-0.153 | \-0.153 | \-0.153 | \-0.153 | \-0.153 |
-| r   | \-1.000 | \-1.000 | \-1.000 | \-1.000 | \-1.000 | \-1.000 | \-1.000 | \-1.000 | \-1.000 |
-| auc |   0.876 |   0.875 |   0.875 |   0.874 |   0.874 |   0.873 |   0.872 |   0.871 |   0.870 |
-| b   |   0.893 |   0.584 |   0.526 |   0.485 |   0.426 |   0.409 |   0.396 |   0.379 |   0.347 |
-| a   |   0.085 | \-0.225 | \-0.522 | \-0.773 | \-1.026 | \-1.272 | \-1.524 | \-1.803 | \-2.163 |
-| c11 |   0.000 |   0.000 |   0.000 |   0.000 |   0.013 |   0.020 |   0.024 |   0.025 |   0.027 |
-| c22 |   1.000 |   1.000 |   1.000 |   1.000 |   0.987 |   0.980 |   0.976 |   0.975 |   0.973 |
+|     |   p = 1 | p = 0.9 | p = 0.8 | p = 0.7 | p = 0.6 | p = 0.5 | p = 0.4 | p = 0.3 | p = 0.2 | p = 0.1 |
+| :-- | ------: | ------: | ------: | ------: | ------: | ------: | ------: | ------: | ------: | ------: |
+| u1  |   1.436 |   1.434 |   1.432 |   1.431 |   1.429 |   1.428 |   1.427 |   1.426 |   1.425 |   1.422 |
+| u2  |   1.479 |   1.462 |   1.451 |   1.443 |   1.437 |   1.432 |   1.428 |   1.424 |   1.418 |   1.408 |
+| t1  |   0.313 |   0.315 |   0.316 |   0.317 |   0.317 |   0.318 |   0.318 |   0.319 |   0.320 |   0.321 |
+| t2  |   0.472 |   0.468 |   0.465 |   0.462 |   0.460 |   0.459 |   0.457 |   0.456 |   0.454 |   0.451 |
+| r   | \-1.000 | \-1.000 | \-1.000 | \-1.000 | \-1.000 | \-1.000 | \-1.000 | \-1.000 | \-1.000 | \-1.000 |
+| t12 | \-0.148 | \-0.147 | \-0.147 | \-0.146 | \-0.146 | \-0.146 | \-0.146 | \-0.145 | \-0.145 | \-0.145 |
+| auc |   0.877 |   0.876 |   0.875 |   0.874 |   0.874 |   0.874 |   0.873 |   0.873 |   0.873 |   0.872 |
+| b   |   1.000 |   0.570 |   0.475 |   0.385 |   0.318 |   0.270 |   0.232 |   0.202 |   0.179 |   0.158 |
+| a   |  16.777 | \-0.156 | \-0.478 | \-0.618 | \-0.734 | \-0.867 | \-1.017 | \-1.200 | \-1.448 | \-1.820 |
 
 ### Example data 2
 
@@ -355,8 +314,9 @@ title("Reistma model from mada")
 
 
 par0 <- c(fit$coefficients*c(1,-1), c(1,-1)*sqrt(fit$Psi[c(1,4)]), fit$Psi[3]/prod(sqrt(fit$Psi[c(1,4)])))
-par1 <- dtasens1(IVD, 0.9)$par[c(1:4,6)]
-par2 <- dtasens2(IVD, 0.9)$par[c(1:4,6)]
+
+par1 <- dtasens1(IVD, 0.9)$par
+par2 <- dtasens2(IVD, 0.9)$par
 
 sROC(par1, pch = 19)
 sROC(par2, add = TRUE, col=2, pch = 19)
@@ -377,19 +337,23 @@ A series of ROC
 
 ``` r
 
-p.seq <- seq(0.9, 0.1, -0.1)
-estimates1 <- sapply(p.seq, function(p) dtasens1(IVD, p)$par)[c(1:4,6),]
-estimates2 <- sapply(p.seq, function(p) dtasens2(IVD, p)$par)[c(1:4,6),]
+p.seq <- seq(1, 0.1, -0.1)
+estimates1 <- sapply(p.seq, 
+                     function(p) dtasens1(IVD, p,
+                                          b.interval = c(0,2),
+                                          a.interval = c(-5,0))$par)
+estimates2 <- sapply(p.seq, 
+                     function(p) dtasens2(IVD, p,
+                                          b.interval = c(0,2),
+                                          a.interval = c(-5,0))$par)
 
 par(mfrow = c(1,2))
-sROC.bunch(par.matrix = estimates1)
+mROC(par.matrix = estimates1)
 sROC(par0, add = TRUE, col = 2, pch = 19, lty =3)
-
 title("dtasens1")
 
-sROC.bunch(par.matrix = estimates2, p.vec = p.seq)
+mROC(par.matrix = estimates2, p.vec = p.seq)
 sROC(par0, add = TRUE, col = 2, pch = 19, lty =3)
-
 title("dtasens2")
 ```
 
