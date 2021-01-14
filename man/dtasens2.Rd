@@ -7,16 +7,18 @@
 dtasens2(
   data,
   p,
-  start7 = NULL,
   correct.value = 0.5,
   correct.type = "single",
+  start5 = NULL,
+  b0 = 1,
+  c0 = 0.71,
+  b.interval = c(0, 2),
+  a.interval = c(-5, 2),
   optimize.type = c("optim", "nlminb"),
   show.warn.message = FALSE,
   show.data = FALSE,
   show.p.hat = FALSE,
   show.auc.all = FALSE,
-  b.interval = c(0, 2),
-  a.interval = c(-10, 0),
   a.root.extendInt = "downX",
   ...
 )
@@ -26,11 +28,19 @@ dtasens2(
 
 \item{p}{p}
 
-\item{start7}{par}
-
 \item{correct.value}{par}
 
 \item{correct.type}{par}
+
+\item{start5}{a vector of u1 u2 t1 t2 r}
+
+\item{b0}{b}
+
+\item{c0}{c1}
+
+\item{b.interval}{par}
+
+\item{a.interval}{par}
 
 \item{optimize.type}{par}
 
@@ -41,10 +51,6 @@ dtasens2(
 \item{show.p.hat}{par}
 
 \item{show.auc.all}{par}
-
-\item{b.interval}{par}
-
-\item{a.interval}{par}
 
 \item{a.root.extendInt}{par}
 

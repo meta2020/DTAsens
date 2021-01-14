@@ -174,7 +174,7 @@ dtasens2(dta, p = 0.7)
 #> 
 #> $counts
 #> function gradient 
-#>       30       30 
+#>       44       44 
 #> 
 #> $convergence
 #> [1] 0
@@ -232,7 +232,7 @@ dtasens2(dta, p = 0.7,
 #> 
 #> $counts
 #> function gradient 
-#>       30       30 
+#>       44       44 
 #> 
 #> $convergence
 #> [1] 0

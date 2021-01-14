@@ -5,16 +5,18 @@
 #' @param data data
 #' @param p p
 #' @param c1 c1
-#' @param start6 par
 #' @param correct.value par
-#' @param correct.type par
+#' @param correct.type "single", "all"
+#' @param start5 A vector of u1 u2 t1 t2 r
+#' @param b0 A start value of b
+#' @param b.interval par
+#' @param a.interval par
 #' @param optimize.type par
 #' @param show.warn.message par
 #' @param show.data par
 #' @param show.p.hat par
 #' @param show.auc.all par
-#' @param b.interval par
-#' @param a.interval par
+
 #' @param a.root.extendInt par
 #' @param ... par
 #'
@@ -30,21 +32,23 @@
 
 dtasens1 <- function(data,   ## 2 FORMAT: N OR Y, make data name as format
                      p,
-                     start6 = NULL,  ## u1, u2, t1, t2, r, b
 
                      c1 = sqrt(0.5), ##  0<=c11<=1
 
                      correct.value = 0.5,
                      correct.type = "single",
 
+                     start5 = NULL,  ## u1, u2, t1, t2, r, b
+                     b0 = 1,
+                     b.interval = c(0,2),
+                     a.interval = c(-5, 2),
                      optimize.type = c("optim", "nlminb"),  ## SAME
+
                      show.warn.message = FALSE,
                      show.data = FALSE,
                      show.p.hat = FALSE,
                      show.auc.all = FALSE,
 
-                     b.interval = c(0,2),
-                     a.interval = c(-10, 0),
                      a.root.extendInt = "downX",
                      ...
 ){
@@ -180,7 +184,7 @@ dtasens1 <- function(data,   ## 2 FORMAT: N OR Y, make data name as format
 
   ## AUTO-SET START POINTS
 
-  if(is.null(start6)) {
+  if(is.null(start5)) {
 
     fit.m <- mvmeta(cbind(y1,y2),S=cbind(v1, rep(0, n), v2), method="ml")
 
@@ -189,9 +193,9 @@ dtasens1 <- function(data,   ## 2 FORMAT: N OR Y, make data name as format
       p1 <- round(sqrt(fit.m$Psi[1]),1)
       p2 <- round(sqrt(fit.m$Psi[4]),1)
       p.r<- round(fit.m$Psi[3]/(p1*p2),1)
-      start6 <- c(round(fit.m$coefficients,1), p1, p2, p.r, 1)
+      start6 <- c(round(fit.m$coefficients,1), p1, p2, p.r, b0)
 
-    } else start6 <- c(0, 0, 0.5, 0.5, -0.4, 1)
+    } else start6 <- c(0, 0, 0.5, 0.5, -0.4, b0)
 
   }
 

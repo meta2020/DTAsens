@@ -4,9 +4,11 @@
 #'
 #' @param data data
 #' @param p p
-#' @param start7 par
 #' @param correct.value par
 #' @param correct.type par
+#' @param start5 a vector of u1 u2 t1 t2 r
+#' @param b0 b
+#' @param c0 c1
 #' @param optimize.type par
 #' @param show.warn.message par
 #' @param show.data par
@@ -25,19 +27,21 @@
 #'
 dtasens2 <- function(data,
                   p,
-                  start7 = NULL,  ## u1, u2, t1, t2, r, b, c1
 
                   correct.value = 0.5,
                   correct.type = "single",
 
+                  start5 = NULL,  ## u1, u2, t1, t2, r
+                  b0 = 1,
+                  c0 = 0.71,
+                  b.interval = c(0, 2), ## SET A VALUE b.interval in [-5, 5]
+                  a.interval = c(-5, 2),
                   optimize.type = c("optim", "nlminb"),
                   show.warn.message = FALSE,
                   show.data =FALSE,
                   show.p.hat=FALSE,
                   show.auc.all = FALSE,
 
-                  b.interval = c(0,2), ## SET A VALUE b.interval in [-5, 5]
-                  a.interval = c(-10, 0),
                   a.root.extendInt = "downX",
                   ...
                   ){
@@ -170,7 +174,7 @@ dtasens2 <- function(data,
 
     ## AUTO-SET START POINTS
 
-    if(is.null(start7)) {
+    if(is.null(start5)) {
 
       fit.m <- mvmeta(cbind(y1,y2),S=cbind(v1, rep(0, n), v2), method="ml")
 
@@ -179,9 +183,9 @@ dtasens2 <- function(data,
         p1 <- round(sqrt(fit.m$Psi[1]),1)
         p2 <- round(sqrt(fit.m$Psi[4]),1)
         p.r<- round(fit.m$Psi[3]/(p1*p2),1)
-        start7 <- c(round(fit.m$coefficients,1), p1,p2, p.r, 1, 0.71)
+        start7 <- c(round(fit.m$coefficients,1), p1,p2, p.r, b0, c0)
 
-      } else start7 <- c(0, 0 , 0.5, 0.5, -0.4, 1, 0.71)
+      } else start7 <- c(0, 0 , 0.5, 0.5, -0.4, b0, c0)
 
     }
 
