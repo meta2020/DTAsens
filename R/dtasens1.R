@@ -12,6 +12,7 @@
 #' @param b.interval par
 #' @param a.interval par
 #' @param optimize.type par
+#' @param pos.r permit positive r
 #' @param show.warn.message par
 #' @param show.data par
 #' @param show.p.hat par
@@ -39,17 +40,18 @@ dtasens1 <- function(data,   ## 2 FORMAT: N OR Y, make data name as format
                      correct.type = "single",
 
                      start5 = NULL,  ## u1, u2, t1, t2, r, b
-                     b0 = 1,
-                     b.interval = c(0,2),
-                     a.interval = c(-5, 2),
+                     b0 = 0,
+                     b.interval = c(0, 3),
+                     a.interval = c(-5, 5),
                      optimize.type = c("optim", "nlminb"),  ## SAME
+                     pos.r = FALSE,
 
                      show.warn.message = FALSE,
                      show.data = FALSE,
                      show.p.hat = FALSE,
                      show.auc.all = FALSE,
 
-                     a.root.extendInt = "downX",
+                     a.root.extendInt = "yes",
                      ...
 ){
 
@@ -197,16 +199,17 @@ dtasens1 <- function(data,   ## 2 FORMAT: N OR Y, make data name as format
 
     } else start6 <- c(0, 0, 0.5, 0.5, -0.4, b0)
 
-  }
+  } else start6 <- c(start5, b0)
 
+  if(!pos.r) r.up <- 0 else  r.up <- 1
 
   if(optimize.type == "optim"){
 
     opt <- try(optim(start6,
                      fn,
                      method="L-BFGS-B",
-                     lower = c(-5, -5, 0, 0,-1, b.interval[1]),
-                     upper = c( 5,  5, 3, 3, 0, b.interval[2])
+                     lower = c(-5, -5, 0, 0, -1, b.interval[1]),
+                     upper = c( 5,  5, 3, 3, r.up , b.interval[2])
     ), silent = TRUE)
 
 
@@ -214,8 +217,8 @@ dtasens1 <- function(data,   ## 2 FORMAT: N OR Y, make data name as format
 
     opt <- try(nlminb(start6,
                       fn,
-                      lower = c(-5, -5, 0, 0,-1, b.interval[1]), ## u1 u2 t1 t2 r b
-                      upper = c( 5,  5, 3, 3, 0, b.interval[2])
+                      lower = c(-5, -5, 0, 0, -1, b.interval[1]), ## u1 u2 t1 t2 r b
+                      upper = c( 5,  5, 3, 3, r.up, b.interval[2])
     ),silent = TRUE)
 
   }
@@ -274,9 +277,9 @@ dtasens1 <- function(data,   ## 2 FORMAT: N OR Y, make data name as format
 
     if (!inherits(auc.try, "try-error")) auc <- auc.try$value else auc <- NA
 
-    opt$par <- c(u1, u2, t1, t2, r, t12, auc, b, a.opt)
+    opt$par <- c(u1, u2, t1, t2, r, t12, auc, b, a.opt, c11, c22)
 
-    names(opt$par) <- c("u1", "u2", "t1", "t2", "r", "t12", "auc", "b", "a")
+    names(opt$par) <- c("u1", "u2", "t1", "t2", "r", "t12", "auc", "b", "a", "c11", "c22")
 
     ##
     ##  P.HAT CALC, FROM b FUNCTION ----------------------------------------
@@ -288,16 +291,16 @@ dtasens1 <- function(data,   ## 2 FORMAT: N OR Y, make data name as format
 
       p.hat <- n/sum(1/bp)
 
-      opt$par   <- c(u1, u2, t1, t2, r, t12, auc, b, a.opt, p.hat)
+      opt$par   <- c(u1, u2, t1, t2, r, t12, auc, b, a.opt, c11, c22, p.hat)
 
-      names(opt$par) <- c("u1", "u2", "t1", "t2", "r", "t12", "auc", "b", "a", "p.hat")
+      names(opt$par) <- c("u1", "u2", "t1", "t2", "r", "t12", "auc", "b", "a", "c11", "c22", "p.hat")
 
     }
 
 
   }
 
-  class(opt) <- "DTAsens"
+  #class(opt) <- "DTAsens"
 
   if (!show.data) return(opt) else return(list(data=data, opt=opt))
 

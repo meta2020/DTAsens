@@ -10,16 +10,17 @@ dtasens2(
   correct.value = 0.5,
   correct.type = "single",
   start5 = NULL,
-  b0 = 1,
-  c0 = 0.71,
-  b.interval = c(0, 2),
-  a.interval = c(-5, 2),
+  b0 = 0,
+  c0 = sqrt(0.5),
+  b.interval = c(0, 3),
+  a.interval = c(-5, 5),
   optimize.type = c("optim", "nlminb"),
+  pos.r = FALSE,
   show.warn.message = FALSE,
   show.data = FALSE,
   show.p.hat = FALSE,
   show.auc.all = FALSE,
-  a.root.extendInt = "downX",
+  a.root.extendInt = "yes",
   ...
 )
 }
@@ -38,11 +39,13 @@ dtasens2(
 
 \item{c0}{c1}
 
-\item{b.interval}{par}
+\item{b.interval}{par one-side}
 
 \item{a.interval}{par}
 
 \item{optimize.type}{par}
+
+\item{pos.r}{permit positive r}
 
 \item{show.warn.message}{par}
 

@@ -10,11 +10,12 @@
 #' @param b0 b
 #' @param c0 c1
 #' @param optimize.type par
+#' @param pos.r permit positive r
 #' @param show.warn.message par
 #' @param show.data par
 #' @param show.p.hat par
 #' @param show.auc.all par
-#' @param b.interval par
+#' @param b.interval par one-side
 #' @param a.interval par
 #' @param a.root.extendInt par
 #' @param ... par
@@ -32,17 +33,18 @@ dtasens2 <- function(data,
                   correct.type = "single",
 
                   start5 = NULL,  ## u1, u2, t1, t2, r
-                  b0 = 1,
-                  c0 = 0.71,
-                  b.interval = c(0, 2), ## SET A VALUE b.interval in [-5, 5]
-                  a.interval = c(-5, 2),
+                  b0 = 0,
+                  c0 = sqrt(0.5),
+                  b.interval = c(0, 3), ## SET A VALUE b.interval in [-5, 5]
+                  a.interval = c(-5, 5),
                   optimize.type = c("optim", "nlminb"),
+                  pos.r = FALSE,
                   show.warn.message = FALSE,
                   show.data =FALSE,
                   show.p.hat=FALSE,
                   show.auc.all = FALSE,
 
-                  a.root.extendInt = "downX",
+                  a.root.extendInt = "yes",
                   ...
                   ){
 
@@ -187,7 +189,9 @@ dtasens2 <- function(data,
 
       } else start7 <- c(0, 0 , 0.5, 0.5, -0.4, b0, c0)
 
-    }
+    } else start7 <-c(start5, b0, c0)
+
+    if(!pos.r) r.up <- 0 else  r.up <- 1
 
     if(optimize.type == "optim"){
 
@@ -195,7 +199,7 @@ dtasens2 <- function(data,
                        fn,
                        method="L-BFGS-B",
                        lower = c(-5, -5, 0, 0,-1, b.interval[1], 0),
-                       upper = c( 5,  5, 3, 3, 0, b.interval[2], 1)
+                       upper = c( 5,  5, 3, 3, r.up, b.interval[2], 1)
       ),silent = TRUE)
 
     } else {
@@ -203,7 +207,7 @@ dtasens2 <- function(data,
       opt <- try(nlminb(start7,
                         fn,
                         lower = c(-5, -5, 0, 0,-1, b.interval[1], 0), ## u1 u2 t1 t2 r b c1
-                        upper = c( 5,  5, 3, 3, 0, b.interval[2], 1)
+                        upper = c( 5,  5, 3, 3, r.up, b.interval[2], 1)
       ), silent = TRUE)
 
     }
