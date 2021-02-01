@@ -33,18 +33,18 @@ dtasens2 <- function(data,
                   correct.type = "single",
 
                   start5 = NULL,  ## u1, u2, t1, t2, r
-                  b0 = 0,
+                  b0 = 0.1,
                   c0 = sqrt(0.5),
-                  b.interval = c(0, 3), ## SET A VALUE b.interval in [-5, 5]
-                  a.interval = c(-5, 5),
+                  b.interval = c(0, 2), ## SET A VALUE b.interval in [-5, 5]
+                  a.interval = c(-5, 3),
                   optimize.type = c("optim", "nlminb"),
-                  pos.r = FALSE,
+                  pos.r = TRUE,
                   show.warn.message = FALSE,
                   show.data =FALSE,
                   show.p.hat=FALSE,
                   show.auc.all = FALSE,
 
-                  a.root.extendInt = "yes",
+                  a.root.extendInt = "downX",
                   ...
                   ){
 
@@ -60,7 +60,7 @@ dtasens2 <- function(data,
 
     data <- correction(data, value =correct.value, type=correct.type)
 
-    data <- DOR.data(data)
+    data <- logit.data(data)
 
   }
 
@@ -187,7 +187,7 @@ dtasens2 <- function(data,
         p.r<- round(fit.m$Psi[3]/(p1*p2),1)
         start7 <- c(round(fit.m$coefficients,1), p1,p2, p.r, b0, c0)
 
-      } else start7 <- c(0, 0 , 0.5, 0.5, -0.4, b0, c0)
+      } else start7 <- c(0, 0 , 0.1, 0.1, -0.1, b0, c0)
 
     } else start7 <-c(start5, b0, c0)
 
@@ -206,7 +206,7 @@ dtasens2 <- function(data,
 
       opt <- try(nlminb(start7,
                         fn,
-                        lower = c(-5, -5, 0, 0,-1, b.interval[1], 0), ## u1 u2 t1 t2 r b c1
+                        lower = c(-5, -5, 0, 0, -1, b.interval[1], 0), ## u1 u2 t1 t2 r b c1
                         upper = c( 5,  5, 3, 3, r.up, b.interval[2], 1)
       ), silent = TRUE)
 
@@ -222,7 +222,9 @@ dtasens2 <- function(data,
     ##
 
     u1  <- opt$par[1]
+    se  <- plogis(u1)
     u2  <- opt$par[2]
+    sp  <- plogis(u2)
     t1  <- opt$par[3]
     t11 <- t1^2
     t2  <- opt$par[4]
@@ -273,8 +275,8 @@ dtasens2 <- function(data,
 
     if (!inherits(auc.try, "try-error")) auc <- auc.try$value else auc <- NA
 
-    opt$par   <- c(u1, u2, t1, t2, r, t12, auc, b, a.opt, c11, c22)
-    names(opt$par) <- c("u1", "u2", "t1", "t2", "r", "t12", "auc", "b", "a", "c11", "c22")
+    opt$par   <- c(se, sp, u1, u2, t1, t2, r, t12, b, a.opt, c11, c22, auc)
+    names(opt$par) <- c("se", "sp", "u1", "u2", "t1", "t2", "r", "t12", "b", "a", "c11", "c22", "auc")
 
     ##
     ##  show.p.hat CALC, FROM b FUNCTION ----------------------------------------
@@ -287,14 +289,14 @@ dtasens2 <- function(data,
 
       p.hat <- n/sum(1/bp)
 
-      opt$par   <- c(u1, u2, t1, t2, r, t12, auc, b, a.opt, c11, c22, p.hat)
-      names(opt$par) <- c("u1", "u2", "t1", "t2", "r", "t12", "auc", "b", "a", "c11", "c22", "p.hat")
+      opt$par   <- c(se, sp, u1, u2, t1, t2, r, t12, b, a.opt, c11, c22, auc, p.hat)
+      names(opt$par) <- c("se", "sp", "u1", "u2", "t1", "t2", "r", "t12", "b", "a", "c11", "c22", "auc", "p.hat")
 
     }
 
   }
 
-    class(opt) <- "DTAsens"
+    #class(opt) <- "DTAsens"
 
   if (!show.data)  return(opt) else  return(list(data=data, opt=opt))
 

@@ -4,60 +4,90 @@
 
 ##
 ## CONTINUITY CORRECTION -------------------------------------------------------
-## 
+##
 
-correction <- function(data, value = 0.5, 
+#' Continuity correction
+#'
+#' @description Continuity correction
+#'
+#' @param data data
+#' @param value value
+#' @param type type
+#'
+#' @return data
+#'
+#' @examples
+#' correction(IVD)
+#'
+#' @export
+#'
+correction <- function(data, value = 0.5,
                        type = c("single", "all")){
-  
+
   type <- match.arg(type)
-  
+
   if(type == "single"){
-    
+
     correction = ((((data$TP == 0)|(data$FN == 0))|(data$FP == 0))| (data$TN == 0)) * value
-    
+
     data$TP <- correction + data$TP
     data$FN <- correction + data$FN
     data$FP <- correction + data$FP
     data$TN <- correction + data$TN
-  }
-  
-  else{
-    
+
+  } else{
+
     if(any(c(data$TP,data$FN,data$FP,data$TN) == 0)){
-      
+
       data$TP <- data$TP + value
       data$FN <- data$FN + value
       data$FP <- data$FP + value
       data$TN <- data$TN + value
     }
   }
-  
+
   return(data)
-  
+
 }
 
 
 ##
 ## GENERATE y1 y2 --------------------------------------------------------------
-## 
+##
+#' Transform data
+#'
+#' @description Transform data
+#'
+#' @param data data
+#'
+#' @return data
+#'
+#' @examples
+#' logit.data(correction(IVD))
+#'
+#' @export
+#'
+logit.data <- function(data){
 
-DOR.data <- function(data){
-  
   sens <- data$TP/(data$TP+data$FN)
   spec <- data$TN/(data$TN+data$FP)
-  
+
   y1 <- qlogis(sens)  ##y1 <- log(sens/(1-sens))
   y2 <- qlogis(spec)  ##y2 <- log(spec/(1-spec))
-  
+
   v1 <- (1/data$TP)+(1/data$FN)
   v2 <- (1/data$TN)+(1/data$FP)
-  
-  data.frame(sens = sens, 
-             spec = spec, 
+
+  lnDOR <- y1+y2        ## log DOR
+  seDOR <- sqrt(v1+v2)  ## SE DOR
+
+  data.frame(sens = sens,
+             spec = spec,
              y1 = y1,
              y2 = y2,
              v1 = v1,
-             v2 = v2)
-  
+             v2 = v2,
+             ldor.t = lnDOR/seDOR)
+
 }
 

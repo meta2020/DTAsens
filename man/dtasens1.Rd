@@ -11,16 +11,16 @@ dtasens1(
   correct.value = 0.5,
   correct.type = "single",
   start5 = NULL,
-  b0 = 0,
-  b.interval = c(0, 3),
-  a.interval = c(-5, 5),
+  b0 = 0.1,
+  b.interval = c(0, 2),
+  a.interval = c(-5, 3),
   optimize.type = c("optim", "nlminb"),
   pos.r = FALSE,
   show.warn.message = FALSE,
   show.data = FALSE,
   show.p.hat = FALSE,
   show.auc.all = FALSE,
-  a.root.extendInt = "yes",
+  a.root.extendInt = "downX",
   ...
 )
 }

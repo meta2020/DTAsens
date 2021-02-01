@@ -51,23 +51,25 @@ sROC <- function(par.vec = NULL,
 #' @param new.plot new.plot
 #' @param legend legend
 #' @param p.vec p.vec
+#' @param cols set cols
 #' @param ... par
 #'
 #' @return plot
 #'
 #' @examples
 #' par.matrix <-matrix(c(1,1,0.5, 0.5, -0.6, 1,1,1, 2, -0.6), 5,2)
-#' mROC(par.matrix, legend = TRUE, p.vec = c(0.9, 0.5))
+#' mROC(par.matrix, legend = TRUE, p.vec = c(0.9, 0.5), cols = 1:2)
 #'
 #' @export
 
 mROC <- function(par.matrix,  ## u1 u2 t12 t22
-                       s.point=TRUE, s.line = FALSE,
-                       new.plot =TRUE,legend = FALSE, p.vec,...) {
+                 s.point=TRUE, s.line = FALSE,
+                 new.plot =TRUE,legend = FALSE, p.vec,
+                 cols = NULL,...) {
 
   if (new.plot) plot(NULL, xlim=c(0,1), ylim=c(0,1), xlab = "FPR", ylab = "TPR")
 
-  cols <- gray.colors(ncol(par.matrix), gamma = 1, start = 0, end = 0.8)
+  if (is.null(cols)) cols <- gray.colors(ncol(par.matrix), gamma = 1, start = 0, end = 0.8)
 
   for (i in 1:ncol(par.matrix)) {
 

@@ -11,6 +11,7 @@ mROC(
   new.plot = TRUE,
   legend = FALSE,
   p.vec,
+  cols = NULL,
   ...
 )
 }
@@ -27,6 +28,8 @@ mROC(
 
 \item{p.vec}{p.vec}
 
+\item{cols}{set cols}
+
 \item{...}{par}
 }
 \value{
@@ -37,6 +40,6 @@ Multiple ROC curves
 }
 \examples{
 par.matrix <-matrix(c(1,1,0.5, 0.5, -0.6, 1,1,1, 2, -0.6), 5,2)
-mROC(par.matrix, legend = TRUE, p.vec = c(0.9, 0.5))
+mROC(par.matrix, legend = TRUE, p.vec = c(0.9, 0.5), cols = 1:2)
 
 }

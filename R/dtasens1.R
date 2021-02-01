@@ -40,9 +40,9 @@ dtasens1 <- function(data,   ## 2 FORMAT: N OR Y, make data name as format
                      correct.type = "single",
 
                      start5 = NULL,  ## u1, u2, t1, t2, r, b
-                     b0 = 0,
-                     b.interval = c(0, 3),
-                     a.interval = c(-5, 5),
+                     b0 = 0.1,
+                     b.interval = c(0, 2),
+                     a.interval = c(-5, 3),
                      optimize.type = c("optim", "nlminb"),  ## SAME
                      pos.r = FALSE,
 
@@ -51,7 +51,7 @@ dtasens1 <- function(data,   ## 2 FORMAT: N OR Y, make data name as format
                      show.p.hat = FALSE,
                      show.auc.all = FALSE,
 
-                     a.root.extendInt = "yes",
+                     a.root.extendInt = "downX",
                      ...
 ){
 
@@ -68,7 +68,7 @@ dtasens1 <- function(data,   ## 2 FORMAT: N OR Y, make data name as format
 
     data <- correction(data, value = correct.value, type= correct.type)
 
-    data <- DOR.data(data)
+    data <- logit.data(data)
 
   }
 
@@ -233,7 +233,9 @@ dtasens1 <- function(data,   ## 2 FORMAT: N OR Y, make data name as format
     ##
 
     u1  <- opt$par[1]
+    se  <- plogis(u1)
     u2  <- opt$par[2]
+    sp  <- plogis(u2)
     t1  <- opt$par[3]
     t11 <- t1^2
     t2  <- opt$par[4]
@@ -271,15 +273,15 @@ dtasens1 <- function(data,   ## 2 FORMAT: N OR Y, make data name as format
     ## AUC CALC----------------------------------------
     ##
 
-    auc.try <- try(sAUC(c(u1,u2, t1, t2, r)), silent = TRUE)
+    auc.try <- try(sAUC(c(u1, u2, t1, t2, r)), silent = TRUE)
 
     if (show.auc.all) opt$auc <- auc.try
 
     if (!inherits(auc.try, "try-error")) auc <- auc.try$value else auc <- NA
 
-    opt$par <- c(u1, u2, t1, t2, r, t12, auc, b, a.opt, c11, c22)
+    opt$par <- c(se, sp, u1, u2, t1, t2, r, t12, b, a.opt, c11, c22, auc)
 
-    names(opt$par) <- c("u1", "u2", "t1", "t2", "r", "t12", "auc", "b", "a", "c11", "c22")
+    names(opt$par) <- c("se", "sp" ,"u1", "u2", "t1", "t2", "r", "t12", "b", "a", "c11", "c22", "auc")
 
     ##
     ##  P.HAT CALC, FROM b FUNCTION ----------------------------------------
@@ -291,9 +293,9 @@ dtasens1 <- function(data,   ## 2 FORMAT: N OR Y, make data name as format
 
       p.hat <- n/sum(1/bp)
 
-      opt$par   <- c(u1, u2, t1, t2, r, t12, auc, b, a.opt, c11, c22, p.hat)
+      opt$par   <- c(se, sp, u1, u2, t1, t2, r, t12, b, a.opt, c11, c22, auc, p.hat)
 
-      names(opt$par) <- c("u1", "u2", "t1", "t2", "r", "t12", "auc", "b", "a", "c11", "c22", "p.hat")
+      names(opt$par) <- c("se", "sp","u1", "u2", "t1", "t2", "r", "t12", "b", "a", "c11", "c22", "auc", "p.hat")
 
     }
 
