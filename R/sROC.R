@@ -4,23 +4,29 @@
 #'
 #' @param par.vec c(u1, u2, t1, t2, r)
 #' @param add par
-#' @param s.point par
+#' @param add.ci par
+#' @param ci.level ci.level
+#' @param add.sum.point par
 #' @param ... par
 #'
 #' @return plot
 #'
 #' @importFrom grDevices gray.colors
 #' @importFrom graphics curve lines points
+#' @importFrom stats qnorm
+
 
 #' @examples
 #' par.vec <- c(1,1, 0.5, 0.5, -0.6)
-#' sROC(par.vec)
+#' sROC(par.vec, ci.level = 0.90)
 #'
 #' @export
 
 sROC <- function(par.vec = NULL,
                  add = FALSE,
-                 s.point = TRUE,
+                 add.ci = TRUE,
+                 ci.level = 0.95,
+                 add.sum.point = TRUE,
                  ...) {
 
   if (!is.null(par.vec)) {
@@ -33,11 +39,22 @@ sROC <- function(par.vec = NULL,
 
   }
 
-  auc <- function(x) plogis(u1 - (r*t1/t2) * (qlogis(x) + u2))
+  roc   <- function(x) plogis(u1 - (r*t1/t2) * (qlogis(x) + u2))
+  roc.l <- function(x) plogis(u1 - (r*t1/t2) * (qlogis(x) + u2) - qnorm((1-ci.level)/2, lower.tail = FALSE) * t1* sqrt(1-r^2))
+  roc.u <- function(x) plogis(u1 - (r*t1/t2) * (qlogis(x) + u2) + qnorm((1-ci.level)/2, lower.tail = FALSE) * t1* sqrt(1-r^2))
 
-  curve(auc, xlab = "FPR", ylab = "TPR", add = add, ...)
 
-  if(s.point) points(plogis(-u2), plogis(u1),...)
+  curve(roc, xlab = "FPR", ylab = "TPR", add = add, ..., xlim = c(0,1), ylim = c(0,1))
+  if(add.ci){
+
+    curve(roc.l, xlab = "FPR", ylab = "TPR", add = TRUE, lty = 3, col = "grey")
+    curve(roc.u, xlab = "FPR", ylab = "TPR", add = TRUE, lty = 3, col = "grey")
+
+  }
+
+
+
+  if(add.sum.point) points(plogis(-u2), plogis(u1),...)
 
 
 }

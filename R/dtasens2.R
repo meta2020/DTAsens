@@ -8,9 +8,9 @@
 #' @param correct.type par
 #' @param start5 a vector of u1 u2 t1 t2 r
 #' @param b0 b
-#' @param c0 c1
-#' @param optimize.type par
+#' @param c10 c1
 #' @param pos.r permit positive r
+#' @param ci.level ci.level
 #' @param show.warn.message par
 #' @param show.data par
 #' @param show.p.hat par
@@ -18,27 +18,25 @@
 #' @param b.interval par one-side
 #' @param a.interval par
 #' @param a.root.extendInt par
-#' @param ... par
+#' @param ... ...
 #'
 #' @return convergence list
 #' @export
 #'
 #' @examples
-#' dtasens2(dta, p = 0.7)
+#' dtasens2(data = IVD, p = 0.7)
 #'
 dtasens2 <- function(data,
                   p,
-
                   correct.value = 0.5,
                   correct.type = "single",
-
                   start5 = NULL,  ## u1, u2, t1, t2, r
                   b0 = 0.1,
-                  c0 = sqrt(0.5),
+                  c10 = sqrt(0.5),
                   b.interval = c(0, 2), ## SET A VALUE b.interval in [-5, 5]
                   a.interval = c(-5, 3),
-                  optimize.type = c("optim", "nlminb"),
                   pos.r = TRUE,
+                  ci.level = 0.95,
                   show.warn.message = FALSE,
                   show.data =FALSE,
                   show.p.hat=FALSE,
@@ -52,9 +50,11 @@ dtasens2 <- function(data,
   ## INPUT: DATA PREPROCESS ----------------------------------------------------------
   ##
 
-  if (!any(c("y1", "TP") %in% names(data))) stop("CHECK DATA NAMES")
+  if (p <=0 || p>1) stop("PLEASE MAKE SET SELECTION PROB: 0 < P <= 1",  call. = FALSE)
 
-  n    <- nrow(data)
+  if (!any(c("y1", "TP") %in% names(data))) stop("DATA NAMES MUST BE 'TP/FN/TN/FP' OR 'y1/y2/v1/v2'", call. = FALSE)
+
+  n <- nrow(data)
 
   if ("TP" %in% names(data)){
 
@@ -69,153 +69,111 @@ dtasens2 <- function(data,
     v1 <- data$v1
     v2 <- data$v2
 
-  ##
-  ## LIKELIHOOD FUNCTION (8 PARS)-----------------------------------------------
-  ##
-
-  fn <- function(par) {
-
-
-    u1 <- par[1]
-    u2 <- par[2]
-
-    t1  <- par[3]
-    t11 <- t1^2
-    t2  <- par[4]
-    t22 <- t2^2
-    r   <- par[5]
-
-    t12 <- t1*t2*r
-
-    b  <- par[6]
-
-    c1  <- par[7]
-    c11 <- c1^2
-    c22 <- 1-c11
-    c2  <- sqrt(c22)
-
-    ldor     <- c1*y1 + c2*y2
-
-    se.ldor2 <- c11*v1+c22*v2
-    se.ldor  <- sqrt(se.ldor2)
-
-    u.ldor   <- c1*u1 + c2*u2
-    t.ldor   <- c11*t11 + c22*t22 + 2*c1*c2*t12
-
-    t        <- ldor/se.ldor
-
-    ##
-    ## FUNCTOIN b(Sigma) -------------------------------------------------------
-    ##
-
-    f.b <- function(a){
-
-      if (!show.warn.message) sq <- suppressWarnings(sqrt(1 + b^2 * (1 + t.ldor/se.ldor2))) else sq <- sqrt(1 + b^2 * (1 + t.ldor/se.ldor2))
-
-      pnorm( (a + b * u.ldor/se.ldor) / sq )
-
-    }
-
-
-    ##
-    ## FIND THE ROOT OF a = a.opt ----------------------------------------------
-    ##
-
-    a.p <- function(a) {sum(1/f.b(a), na.rm = TRUE) - n/p}
-
-    if (!show.warn.message) a.opt.try <- suppressWarnings(try(uniroot(a.p, a.interval, extendInt=a.root.extendInt,...), silent = TRUE)) else a.opt.try <- try(uniroot(a.p, a.interval, extendInt=a.root.extendInt,...), silent = TRUE)
-
-    a.opt <- a.opt.try$root
-
-
-    ##
-    ##  LOGLIKELIHOOD-1 OF y|Sigma ---------------------------------------------
-    ##
-
-    det.vec <- (v1+t11)*(v2+t22)-t12^2
-
-    if (!show.warn.message) log.det.vec <- suppressWarnings(log(det.vec)) else log.det.vec <- log(det.vec)
-
-    f.l1  <- ((y1-u1)^2*(v2+t22) - 2*(y2-u2)*(y1-u1)*t12 + (y2-u2)^2*(v1+t11)) / det.vec + log.det.vec
-
-    s.l1  <- -0.5*sum(f.l1, na.rm = TRUE)
-
-
-    ##
-    ##  LOGLIKELIHOOD-2 OF a(a.opt) --------------------------------------------
-    ##
-
-
-    f.l2 <- pnorm(a.opt + b * t)
-
-    s.l2 <- sum( log(f.l2), na.rm = TRUE )
-
-
-    ##
-    ##  LOGLIKELIHOOD-3 OF b(a.opt) --------------------------------------------
-    ##
-
-    f.l3 <- f.b(a.opt)
-
-    s.l3 <- sum( log(f.l3), na.rm = TRUE )
-
-
-    ##
-    ##  FINAL LOGLIKELIHOOD ----------------------------------------------------
-    ##
-
-    return(-(s.l1 + s.l2 - s.l3)) ## NEGATIVE
-
-  }
 
   ##
   ##  INPUT: OPTIMIZATION LOGLIKELIHOOD FUNCTION --------------------------------------
   ##
 
-    optimize.type <- match.arg(optimize.type)
 
     ## AUTO-SET START POINTS
 
+    start7 <- c(0, 0 , 0.1, 0.1, -0.1, b0, c10)
+
     if(is.null(start5)) {
 
-      fit.m <- mvmeta(cbind(y1,y2),S=cbind(v1, rep(0, n), v2), method="ml")
+      fit.m <- mvmeta::mvmeta(cbind(y1,y2),S=cbind(v1, rep(0, n), v2), method="ml")
 
       if(!inherits(fit.m, "try-error")) {
 
         p1 <- round(sqrt(fit.m$Psi[1]),1)
         p2 <- round(sqrt(fit.m$Psi[4]),1)
         p.r<- round(fit.m$Psi[3]/(p1*p2),1)
-        start7 <- c(round(fit.m$coefficients,1), p1,p2, p.r, b0, c0)
+        start7 <- c(round(fit.m$coefficients,1), p1,p2, p.r, b0, c10)
 
-      } else start7 <- c(0, 0 , 0.1, 0.1, -0.1, b0, c0)
-
-    } else start7 <-c(start5, b0, c0)
-
-    if(!pos.r) r.up <- 0 else  r.up <- 1
-
-    if(optimize.type == "optim"){
-
-      opt <- try(optim(start7,
-                       fn,
-                       method="L-BFGS-B",
-                       lower = c(-5, -5, 0, 0,-1, b.interval[1], 0),
-                       upper = c( 5,  5, 3, 3, r.up, b.interval[2], 1)
-      ),silent = TRUE)
-
-    } else {
-
-      opt <- try(nlminb(start7,
-                        fn,
-                        lower = c(-5, -5, 0, 0, -1, b.interval[1], 0), ## u1 u2 t1 t2 r b c1
-                        upper = c( 5,  5, 3, 3, r.up, b.interval[2], 1)
-      ), silent = TRUE)
+      }
 
     }
 
+    if(!pos.r) r.up <- 0 else  r.up <- 1
+
+    fn <- function(par) llk.fn(par,
+                               data = data, p = p,
+                               a.root.extendInt = a.root.extendInt, a.interval = a.interval,
+                               show.warn.message = show.warn.message, ...)
+
+    opt <- try(optim(start7,
+                     fn,
+                     method="L-BFGS-B",
+                     lower = c(-5, -5, 0, 0,-1, b.interval[1], 0),
+                     upper = c( 5,  5, 3, 3, r.up, b.interval[2], 1)
+    ),silent = TRUE)
 
   if(!inherits(opt,"try-error")) {
 
-    #names(opt$convergence) <- c("conv")
+    ##
+    ## CI ----------------------------------------------------
+    ##
+
+    # u1
+    fx <- function(x) fn(par = c(x, opt$par[c(2:7)]))- opt$value - qchisq(ci.level,1)/2
+    u1.l <- try(uniroot(fx, c(-5, opt$par[1])), silent = TRUE)
+    u1.u <- try(uniroot(fx, c(opt$par[1],  5)), silent = TRUE)
+    if (!inherits(u1.l, "try-error")) u1.l <- u1.l$root else u1.l <- NA
+    if (!inherits(u1.u, "try-error")) u1.u <- u1.u$root else u1.u <- NA
+
+    # u2
+    fx <- function(x) fn(par = c(opt$par[1], x, opt$par[3:7]))- opt$value - qchisq(ci.level,1)/2
+    u2.l <- try(uniroot(fx, c(-5, opt$par[2])), silent = TRUE)
+    u2.u <- try(uniroot(fx, c(opt$par[2],  5)), silent = TRUE)
+    if (!inherits(u2.l, "try-error")) u2.l <- u2.l$root else u2.l <- NA
+    if (!inherits(u2.u, "try-error")) u2.u <- u2.u$root else u2.u <- NA
+
+    # t1
+    fx <- function(x) fn(par = c(opt$par[1:2], x, opt$par[4:7]))- opt$value - qchisq(ci.level,1)/2
+    t1.l <- try(uniroot(fx, c(0, opt$par[3])), silent = TRUE)
+    t1.u <- try(uniroot(fx, c(opt$par[3], 3)), silent = TRUE)
+    if (!inherits(t1.l, "try-error")) t1.l <- t1.l$root else t1.l <- NA
+    if (!inherits(t1.u, "try-error")) t1.u <- t1.u$root else t1.u <- NA
+
+    # t2
+    fx <- function(x) fn(par = c(opt$par[1:3], x, opt$par[5:7]))- opt$value - qchisq(ci.level,1)/2
+    t2.l <- try(uniroot(fx, c(0, opt$par[4])), silent = TRUE)
+    t2.u <- try(uniroot(fx, c(opt$par[4], 3)), silent = TRUE)
+    if (!inherits(t2.l, "try-error")) t2.l <- t2.l$root else t2.l <- NA
+    if (!inherits(t2.u, "try-error")) t2.u <- t2.u$root else t2.u <- NA
+
+    # r
+    fx <- function(x) fn(par = c(opt$par[1:4], x, opt$par[6:7]))- opt$value - qchisq(ci.level,1)/2
+    r.l <- try(uniroot(fx, c(-1,   opt$par[5])), silent = TRUE)
+    r.u <- try(uniroot(fx, c(opt$par[5], r.up)), silent = TRUE)
+    if (!inherits(r.l, "try-error")) r.l <- r.l$root else r.l <- NA
+    if (!inherits(r.u, "try-error")) r.u <- r.u$root else r.u <- NA
+
+    # b
+    fx <- function(x) fn(par = c(opt$par[1:5], x,  opt$par[7]))- opt$value - qchisq(ci.level,1)/2
+    b.l <- try(uniroot(fx, c(b.interval[1], opt$par[6])), silent = TRUE)
+    b.u <- try(uniroot(fx, c(opt$par[6], b.interval[2])), silent = TRUE)
+    if (!inherits(b.l, "try-error")) b.l <- b.l$root else b.l <- NA
+    if (!inherits(b.u, "try-error")) b.u <- b.u$root else b.u <- NA
+
+    # c1
+    fx <- function(x) fn(par = c(opt$par[1:6], x))- opt$value - qchisq(ci.level,1)/2
+    c.l <- try(uniroot(fx, c(0, opt$par[7])), silent = TRUE)
+    c.u <- try(uniroot(fx, c(opt$par[7], 1)), silent = TRUE)
+    if (!inherits(c.l, "try-error")) c.l <- c.l$root else c.l <- NA
+    if (!inherits(c.u, "try-error")) c.u <- c.u$root else c.u <- NA
+
+
+    opt$prof.llk.ci <- matrix(
+      c(u1.l, opt$par[1], u1.u,
+        u2.l, opt$par[2], u2.u,
+        t1.l, opt$par[3], t1.u,
+        t2.l, opt$par[4], t2.u,
+        r.l,  opt$par[5], r.u,
+        b.l,  opt$par[6], b.u,
+        c.l,  opt$par[7], c.u), byrow = TRUE, ncol = 3,
+      dimnames = list(c("u1","u2","t1", "t2", "r", "b", "c1"), c("ci.low", "estimate", "ci.up")))
+
 
     ##
     ##  OUTPUT: ALL PARAMETERS -------------------------------------------------
@@ -225,6 +183,7 @@ dtasens2 <- function(data,
     se  <- plogis(u1)
     u2  <- opt$par[2]
     sp  <- plogis(u2)
+
     t1  <- opt$par[3]
     t11 <- t1^2
     t2  <- opt$par[4]
@@ -252,15 +211,9 @@ dtasens2 <- function(data,
     ## ALPHA CALC --------------------------------------------------------
     ##
 
-    a.p2 <- function(a){
+    a.p <- function(a){ sum(1/ pnorm( (a + b * u.ldor/se.ldor) / sq ), na.rm = TRUE) - n/p }
 
-      bp <- pnorm( (a + b * u.ldor/se.ldor) / sq )
-
-      sum(1/bp, na.rm = TRUE) - n/p
-
-    }
-
-    if (!show.warn.message) a.opt.try <- suppressWarnings(try(uniroot(a.p2, a.interval, extendInt=a.root.extendInt,...), silent = TRUE)) else a.opt.try <- try(uniroot(a.p2, a.interval, extendInt=a.root.extendInt,...), silent = TRUE)
+    if (!show.warn.message) a.opt.try <- suppressWarnings(try(uniroot(a.p, a.interval, extendInt=a.root.extendInt,...), silent = TRUE)) else a.opt.try <- try(uniroot(a.p, a.interval, extendInt=a.root.extendInt,...), silent = FALSE)
 
     a.opt <- a.opt.try$root
 
@@ -275,8 +228,8 @@ dtasens2 <- function(data,
 
     if (!inherits(auc.try, "try-error")) auc <- auc.try$value else auc <- NA
 
-    opt$par   <- c(se, sp, u1, u2, t1, t2, r, t12, b, a.opt, c11, c22, auc)
-    names(opt$par) <- c("se", "sp", "u1", "u2", "t1", "t2", "r", "t12", "b", "a", "c11", "c22", "auc")
+    opt$par   <- c(u1, u2, t1, t2, r, t12, b, a.opt, c11, c22, auc, se, sp)
+    names(opt$par) <- c("u1", "u2", "t1", "t2", "r", "t12", "b", "a", "c11", "c22", "auc", "se", "sp")
 
     ##
     ##  show.p.hat CALC, FROM b FUNCTION ----------------------------------------
@@ -289,16 +242,16 @@ dtasens2 <- function(data,
 
       p.hat <- n/sum(1/bp)
 
-      opt$par   <- c(se, sp, u1, u2, t1, t2, r, t12, b, a.opt, c11, c22, auc, p.hat)
-      names(opt$par) <- c("se", "sp", "u1", "u2", "t1", "t2", "r", "t12", "b", "a", "c11", "c22", "auc", "p.hat")
+      opt$par   <- c(u1, u2, t1, t2, r, t12, b, a.opt, c11, c22, auc, se, sp, p.hat)
+      names(opt$par) <- c("u1", "u2", "t1", "t2", "r", "t12", "b", "a", "c11", "c22", "auc", "se", "sp", "p.hat")
 
     }
 
   }
 
-    #class(opt) <- "DTAsens"
+  class(opt) <- "DTAsens2"
 
-  if (!show.data)  return(opt) else  return(list(data=data, opt=opt))
+  if (!show.data) return(opt) else  return(list(data=data, opt=opt))
 
 }
 

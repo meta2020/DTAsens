@@ -4,14 +4,25 @@
 \alias{sROC}
 \title{Single ROC plot}
 \usage{
-sROC(par.vec = NULL, add = FALSE, s.point = TRUE, ...)
+sROC(
+  par.vec = NULL,
+  add = FALSE,
+  add.ci = TRUE,
+  ci.level = 0.95,
+  add.sum.point = TRUE,
+  ...
+)
 }
 \arguments{
 \item{par.vec}{c(u1, u2, t1, t2, r)}
 
 \item{add}{par}
 
-\item{s.point}{par}
+\item{add.ci}{par}
+
+\item{ci.level}{ci.level}
+
+\item{add.sum.point}{par}
 
 \item{...}{par}
 }
@@ -23,6 +34,6 @@ Single ROC plot
 }
 \examples{
 par.vec <- c(1,1, 0.5, 0.5, -0.6)
-sROC(par.vec)
+sROC(par.vec, ci.level = 0.90)
 
 }

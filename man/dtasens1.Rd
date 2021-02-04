@@ -14,8 +14,8 @@ dtasens1(
   b0 = 0.1,
   b.interval = c(0, 2),
   a.interval = c(-5, 3),
-  optimize.type = c("optim", "nlminb"),
-  pos.r = FALSE,
+  pos.r = TRUE,
+  ci.level = 0.95,
   show.warn.message = FALSE,
   show.data = FALSE,
   show.p.hat = FALSE,
@@ -43,9 +43,9 @@ dtasens1(
 
 \item{a.interval}{par}
 
-\item{optimize.type}{par}
-
 \item{pos.r}{permit positive r}
+
+\item{ci.level}{0.95}
 
 \item{show.warn.message}{par}
 
@@ -66,6 +66,6 @@ convergence list
 dtasens1 function
 }
 \examples{
-dtasens1(dta, p = 0.7)
+dtasens1(IVD, p = 0.7)
 
 }

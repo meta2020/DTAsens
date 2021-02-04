@@ -11,11 +11,11 @@ dtasens2(
   correct.type = "single",
   start5 = NULL,
   b0 = 0.1,
-  c0 = sqrt(0.5),
+  c10 = sqrt(0.5),
   b.interval = c(0, 2),
   a.interval = c(-5, 3),
-  optimize.type = c("optim", "nlminb"),
   pos.r = TRUE,
+  ci.level = 0.95,
   show.warn.message = FALSE,
   show.data = FALSE,
   show.p.hat = FALSE,
@@ -37,15 +37,15 @@ dtasens2(
 
 \item{b0}{b}
 
-\item{c0}{c1}
+\item{c10}{c1}
 
 \item{b.interval}{par one-side}
 
 \item{a.interval}{par}
 
-\item{optimize.type}{par}
-
 \item{pos.r}{permit positive r}
+
+\item{ci.level}{ci.level}
 
 \item{show.warn.message}{par}
 
@@ -57,7 +57,7 @@ dtasens2(
 
 \item{a.root.extendInt}{par}
 
-\item{...}{par}
+\item{...}{...}
 }
 \value{
 convergence list
@@ -66,6 +66,6 @@ convergence list
 dtasens2 function
 }
 \examples{
-dtasens2(dta, p = 0.7)
+dtasens2(data = IVD, p = 0.7)
 
 }

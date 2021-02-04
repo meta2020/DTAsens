@@ -79,556 +79,11 @@
 <div id="example" class="section level2">
 <h2 class="hasAnchor">
 <a href="#example" class="anchor"></a>Example</h2>
-<p>This is a basic example which shows you how to solve a common problem:</p>
+<p>This is an example which shows you how to solve a common problem:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">DTAsens</span><span class="op">)</span>
-<span class="co">## basic example code</span></code></pre></div>
-<div id="example-data-1" class="section level3">
-<h3 class="hasAnchor">
-<a href="#example-data-1" class="anchor"></a>Example data 1</h3>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">dta</span><span class="op">)</span>
-<span class="fu">kable</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">dta</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<table class="table">
-<thead><tr class="header">
-<th align="right">se</th>
-<th align="right">sp</th>
-<th align="right">y1</th>
-<th align="right">y2</th>
-<th align="right">v1</th>
-<th align="right">v2</th>
-<th align="right">ldor.t</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td align="right">0.819</td>
-<td align="right">0.746</td>
-<td align="right">1.509</td>
-<td align="right">1.077</td>
-<td align="right">0.137</td>
-<td align="right">0.005</td>
-<td align="right">6.839</td>
-</tr>
-<tr class="even">
-<td align="right">0.883</td>
-<td align="right">0.751</td>
-<td align="right">2.024</td>
-<td align="right">1.102</td>
-<td align="right">0.086</td>
-<td align="right">0.053</td>
-<td align="right">8.404</td>
-</tr>
-<tr class="odd">
-<td align="right">0.816</td>
-<td align="right">0.857</td>
-<td align="right">1.490</td>
-<td align="right">1.794</td>
-<td align="right">0.043</td>
-<td align="right">0.139</td>
-<td align="right">7.699</td>
-</tr>
-<tr class="even">
-<td align="right">0.725</td>
-<td align="right">0.653</td>
-<td align="right">0.967</td>
-<td align="right">0.634</td>
-<td align="right">1.124</td>
-<td align="right">1.458</td>
-<td align="right">0.996</td>
-</tr>
-<tr class="odd">
-<td align="right">0.768</td>
-<td align="right">0.843</td>
-<td align="right">1.196</td>
-<td align="right">1.681</td>
-<td align="right">0.343</td>
-<td align="right">0.302</td>
-<td align="right">3.584</td>
-</tr>
-<tr class="even">
-<td align="right">0.519</td>
-<td align="right">0.877</td>
-<td align="right">0.075</td>
-<td align="right">1.961</td>
-<td align="right">0.375</td>
-<td align="right">0.232</td>
-<td align="right">2.614</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div id="optim-1-dtasens1" class="section level3">
-<h3 class="hasAnchor">
-<a href="#optim-1-dtasens1" class="anchor"></a>Optim 1: dtasens1</h3>
-<p>For a certain selection probability, e.g., p = 0.5</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="reference/dtasens1.html">dtasens1</a></span><span class="op">(</span><span class="va">dta</span>, p <span class="op">=</span> <span class="fl">0.7</span><span class="op">)</span>
-<span class="co">#&gt; $par</span>
-<span class="co">#&gt;     u1     u2     t1     t2      r    t12    auc      b      a </span>
-<span class="co">#&gt;  1.431  1.443  0.317  0.462 -1.000 -0.146  0.874  0.385 -0.618 </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $value</span>
-<span class="co">#&gt; [1] -3.97</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $counts</span>
-<span class="co">#&gt; function gradient </span>
-<span class="co">#&gt;       21       21 </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $convergence</span>
-<span class="co">#&gt; [1] 0</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $message</span>
-<span class="co">#&gt; [1] "CONVERGENCE: REL_REDUCTION_OF_F &lt;= FACTR*EPSMCH"</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; attr(,"class")</span>
-<span class="co">#&gt; [1] "DTAsens"</span>
 
-<span class="fu"><a href="reference/dtasens1.html">dtasens1</a></span><span class="op">(</span><span class="va">dta</span>, p <span class="op">=</span> <span class="fl">0.7</span>, 
-         show.p.hat <span class="op">=</span> <span class="cn">TRUE</span>, show.auc.all <span class="op">=</span> <span class="cn">TRUE</span>, show.data <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="co">#&gt; $data</span>
-<span class="co">#&gt;       se    sp     y1    y2       v1       v2 ldor.t</span>
-<span class="co">#&gt; 1  0.819 0.746 1.5089 1.077 1.37e-01 5.45e-03  6.839</span>
-<span class="co">#&gt; 2  0.883 0.751 2.0236 1.102 8.56e-02 5.27e-02  8.404</span>
-<span class="co">#&gt; 3  0.816 0.857 1.4900 1.794 4.25e-02 1.39e-01  7.699</span>
-<span class="co">#&gt; 4  0.725 0.653 0.9669 0.634 1.12e+00 1.46e+00  0.996</span>
-<span class="co">#&gt; 5  0.768 0.843 1.1964 1.681 3.43e-01 3.02e-01  3.584</span>
-<span class="co">#&gt; 6  0.519 0.877 0.0749 1.961 3.75e-01 2.32e-01  2.614</span>
-<span class="co">#&gt; 7  0.859 0.791 1.8074 1.330 1.17e+00 1.45e-02  2.884</span>
-<span class="co">#&gt; 8  0.883 0.897 2.0205 2.165 7.20e-01 5.30e-01  3.745</span>
-<span class="co">#&gt; 9  0.748 0.931 1.0877 2.601 6.27e-02 9.34e-01  3.696</span>
-<span class="co">#&gt; 10 0.883 0.855 2.0216 1.773 8.93e-02 1.20e+00  3.335</span>
-<span class="co">#&gt; 11 0.810 0.817 1.4497 1.494 3.84e-01 2.75e+00  1.662</span>
-<span class="co">#&gt; 12 0.658 0.898 0.6527 2.180 2.33e-01 1.02e-01  4.899</span>
-<span class="co">#&gt; 13 0.783 0.852 1.2839 1.751 2.36e-02 6.01e-03 17.646</span>
-<span class="co">#&gt; 14 0.832 0.715 1.6023 0.919 2.53e-03 6.43e-01  3.136</span>
-<span class="co">#&gt; 15 0.730 0.527 0.9926 0.107 4.27e-01 1.50e+00  0.793</span>
-<span class="co">#&gt; 16 0.823 0.842 1.5373 1.675 3.34e-01 3.83e-01  3.793</span>
-<span class="co">#&gt; 17 0.723 0.752 0.9596 1.107 3.87e-01 2.17e-02  3.233</span>
-<span class="co">#&gt; 18 0.945 0.812 2.8408 1.466 2.12e+00 1.21e-01  2.880</span>
-<span class="co">#&gt; 19 0.890 0.588 2.0940 0.357 1.84e-07 1.81e-02 18.205</span>
-<span class="co">#&gt; 20 0.652 0.638 0.6265 0.565 4.30e-01 1.59e+00  0.840</span>
-<span class="co">#&gt; 21 0.778 0.884 1.2564 2.035 1.05e+00 1.27e-01  3.031</span>
-<span class="co">#&gt; 22 0.884 0.818 2.0341 1.503 6.82e-01 1.42e-01  3.898</span>
-<span class="co">#&gt; 23 0.872 0.948 1.9203 2.907 7.82e-03 1.59e+00  3.821</span>
-<span class="co">#&gt; 24 0.802 0.888 1.3998 2.072 4.99e-02 4.05e-01  5.145</span>
-<span class="co">#&gt; 25 0.686 0.953 0.7832 3.002 4.24e-03 9.18e-01  3.941</span>
-<span class="co">#&gt; 26 0.857 0.655 1.7897 0.643 5.20e-01 1.89e+00  1.569</span>
-<span class="co">#&gt; 27 0.939 0.741 2.7324 1.049 2.82e-01 2.65e-05  7.122</span>
-<span class="co">#&gt; 28 0.713 0.892 0.9117 2.114 9.16e-01 1.84e-01  2.885</span>
-<span class="co">#&gt; 29 0.762 0.837 1.1647 1.638 5.89e-03 2.98e-01  5.085</span>
-<span class="co">#&gt; 30 0.851 0.888 1.7437 2.067 7.76e-01 1.55e+00  2.497</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $opt</span>
-<span class="co">#&gt; $par</span>
-<span class="co">#&gt;     u1     u2     t1     t2      r    t12    auc      b      a  p.hat </span>
-<span class="co">#&gt;  1.431  1.443  0.317  0.462 -1.000 -0.146  0.874  0.385 -0.618  0.700 </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $value</span>
-<span class="co">#&gt; [1] -3.97</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $counts</span>
-<span class="co">#&gt; function gradient </span>
-<span class="co">#&gt;       21       21 </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $convergence</span>
-<span class="co">#&gt; [1] 0</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $message</span>
-<span class="co">#&gt; [1] "CONVERGENCE: REL_REDUCTION_OF_F &lt;= FACTR*EPSMCH"</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $auc</span>
-<span class="co">#&gt; 0.874 with absolute error &lt; 6.1e-05</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; attr(,"class")</span>
-<span class="co">#&gt; [1] "DTAsens"</span></code></pre></div>
-<p>For a series of selection probabilities, e.g., p = 0.9, 0,8, …,0.1</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">p.seq</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0.1</span>, <span class="op">-</span><span class="fl">0.1</span><span class="op">)</span>
-
-<span class="va">estimates</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="va">p.seq</span>, 
-                    <span class="kw">function</span><span class="op">(</span><span class="va">p</span><span class="op">)</span> <span class="fu"><a href="reference/dtasens1.html">dtasens1</a></span><span class="op">(</span><span class="va">dta</span>, <span class="va">p</span>, 
-                                         b.interval <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">2</span><span class="op">)</span>, 
-                                         a.interval <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">5</span>,<span class="fl">0</span><span class="op">)</span>, 
-                                         a.root.extendInt <span class="op">=</span> <span class="st">"downX"</span><span class="op">)</span><span class="op">$</span><span class="va">par</span><span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">estimates</span><span class="op">)</span><span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"p = "</span>, <span class="va">p.seq</span><span class="op">)</span>
-<span class="fu">kable</span><span class="op">(</span><span class="va">estimates</span><span class="op">)</span></code></pre></div>
-<table class="table">
-<thead><tr class="header">
-<th align="left"></th>
-<th align="right">p = 1</th>
-<th align="right">p = 0.9</th>
-<th align="right">p = 0.8</th>
-<th align="right">p = 0.7</th>
-<th align="right">p = 0.6</th>
-<th align="right">p = 0.5</th>
-<th align="right">p = 0.4</th>
-<th align="right">p = 0.3</th>
-<th align="right">p = 0.2</th>
-<th align="right">p = 0.1</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td align="left">u1</td>
-<td align="right">1.436</td>
-<td align="right">1.434</td>
-<td align="right">1.432</td>
-<td align="right">1.431</td>
-<td align="right">1.429</td>
-<td align="right">1.428</td>
-<td align="right">1.427</td>
-<td align="right">1.426</td>
-<td align="right">1.425</td>
-<td align="right">1.422</td>
-</tr>
-<tr class="even">
-<td align="left">u2</td>
-<td align="right">1.479</td>
-<td align="right">1.462</td>
-<td align="right">1.451</td>
-<td align="right">1.443</td>
-<td align="right">1.437</td>
-<td align="right">1.432</td>
-<td align="right">1.428</td>
-<td align="right">1.424</td>
-<td align="right">1.418</td>
-<td align="right">1.408</td>
-</tr>
-<tr class="odd">
-<td align="left">t1</td>
-<td align="right">0.313</td>
-<td align="right">0.315</td>
-<td align="right">0.316</td>
-<td align="right">0.317</td>
-<td align="right">0.317</td>
-<td align="right">0.318</td>
-<td align="right">0.318</td>
-<td align="right">0.319</td>
-<td align="right">0.320</td>
-<td align="right">0.321</td>
-</tr>
-<tr class="even">
-<td align="left">t2</td>
-<td align="right">0.472</td>
-<td align="right">0.468</td>
-<td align="right">0.465</td>
-<td align="right">0.462</td>
-<td align="right">0.460</td>
-<td align="right">0.459</td>
-<td align="right">0.457</td>
-<td align="right">0.456</td>
-<td align="right">0.454</td>
-<td align="right">0.451</td>
-</tr>
-<tr class="odd">
-<td align="left">r</td>
-<td align="right">-1.000</td>
-<td align="right">-1.000</td>
-<td align="right">-1.000</td>
-<td align="right">-1.000</td>
-<td align="right">-1.000</td>
-<td align="right">-1.000</td>
-<td align="right">-1.000</td>
-<td align="right">-1.000</td>
-<td align="right">-1.000</td>
-<td align="right">-1.000</td>
-</tr>
-<tr class="even">
-<td align="left">t12</td>
-<td align="right">-0.148</td>
-<td align="right">-0.147</td>
-<td align="right">-0.147</td>
-<td align="right">-0.146</td>
-<td align="right">-0.146</td>
-<td align="right">-0.146</td>
-<td align="right">-0.146</td>
-<td align="right">-0.145</td>
-<td align="right">-0.145</td>
-<td align="right">-0.145</td>
-</tr>
-<tr class="odd">
-<td align="left">auc</td>
-<td align="right">0.877</td>
-<td align="right">0.876</td>
-<td align="right">0.875</td>
-<td align="right">0.874</td>
-<td align="right">0.874</td>
-<td align="right">0.874</td>
-<td align="right">0.873</td>
-<td align="right">0.873</td>
-<td align="right">0.873</td>
-<td align="right">0.872</td>
-</tr>
-<tr class="even">
-<td align="left">b</td>
-<td align="right">1.000</td>
-<td align="right">0.570</td>
-<td align="right">0.475</td>
-<td align="right">0.385</td>
-<td align="right">0.318</td>
-<td align="right">0.270</td>
-<td align="right">0.232</td>
-<td align="right">0.202</td>
-<td align="right">0.179</td>
-<td align="right">0.158</td>
-</tr>
-<tr class="odd">
-<td align="left">a</td>
-<td align="right">16.777</td>
-<td align="right">-0.156</td>
-<td align="right">-0.478</td>
-<td align="right">-0.618</td>
-<td align="right">-0.734</td>
-<td align="right">-0.867</td>
-<td align="right">-1.017</td>
-<td align="right">-1.200</td>
-<td align="right">-1.448</td>
-<td align="right">-1.820</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div id="optim-2-dtasens2" class="section level3">
-<h3 class="hasAnchor">
-<a href="#optim-2-dtasens2" class="anchor"></a>Optim 2: dtasens2</h3>
-<p>For a certain selection probability, e.g., p = 0.5</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="fu"><a href="reference/dtasens2.html">dtasens2</a></span><span class="op">(</span><span class="va">dta</span>, p <span class="op">=</span> <span class="fl">0.7</span><span class="op">)</span>
-<span class="co">#&gt; $par</span>
-<span class="co">#&gt;     u1     u2     t1     t2      r    t12    auc      b      a    c11    c22 </span>
-<span class="co">#&gt;  1.478  1.387  0.323  0.483 -1.000 -0.156  0.875  0.526 -0.522  0.000  1.000 </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $value</span>
-<span class="co">#&gt; [1] -4.79</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $counts</span>
-<span class="co">#&gt; function gradient </span>
-<span class="co">#&gt;       44       44 </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $convergence</span>
-<span class="co">#&gt; [1] 0</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $message</span>
-<span class="co">#&gt; [1] "CONVERGENCE: REL_REDUCTION_OF_F &lt;= FACTR*EPSMCH"</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; attr(,"class")</span>
-<span class="co">#&gt; [1] "DTAsens"</span>
-
-<span class="fu"><a href="reference/dtasens2.html">dtasens2</a></span><span class="op">(</span><span class="va">dta</span>, p <span class="op">=</span> <span class="fl">0.7</span>, 
-         show.p.hat <span class="op">=</span> <span class="cn">TRUE</span>, show.auc.all <span class="op">=</span> <span class="cn">TRUE</span>, show.data <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="co">#&gt; $data</span>
-<span class="co">#&gt;       se    sp     y1    y2       v1       v2 ldor.t</span>
-<span class="co">#&gt; 1  0.819 0.746 1.5089 1.077 1.37e-01 5.45e-03  6.839</span>
-<span class="co">#&gt; 2  0.883 0.751 2.0236 1.102 8.56e-02 5.27e-02  8.404</span>
-<span class="co">#&gt; 3  0.816 0.857 1.4900 1.794 4.25e-02 1.39e-01  7.699</span>
-<span class="co">#&gt; 4  0.725 0.653 0.9669 0.634 1.12e+00 1.46e+00  0.996</span>
-<span class="co">#&gt; 5  0.768 0.843 1.1964 1.681 3.43e-01 3.02e-01  3.584</span>
-<span class="co">#&gt; 6  0.519 0.877 0.0749 1.961 3.75e-01 2.32e-01  2.614</span>
-<span class="co">#&gt; 7  0.859 0.791 1.8074 1.330 1.17e+00 1.45e-02  2.884</span>
-<span class="co">#&gt; 8  0.883 0.897 2.0205 2.165 7.20e-01 5.30e-01  3.745</span>
-<span class="co">#&gt; 9  0.748 0.931 1.0877 2.601 6.27e-02 9.34e-01  3.696</span>
-<span class="co">#&gt; 10 0.883 0.855 2.0216 1.773 8.93e-02 1.20e+00  3.335</span>
-<span class="co">#&gt; 11 0.810 0.817 1.4497 1.494 3.84e-01 2.75e+00  1.662</span>
-<span class="co">#&gt; 12 0.658 0.898 0.6527 2.180 2.33e-01 1.02e-01  4.899</span>
-<span class="co">#&gt; 13 0.783 0.852 1.2839 1.751 2.36e-02 6.01e-03 17.646</span>
-<span class="co">#&gt; 14 0.832 0.715 1.6023 0.919 2.53e-03 6.43e-01  3.136</span>
-<span class="co">#&gt; 15 0.730 0.527 0.9926 0.107 4.27e-01 1.50e+00  0.793</span>
-<span class="co">#&gt; 16 0.823 0.842 1.5373 1.675 3.34e-01 3.83e-01  3.793</span>
-<span class="co">#&gt; 17 0.723 0.752 0.9596 1.107 3.87e-01 2.17e-02  3.233</span>
-<span class="co">#&gt; 18 0.945 0.812 2.8408 1.466 2.12e+00 1.21e-01  2.880</span>
-<span class="co">#&gt; 19 0.890 0.588 2.0940 0.357 1.84e-07 1.81e-02 18.205</span>
-<span class="co">#&gt; 20 0.652 0.638 0.6265 0.565 4.30e-01 1.59e+00  0.840</span>
-<span class="co">#&gt; 21 0.778 0.884 1.2564 2.035 1.05e+00 1.27e-01  3.031</span>
-<span class="co">#&gt; 22 0.884 0.818 2.0341 1.503 6.82e-01 1.42e-01  3.898</span>
-<span class="co">#&gt; 23 0.872 0.948 1.9203 2.907 7.82e-03 1.59e+00  3.821</span>
-<span class="co">#&gt; 24 0.802 0.888 1.3998 2.072 4.99e-02 4.05e-01  5.145</span>
-<span class="co">#&gt; 25 0.686 0.953 0.7832 3.002 4.24e-03 9.18e-01  3.941</span>
-<span class="co">#&gt; 26 0.857 0.655 1.7897 0.643 5.20e-01 1.89e+00  1.569</span>
-<span class="co">#&gt; 27 0.939 0.741 2.7324 1.049 2.82e-01 2.65e-05  7.122</span>
-<span class="co">#&gt; 28 0.713 0.892 0.9117 2.114 9.16e-01 1.84e-01  2.885</span>
-<span class="co">#&gt; 29 0.762 0.837 1.1647 1.638 5.89e-03 2.98e-01  5.085</span>
-<span class="co">#&gt; 30 0.851 0.888 1.7437 2.067 7.76e-01 1.55e+00  2.497</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $opt</span>
-<span class="co">#&gt; $par</span>
-<span class="co">#&gt;     u1     u2     t1     t2      r    t12    auc      b      a    c11    c22 </span>
-<span class="co">#&gt;  1.478  1.387  0.323  0.483 -1.000 -0.156  0.875  0.526 -0.522  0.000  1.000 </span>
-<span class="co">#&gt;  p.hat </span>
-<span class="co">#&gt;  0.700 </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $value</span>
-<span class="co">#&gt; [1] -4.79</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $counts</span>
-<span class="co">#&gt; function gradient </span>
-<span class="co">#&gt;       44       44 </span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $convergence</span>
-<span class="co">#&gt; [1] 0</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $message</span>
-<span class="co">#&gt; [1] "CONVERGENCE: REL_REDUCTION_OF_F &lt;= FACTR*EPSMCH"</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $auc</span>
-<span class="co">#&gt; 0.875 with absolute error &lt; 7.7e-05</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; attr(,"class")</span>
-<span class="co">#&gt; [1] "DTAsens"</span></code></pre></div>
-<p>For a series of selection probabilities, e.g., p = 0.9, 0.8, …,0.1</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">p.seq</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0.1</span>, <span class="op">-</span><span class="fl">0.1</span><span class="op">)</span>
-
-<span class="va">estimates</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="va">p.seq</span>, 
-                    <span class="kw">function</span><span class="op">(</span><span class="va">p</span><span class="op">)</span> <span class="fu"><a href="reference/dtasens1.html">dtasens1</a></span><span class="op">(</span><span class="va">dta</span>, <span class="va">p</span>, 
-                                         b.interval <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">2</span><span class="op">)</span>, 
-                                         a.interval <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">5</span>,<span class="fl">0</span><span class="op">)</span>, 
-                                         a.root.extendInt <span class="op">=</span> <span class="st">"downX"</span><span class="op">)</span><span class="op">$</span><span class="va">par</span><span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">estimates</span><span class="op">)</span><span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"p = "</span>, <span class="va">p.seq</span><span class="op">)</span>
-<span class="fu">kable</span><span class="op">(</span><span class="va">estimates</span><span class="op">)</span></code></pre></div>
-<table class="table">
-<thead><tr class="header">
-<th align="left"></th>
-<th align="right">p = 1</th>
-<th align="right">p = 0.9</th>
-<th align="right">p = 0.8</th>
-<th align="right">p = 0.7</th>
-<th align="right">p = 0.6</th>
-<th align="right">p = 0.5</th>
-<th align="right">p = 0.4</th>
-<th align="right">p = 0.3</th>
-<th align="right">p = 0.2</th>
-<th align="right">p = 0.1</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td align="left">u1</td>
-<td align="right">1.436</td>
-<td align="right">1.434</td>
-<td align="right">1.432</td>
-<td align="right">1.431</td>
-<td align="right">1.429</td>
-<td align="right">1.428</td>
-<td align="right">1.427</td>
-<td align="right">1.426</td>
-<td align="right">1.425</td>
-<td align="right">1.422</td>
-</tr>
-<tr class="even">
-<td align="left">u2</td>
-<td align="right">1.479</td>
-<td align="right">1.462</td>
-<td align="right">1.451</td>
-<td align="right">1.443</td>
-<td align="right">1.437</td>
-<td align="right">1.432</td>
-<td align="right">1.428</td>
-<td align="right">1.424</td>
-<td align="right">1.418</td>
-<td align="right">1.408</td>
-</tr>
-<tr class="odd">
-<td align="left">t1</td>
-<td align="right">0.313</td>
-<td align="right">0.315</td>
-<td align="right">0.316</td>
-<td align="right">0.317</td>
-<td align="right">0.317</td>
-<td align="right">0.318</td>
-<td align="right">0.318</td>
-<td align="right">0.319</td>
-<td align="right">0.320</td>
-<td align="right">0.321</td>
-</tr>
-<tr class="even">
-<td align="left">t2</td>
-<td align="right">0.472</td>
-<td align="right">0.468</td>
-<td align="right">0.465</td>
-<td align="right">0.462</td>
-<td align="right">0.460</td>
-<td align="right">0.459</td>
-<td align="right">0.457</td>
-<td align="right">0.456</td>
-<td align="right">0.454</td>
-<td align="right">0.451</td>
-</tr>
-<tr class="odd">
-<td align="left">r</td>
-<td align="right">-1.000</td>
-<td align="right">-1.000</td>
-<td align="right">-1.000</td>
-<td align="right">-1.000</td>
-<td align="right">-1.000</td>
-<td align="right">-1.000</td>
-<td align="right">-1.000</td>
-<td align="right">-1.000</td>
-<td align="right">-1.000</td>
-<td align="right">-1.000</td>
-</tr>
-<tr class="even">
-<td align="left">t12</td>
-<td align="right">-0.148</td>
-<td align="right">-0.147</td>
-<td align="right">-0.147</td>
-<td align="right">-0.146</td>
-<td align="right">-0.146</td>
-<td align="right">-0.146</td>
-<td align="right">-0.146</td>
-<td align="right">-0.145</td>
-<td align="right">-0.145</td>
-<td align="right">-0.145</td>
-</tr>
-<tr class="odd">
-<td align="left">auc</td>
-<td align="right">0.877</td>
-<td align="right">0.876</td>
-<td align="right">0.875</td>
-<td align="right">0.874</td>
-<td align="right">0.874</td>
-<td align="right">0.874</td>
-<td align="right">0.873</td>
-<td align="right">0.873</td>
-<td align="right">0.873</td>
-<td align="right">0.872</td>
-</tr>
-<tr class="even">
-<td align="left">b</td>
-<td align="right">1.000</td>
-<td align="right">0.570</td>
-<td align="right">0.475</td>
-<td align="right">0.385</td>
-<td align="right">0.318</td>
-<td align="right">0.270</td>
-<td align="right">0.232</td>
-<td align="right">0.202</td>
-<td align="right">0.179</td>
-<td align="right">0.158</td>
-</tr>
-<tr class="odd">
-<td align="left">a</td>
-<td align="right">16.777</td>
-<td align="right">-0.156</td>
-<td align="right">-0.478</td>
-<td align="right">-0.618</td>
-<td align="right">-0.734</td>
-<td align="right">-0.867</td>
-<td align="right">-1.017</td>
-<td align="right">-1.200</td>
-<td align="right">-1.448</td>
-<td align="right">-1.820</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div id="example-data-2" class="section level3">
-<h3 class="hasAnchor">
-<a href="#example-data-2" class="anchor"></a>Example data 2</h3>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"IVD"</span><span class="op">)</span>
-
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">IVD</span><span class="op">)</span>
 <span class="fu">kable</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">IVD</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
@@ -683,12 +138,624 @@
 </tr>
 </tbody>
 </table>
+<div id="optim-1-dtasens1" class="section level3">
+<h3 class="hasAnchor">
+<a href="#optim-1-dtasens1" class="anchor"></a>Optim 1: dtasens1</h3>
+<p>For a certain selection probability, e.g., p = 0.7</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="reference/dtasens1.html">dtasens1</a></span><span class="op">(</span><span class="va">IVD</span>, p <span class="op">=</span> <span class="fl">0.7</span><span class="op">)</span>
+<span class="co">#&gt; $par</span>
+<span class="co">#&gt;     u1     u2     t1     t2      r    t12      b      a    c11    c22    auc </span>
+<span class="co">#&gt;  1.380  1.740  0.596  0.845 -0.354 -0.178  2.000 -4.290  0.500  0.500  0.851 </span>
+<span class="co">#&gt;     se     sp </span>
+<span class="co">#&gt;  0.799  0.851 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $value</span>
+<span class="co">#&gt; [1] 22.9</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $counts</span>
+<span class="co">#&gt; function gradient </span>
+<span class="co">#&gt;       18       18 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $convergence</span>
+<span class="co">#&gt; [1] 0</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $message</span>
+<span class="co">#&gt; [1] "CONVERGENCE: REL_REDUCTION_OF_F &lt;= FACTR*EPSMCH"</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $prof.llk.ci</span>
+<span class="co">#&gt;    ci.low estimate ci.up</span>
+<span class="co">#&gt; u1  1.081    1.380  1.67</span>
+<span class="co">#&gt; u2  1.459    1.740  2.02</span>
+<span class="co">#&gt; t1  0.303    0.596  1.01</span>
+<span class="co">#&gt; t2  0.645    0.845  1.15</span>
+<span class="co">#&gt; r  -0.748   -0.354  0.15</span>
+<span class="co">#&gt; b   0.972    2.000    NA</span>
+
+<span class="fu"><a href="reference/dtasens1.html">dtasens1</a></span><span class="op">(</span><span class="va">IVD</span>, p <span class="op">=</span> <span class="fl">0.7</span>, 
+         show.p.hat <span class="op">=</span> <span class="cn">TRUE</span>, show.auc.all <span class="op">=</span> <span class="cn">TRUE</span>, show.data <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="co">#&gt; $data</span>
+<span class="co">#&gt;     sens  spec     y1    y2     v1      v2 ldor.t</span>
+<span class="co">#&gt; 1  0.962 0.908  3.219 2.284 2.0800 0.03735   3.78</span>
+<span class="co">#&gt; 2  0.833 0.837  1.609 1.638 0.6000 0.08532   3.92</span>
+<span class="co">#&gt; 3  0.944 0.702  2.833 0.859 1.0588 0.03954   3.52</span>
+<span class="co">#&gt; 4  0.964 0.785  3.296 1.294 2.0741 0.06887   3.14</span>
+<span class="co">#&gt; 5  0.900 0.913  2.197 2.350 2.2222 0.05095   3.02</span>
+<span class="co">#&gt; 6  0.882 0.768  2.015 1.195 0.5667 0.01068   4.22</span>
+<span class="co">#&gt; 7  0.900 0.548  2.197 0.194 0.2222 0.06513   4.46</span>
+<span class="co">#&gt; 8  0.818 0.658  1.504 0.656 0.3056 0.02201   3.77</span>
+<span class="co">#&gt; 9  0.917 0.750  2.398 1.099 2.1818 0.11594   2.31</span>
+<span class="co">#&gt; 10 0.471 0.865 -0.118 1.856 0.2361 0.07708   3.11</span>
+<span class="co">#&gt; 11 0.917 0.894  2.398 2.136 2.1818 0.14908   2.97</span>
+<span class="co">#&gt; 12 0.846 0.833  1.705 1.609 0.5909 0.00984   4.28</span>
+<span class="co">#&gt; 13 0.833 0.960  1.609 3.185 1.2000 0.17356   4.09</span>
+<span class="co">#&gt; 14 0.583 0.932  0.336 2.616 0.3429 0.04292   4.75</span>
+<span class="co">#&gt; 15 0.909 0.761  2.303 1.158 1.1000 0.01413   3.28</span>
+<span class="co">#&gt; 16 0.500 0.869  0.000 1.889 0.4000 0.02808   2.89</span>
+<span class="co">#&gt; 17 0.917 0.775  2.398 1.239 2.1818 0.08321   2.42</span>
+<span class="co">#&gt; 18 0.809 0.980  1.442 3.872 0.0951 0.05373  13.78</span>
+<span class="co">#&gt; 19 0.750 0.714  1.099 0.916 0.6667 0.11667   2.28</span>
+<span class="co">#&gt; 20 0.618 0.980  0.480 3.872 0.0623 0.05373  12.78</span>
+<span class="co">#&gt; 21 0.625 0.881  0.511 2.001 0.5333 0.22703   2.88</span>
+<span class="co">#&gt; 22 0.964 0.916  3.296 2.390 2.0741 0.09492   3.86</span>
+<span class="co">#&gt; 23 0.976 0.921  3.714 2.463 2.0488 0.04429   4.27</span>
+<span class="co">#&gt; 24 0.538 0.847  0.154 1.712 0.3095 0.09081   2.95</span>
+<span class="co">#&gt; 25 0.960 0.758  3.178 1.142 0.5208 0.08794   5.54</span>
+<span class="co">#&gt; 26 0.917 0.837  2.398 1.638 1.0909 0.08532   3.72</span>
+<span class="co">#&gt; 27 0.750 0.842  1.099 1.670 0.2667 0.03713   5.02</span>
+<span class="co">#&gt; 28 0.840 0.688  1.655 0.788 0.0916 0.29091   3.95</span>
+<span class="co">#&gt; 29 0.929 0.935  2.565 2.667 1.0769 0.21389   4.61</span>
+<span class="co">#&gt; 30 0.727 0.830  0.981 1.588 0.4583 0.01825   3.72</span>
+<span class="co">#&gt; 31 0.929 0.749  2.565 1.095 1.0769 0.01362   3.50</span>
+<span class="co">#&gt; 32 0.906 0.997  2.269 5.740 0.7356 2.00643   4.84</span>
+<span class="co">#&gt; 33 0.800 0.938  1.386 2.708 0.6250 0.26667   4.34</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $optim</span>
+<span class="co">#&gt; $optim$par</span>
+<span class="co">#&gt;     u1     u2     t1     t2      r    t12      b      a    c11    c22    auc </span>
+<span class="co">#&gt;  1.380  1.740  0.596  0.845 -0.354 -0.178  2.000 -4.290  0.500  0.500  0.851 </span>
+<span class="co">#&gt;     se     sp  p.hat </span>
+<span class="co">#&gt;  0.799  0.851  0.700 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $optim$value</span>
+<span class="co">#&gt; [1] 22.9</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $optim$counts</span>
+<span class="co">#&gt; function gradient </span>
+<span class="co">#&gt;       18       18 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $optim$convergence</span>
+<span class="co">#&gt; [1] 0</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $optim$message</span>
+<span class="co">#&gt; [1] "CONVERGENCE: REL_REDUCTION_OF_F &lt;= FACTR*EPSMCH"</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $optim$prof.llk.ci</span>
+<span class="co">#&gt;    ci.low estimate ci.up</span>
+<span class="co">#&gt; u1  1.081    1.380  1.67</span>
+<span class="co">#&gt; u2  1.459    1.740  2.02</span>
+<span class="co">#&gt; t1  0.303    0.596  1.01</span>
+<span class="co">#&gt; t2  0.645    0.845  1.15</span>
+<span class="co">#&gt; r  -0.748   -0.354  0.15</span>
+<span class="co">#&gt; b   0.972    2.000    NA</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $optim$auc</span>
+<span class="co">#&gt; 0.851 with absolute error &lt; 1.1e-06</span></code></pre></div>
+<p>For a series of selection probabilities, e.g., p = 0.9, 0,8, …,0.1</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">p.seq</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0.1</span>, <span class="op">-</span><span class="fl">0.1</span><span class="op">)</span>
+
+<span class="va">estimates</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="va">p.seq</span>, 
+                    <span class="kw">function</span><span class="op">(</span><span class="va">p</span><span class="op">)</span> <span class="fu"><a href="reference/dtasens1.html">dtasens1</a></span><span class="op">(</span><span class="va">IVD</span>, <span class="va">p</span>, 
+                                         b.interval <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">2</span><span class="op">)</span>, 
+                                         a.interval <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">3</span>,<span class="fl">3</span><span class="op">)</span>, 
+                                         a.root.extendInt <span class="op">=</span> <span class="st">"downX"</span><span class="op">)</span><span class="op">$</span><span class="va">par</span><span class="op">)</span>
+
+<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">estimates</span><span class="op">)</span><span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"p = "</span>, <span class="va">p.seq</span><span class="op">)</span>
+<span class="fu">kable</span><span class="op">(</span><span class="va">estimates</span><span class="op">)</span></code></pre></div>
+<table class="table">
+<thead><tr class="header">
+<th align="left"></th>
+<th align="right">p = 1</th>
+<th align="right">p = 0.9</th>
+<th align="right">p = 0.8</th>
+<th align="right">p = 0.7</th>
+<th align="right">p = 0.6</th>
+<th align="right">p = 0.5</th>
+<th align="right">p = 0.4</th>
+<th align="right">p = 0.3</th>
+<th align="right">p = 0.2</th>
+<th align="right">p = 0.1</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">u1</td>
+<td align="right">1.484</td>
+<td align="right">1.478</td>
+<td align="right">1.442</td>
+<td align="right">1.380</td>
+<td align="right">1.301</td>
+<td align="right">1.207</td>
+<td align="right">1.091</td>
+<td align="right">0.933</td>
+<td align="right">0.704</td>
+<td align="right">0.280</td>
+</tr>
+<tr class="even">
+<td align="left">u2</td>
+<td align="right">1.824</td>
+<td align="right">1.819</td>
+<td align="right">1.791</td>
+<td align="right">1.740</td>
+<td align="right">1.671</td>
+<td align="right">1.581</td>
+<td align="right">1.464</td>
+<td align="right">1.299</td>
+<td align="right">1.054</td>
+<td align="right">0.610</td>
+</tr>
+<tr class="odd">
+<td align="left">t1</td>
+<td align="right">0.597</td>
+<td align="right">0.599</td>
+<td align="right">0.600</td>
+<td align="right">0.596</td>
+<td align="right">0.592</td>
+<td align="right">0.594</td>
+<td align="right">0.605</td>
+<td align="right">0.634</td>
+<td align="right">0.688</td>
+<td align="right">0.793</td>
+</tr>
+<tr class="even">
+<td align="left">t2</td>
+<td align="right">0.826</td>
+<td align="right">0.828</td>
+<td align="right">0.835</td>
+<td align="right">0.845</td>
+<td align="right">0.857</td>
+<td align="right">0.873</td>
+<td align="right">0.897</td>
+<td align="right">0.933</td>
+<td align="right">0.986</td>
+<td align="right">1.077</td>
+</tr>
+<tr class="odd">
+<td align="left">r</td>
+<td align="right">-0.424</td>
+<td align="right">-0.415</td>
+<td align="right">-0.388</td>
+<td align="right">-0.354</td>
+<td align="right">-0.310</td>
+<td align="right">-0.254</td>
+<td align="right">-0.176</td>
+<td align="right">-0.068</td>
+<td align="right">0.071</td>
+<td align="right">0.256</td>
+</tr>
+<tr class="even">
+<td align="left">t12</td>
+<td align="right">-0.209</td>
+<td align="right">-0.206</td>
+<td align="right">-0.194</td>
+<td align="right">-0.178</td>
+<td align="right">-0.158</td>
+<td align="right">-0.132</td>
+<td align="right">-0.096</td>
+<td align="right">-0.040</td>
+<td align="right">0.048</td>
+<td align="right">0.218</td>
+</tr>
+<tr class="odd">
+<td align="left">b</td>
+<td align="right">0.100</td>
+<td align="right">2.000</td>
+<td align="right">2.000</td>
+<td align="right">2.000</td>
+<td align="right">2.000</td>
+<td align="right">2.000</td>
+<td align="right">2.000</td>
+<td align="right">2.000</td>
+<td align="right">1.930</td>
+<td align="right">1.820</td>
+</tr>
+<tr class="even">
+<td align="left">a</td>
+<td align="right">10.650</td>
+<td align="right">-2.553</td>
+<td align="right">-3.636</td>
+<td align="right">-4.290</td>
+<td align="right">-4.757</td>
+<td align="right">-5.123</td>
+<td align="right">-5.425</td>
+<td align="right">-5.679</td>
+<td align="right">-5.729</td>
+<td align="right">-5.664</td>
+</tr>
+<tr class="odd">
+<td align="left">c11</td>
+<td align="right">0.500</td>
+<td align="right">0.500</td>
+<td align="right">0.500</td>
+<td align="right">0.500</td>
+<td align="right">0.500</td>
+<td align="right">0.500</td>
+<td align="right">0.500</td>
+<td align="right">0.500</td>
+<td align="right">0.500</td>
+<td align="right">0.500</td>
+</tr>
+<tr class="even">
+<td align="left">c22</td>
+<td align="right">0.500</td>
+<td align="right">0.500</td>
+<td align="right">0.500</td>
+<td align="right">0.500</td>
+<td align="right">0.500</td>
+<td align="right">0.500</td>
+<td align="right">0.500</td>
+<td align="right">0.500</td>
+<td align="right">0.500</td>
+<td align="right">0.500</td>
+</tr>
+<tr class="odd">
+<td align="left">auc</td>
+<td align="right">0.874</td>
+<td align="right">0.872</td>
+<td align="right">0.864</td>
+<td align="right">0.851</td>
+<td align="right">0.834</td>
+<td align="right">0.810</td>
+<td align="right">0.778</td>
+<td align="right">0.729</td>
+<td align="right">0.657</td>
+<td align="right">0.540</td>
+</tr>
+<tr class="even">
+<td align="left">se</td>
+<td align="right">0.815</td>
+<td align="right">0.814</td>
+<td align="right">0.809</td>
+<td align="right">0.799</td>
+<td align="right">0.786</td>
+<td align="right">0.770</td>
+<td align="right">0.749</td>
+<td align="right">0.718</td>
+<td align="right">0.669</td>
+<td align="right">0.570</td>
+</tr>
+<tr class="odd">
+<td align="left">sp</td>
+<td align="right">0.861</td>
+<td align="right">0.860</td>
+<td align="right">0.857</td>
+<td align="right">0.851</td>
+<td align="right">0.842</td>
+<td align="right">0.829</td>
+<td align="right">0.812</td>
+<td align="right">0.786</td>
+<td align="right">0.742</td>
+<td align="right">0.648</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="optim-2-dtasens2" class="section level3">
+<h3 class="hasAnchor">
+<a href="#optim-2-dtasens2" class="anchor"></a>Optim 2: dtasens2</h3>
+<p>For a certain selection probability, e.g., p = 0.7</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R">
+<span class="fu"><a href="reference/dtasens2.html">dtasens2</a></span><span class="op">(</span><span class="va">IVD</span>, p <span class="op">=</span> <span class="fl">0.7</span><span class="op">)</span>
+<span class="co">#&gt; $par</span>
+<span class="co">#&gt;     u1     u2     t1     t2      r    t12      b      a    c11    c22    auc </span>
+<span class="co">#&gt;  1.379  1.741  0.596  0.844 -0.353 -0.178  2.000 -4.254  0.509  0.491  0.851 </span>
+<span class="co">#&gt;     se     sp </span>
+<span class="co">#&gt;  0.799  0.851 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $value</span>
+<span class="co">#&gt; [1] 22.9</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $counts</span>
+<span class="co">#&gt; function gradient </span>
+<span class="co">#&gt;       19       19 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $convergence</span>
+<span class="co">#&gt; [1] 0</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $message</span>
+<span class="co">#&gt; [1] "CONVERGENCE: REL_REDUCTION_OF_F &lt;= FACTR*EPSMCH"</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $prof.llk.ci</span>
+<span class="co">#&gt;    ci.low estimate ci.up</span>
+<span class="co">#&gt; u1  1.079    1.379 1.672</span>
+<span class="co">#&gt; u2  1.460    1.741 2.018</span>
+<span class="co">#&gt; t1  0.303    0.596 1.009</span>
+<span class="co">#&gt; t2  0.645    0.844 1.149</span>
+<span class="co">#&gt; r  -0.748   -0.353 0.150</span>
+<span class="co">#&gt; b   0.977    2.000    NA</span>
+<span class="co">#&gt; c1  0.418    0.714 0.918</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; attr(,"class")</span>
+<span class="co">#&gt; [1] "DTAsens2"</span>
+
+<span class="fu"><a href="reference/dtasens2.html">dtasens2</a></span><span class="op">(</span><span class="va">IVD</span>, p <span class="op">=</span> <span class="fl">0.7</span>, 
+         show.p.hat <span class="op">=</span> <span class="cn">TRUE</span>, show.auc.all <span class="op">=</span> <span class="cn">TRUE</span>, show.data <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="co">#&gt; $data</span>
+<span class="co">#&gt;     sens  spec     y1    y2     v1      v2 ldor.t</span>
+<span class="co">#&gt; 1  0.962 0.908  3.219 2.284 2.0800 0.03735   3.78</span>
+<span class="co">#&gt; 2  0.833 0.837  1.609 1.638 0.6000 0.08532   3.92</span>
+<span class="co">#&gt; 3  0.944 0.702  2.833 0.859 1.0588 0.03954   3.52</span>
+<span class="co">#&gt; 4  0.964 0.785  3.296 1.294 2.0741 0.06887   3.14</span>
+<span class="co">#&gt; 5  0.900 0.913  2.197 2.350 2.2222 0.05095   3.02</span>
+<span class="co">#&gt; 6  0.882 0.768  2.015 1.195 0.5667 0.01068   4.22</span>
+<span class="co">#&gt; 7  0.900 0.548  2.197 0.194 0.2222 0.06513   4.46</span>
+<span class="co">#&gt; 8  0.818 0.658  1.504 0.656 0.3056 0.02201   3.77</span>
+<span class="co">#&gt; 9  0.917 0.750  2.398 1.099 2.1818 0.11594   2.31</span>
+<span class="co">#&gt; 10 0.471 0.865 -0.118 1.856 0.2361 0.07708   3.11</span>
+<span class="co">#&gt; 11 0.917 0.894  2.398 2.136 2.1818 0.14908   2.97</span>
+<span class="co">#&gt; 12 0.846 0.833  1.705 1.609 0.5909 0.00984   4.28</span>
+<span class="co">#&gt; 13 0.833 0.960  1.609 3.185 1.2000 0.17356   4.09</span>
+<span class="co">#&gt; 14 0.583 0.932  0.336 2.616 0.3429 0.04292   4.75</span>
+<span class="co">#&gt; 15 0.909 0.761  2.303 1.158 1.1000 0.01413   3.28</span>
+<span class="co">#&gt; 16 0.500 0.869  0.000 1.889 0.4000 0.02808   2.89</span>
+<span class="co">#&gt; 17 0.917 0.775  2.398 1.239 2.1818 0.08321   2.42</span>
+<span class="co">#&gt; 18 0.809 0.980  1.442 3.872 0.0951 0.05373  13.78</span>
+<span class="co">#&gt; 19 0.750 0.714  1.099 0.916 0.6667 0.11667   2.28</span>
+<span class="co">#&gt; 20 0.618 0.980  0.480 3.872 0.0623 0.05373  12.78</span>
+<span class="co">#&gt; 21 0.625 0.881  0.511 2.001 0.5333 0.22703   2.88</span>
+<span class="co">#&gt; 22 0.964 0.916  3.296 2.390 2.0741 0.09492   3.86</span>
+<span class="co">#&gt; 23 0.976 0.921  3.714 2.463 2.0488 0.04429   4.27</span>
+<span class="co">#&gt; 24 0.538 0.847  0.154 1.712 0.3095 0.09081   2.95</span>
+<span class="co">#&gt; 25 0.960 0.758  3.178 1.142 0.5208 0.08794   5.54</span>
+<span class="co">#&gt; 26 0.917 0.837  2.398 1.638 1.0909 0.08532   3.72</span>
+<span class="co">#&gt; 27 0.750 0.842  1.099 1.670 0.2667 0.03713   5.02</span>
+<span class="co">#&gt; 28 0.840 0.688  1.655 0.788 0.0916 0.29091   3.95</span>
+<span class="co">#&gt; 29 0.929 0.935  2.565 2.667 1.0769 0.21389   4.61</span>
+<span class="co">#&gt; 30 0.727 0.830  0.981 1.588 0.4583 0.01825   3.72</span>
+<span class="co">#&gt; 31 0.929 0.749  2.565 1.095 1.0769 0.01362   3.50</span>
+<span class="co">#&gt; 32 0.906 0.997  2.269 5.740 0.7356 2.00643   4.84</span>
+<span class="co">#&gt; 33 0.800 0.938  1.386 2.708 0.6250 0.26667   4.34</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $opt</span>
+<span class="co">#&gt; $par</span>
+<span class="co">#&gt;     u1     u2     t1     t2      r    t12      b      a    c11    c22    auc </span>
+<span class="co">#&gt;  1.379  1.741  0.596  0.844 -0.353 -0.178  2.000 -4.254  0.509  0.491  0.851 </span>
+<span class="co">#&gt;     se     sp  p.hat </span>
+<span class="co">#&gt;  0.799  0.851  0.700 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $value</span>
+<span class="co">#&gt; [1] 22.9</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $counts</span>
+<span class="co">#&gt; function gradient </span>
+<span class="co">#&gt;       19       19 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $convergence</span>
+<span class="co">#&gt; [1] 0</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $message</span>
+<span class="co">#&gt; [1] "CONVERGENCE: REL_REDUCTION_OF_F &lt;= FACTR*EPSMCH"</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $prof.llk.ci</span>
+<span class="co">#&gt;    ci.low estimate ci.up</span>
+<span class="co">#&gt; u1  1.079    1.379 1.672</span>
+<span class="co">#&gt; u2  1.460    1.741 2.018</span>
+<span class="co">#&gt; t1  0.303    0.596 1.009</span>
+<span class="co">#&gt; t2  0.645    0.844 1.149</span>
+<span class="co">#&gt; r  -0.748   -0.353 0.150</span>
+<span class="co">#&gt; b   0.977    2.000    NA</span>
+<span class="co">#&gt; c1  0.418    0.714 0.918</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $auc</span>
+<span class="co">#&gt; 0.851 with absolute error &lt; 1.1e-06</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; attr(,"class")</span>
+<span class="co">#&gt; [1] "DTAsens2"</span></code></pre></div>
+<p>For a series of selection probabilities, e.g., p = 0.9, 0.8, …,0.1</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">p.seq</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0.1</span>, <span class="op">-</span><span class="fl">0.1</span><span class="op">)</span>
+
+<span class="va">estimates</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="va">p.seq</span>, 
+                    <span class="kw">function</span><span class="op">(</span><span class="va">p</span><span class="op">)</span> <span class="fu"><a href="reference/dtasens1.html">dtasens1</a></span><span class="op">(</span><span class="va">IVD</span>, <span class="va">p</span>, 
+                                         b.interval <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">2</span><span class="op">)</span>, 
+                                         a.interval <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">3</span>,<span class="fl">2</span><span class="op">)</span>, 
+                                         a.root.extendInt <span class="op">=</span> <span class="st">"downX"</span><span class="op">)</span><span class="op">$</span><span class="va">par</span><span class="op">)</span>
+
+<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">estimates</span><span class="op">)</span><span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"p = "</span>, <span class="va">p.seq</span><span class="op">)</span>
+<span class="fu">kable</span><span class="op">(</span><span class="va">estimates</span><span class="op">)</span></code></pre></div>
+<table class="table">
+<thead><tr class="header">
+<th align="left"></th>
+<th align="right">p = 1</th>
+<th align="right">p = 0.9</th>
+<th align="right">p = 0.8</th>
+<th align="right">p = 0.7</th>
+<th align="right">p = 0.6</th>
+<th align="right">p = 0.5</th>
+<th align="right">p = 0.4</th>
+<th align="right">p = 0.3</th>
+<th align="right">p = 0.2</th>
+<th align="right">p = 0.1</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">u1</td>
+<td align="right">1.484</td>
+<td align="right">1.478</td>
+<td align="right">1.442</td>
+<td align="right">1.380</td>
+<td align="right">1.301</td>
+<td align="right">1.207</td>
+<td align="right">1.091</td>
+<td align="right">0.933</td>
+<td align="right">0.704</td>
+<td align="right">0.280</td>
+</tr>
+<tr class="even">
+<td align="left">u2</td>
+<td align="right">1.824</td>
+<td align="right">1.819</td>
+<td align="right">1.791</td>
+<td align="right">1.740</td>
+<td align="right">1.671</td>
+<td align="right">1.581</td>
+<td align="right">1.464</td>
+<td align="right">1.299</td>
+<td align="right">1.054</td>
+<td align="right">0.610</td>
+</tr>
+<tr class="odd">
+<td align="left">t1</td>
+<td align="right">0.597</td>
+<td align="right">0.599</td>
+<td align="right">0.600</td>
+<td align="right">0.596</td>
+<td align="right">0.592</td>
+<td align="right">0.594</td>
+<td align="right">0.605</td>
+<td align="right">0.634</td>
+<td align="right">0.688</td>
+<td align="right">0.793</td>
+</tr>
+<tr class="even">
+<td align="left">t2</td>
+<td align="right">0.826</td>
+<td align="right">0.828</td>
+<td align="right">0.835</td>
+<td align="right">0.845</td>
+<td align="right">0.857</td>
+<td align="right">0.873</td>
+<td align="right">0.897</td>
+<td align="right">0.933</td>
+<td align="right">0.986</td>
+<td align="right">1.077</td>
+</tr>
+<tr class="odd">
+<td align="left">r</td>
+<td align="right">-0.424</td>
+<td align="right">-0.415</td>
+<td align="right">-0.388</td>
+<td align="right">-0.354</td>
+<td align="right">-0.310</td>
+<td align="right">-0.254</td>
+<td align="right">-0.176</td>
+<td align="right">-0.068</td>
+<td align="right">0.071</td>
+<td align="right">0.256</td>
+</tr>
+<tr class="even">
+<td align="left">t12</td>
+<td align="right">-0.209</td>
+<td align="right">-0.206</td>
+<td align="right">-0.195</td>
+<td align="right">-0.178</td>
+<td align="right">-0.158</td>
+<td align="right">-0.132</td>
+<td align="right">-0.096</td>
+<td align="right">-0.040</td>
+<td align="right">0.048</td>
+<td align="right">0.218</td>
+</tr>
+<tr class="odd">
+<td align="left">b</td>
+<td align="right">0.100</td>
+<td align="right">2.000</td>
+<td align="right">2.000</td>
+<td align="right">2.000</td>
+<td align="right">2.000</td>
+<td align="right">2.000</td>
+<td align="right">2.000</td>
+<td align="right">2.000</td>
+<td align="right">1.930</td>
+<td align="right">1.820</td>
+</tr>
+<tr class="even">
+<td align="left">a</td>
+<td align="right">12.220</td>
+<td align="right">-2.553</td>
+<td align="right">-3.636</td>
+<td align="right">-4.290</td>
+<td align="right">-4.757</td>
+<td align="right">-5.123</td>
+<td align="right">-5.425</td>
+<td align="right">-5.679</td>
+<td align="right">-5.728</td>
+<td align="right">-5.664</td>
+</tr>
+<tr class="odd">
+<td align="left">c11</td>
+<td align="right">0.500</td>
+<td align="right">0.500</td>
+<td align="right">0.500</td>
+<td align="right">0.500</td>
+<td align="right">0.500</td>
+<td align="right">0.500</td>
+<td align="right">0.500</td>
+<td align="right">0.500</td>
+<td align="right">0.500</td>
+<td align="right">0.500</td>
+</tr>
+<tr class="even">
+<td align="left">c22</td>
+<td align="right">0.500</td>
+<td align="right">0.500</td>
+<td align="right">0.500</td>
+<td align="right">0.500</td>
+<td align="right">0.500</td>
+<td align="right">0.500</td>
+<td align="right">0.500</td>
+<td align="right">0.500</td>
+<td align="right">0.500</td>
+<td align="right">0.500</td>
+</tr>
+<tr class="odd">
+<td align="left">auc</td>
+<td align="right">0.874</td>
+<td align="right">0.872</td>
+<td align="right">0.864</td>
+<td align="right">0.851</td>
+<td align="right">0.834</td>
+<td align="right">0.810</td>
+<td align="right">0.778</td>
+<td align="right">0.729</td>
+<td align="right">0.657</td>
+<td align="right">0.540</td>
+</tr>
+<tr class="even">
+<td align="left">se</td>
+<td align="right">0.815</td>
+<td align="right">0.814</td>
+<td align="right">0.809</td>
+<td align="right">0.799</td>
+<td align="right">0.786</td>
+<td align="right">0.770</td>
+<td align="right">0.749</td>
+<td align="right">0.718</td>
+<td align="right">0.669</td>
+<td align="right">0.570</td>
+</tr>
+<tr class="odd">
+<td align="left">sp</td>
+<td align="right">0.861</td>
+<td align="right">0.860</td>
+<td align="right">0.857</td>
+<td align="right">0.851</td>
+<td align="right">0.842</td>
+<td align="right">0.829</td>
+<td align="right">0.812</td>
+<td align="right">0.786</td>
+<td align="right">0.742</td>
+<td align="right">0.648</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div id="plot-roc" class="section level3">
 <h3 class="hasAnchor">
 <a href="#plot-roc" class="anchor"></a>Plot ROC</h3>
 <p>One ROC</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span>
 
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">mada</span><span class="op">)</span>
@@ -701,38 +768,38 @@
 <span class="co">#&gt;     pairs</span>
 <span class="co">#&gt; Loading required package: mvmeta</span>
 <span class="co">#&gt; This is mvmeta 1.0.3. For an overview type: help('mvmeta-package').</span>
-<span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/mada/man/reitsma.html">reitsma</a></span><span class="op">(</span><span class="va">IVD</span><span class="op">)</span>
+<span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/mada/man/reitsma.html">reitsma</a></span><span class="op">(</span><span class="va">IVD</span>, correction.control <span class="op">=</span> <span class="st">"single"</span>, method <span class="op">=</span> <span class="st">"ml"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/title.html">title</a></span><span class="op">(</span><span class="st">"Reistma model from mada"</span><span class="op">)</span>
 
 
 <span class="va">par0</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">coefficients</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="op">-</span><span class="fl">1</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="op">-</span><span class="fl">1</span><span class="op">)</span><span class="op">*</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">Psi</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">4</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>, <span class="va">fit</span><span class="op">$</span><span class="va">Psi</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/prod.html">prod</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="va">fit</span><span class="op">$</span><span class="va">Psi</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">4</span><span class="op">)</span><span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
 
-<span class="va">par1</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/dtasens1.html">dtasens1</a></span><span class="op">(</span><span class="va">IVD</span>, <span class="fl">0.9</span><span class="op">)</span><span class="op">$</span><span class="va">par</span>
-<span class="va">par2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/dtasens2.html">dtasens2</a></span><span class="op">(</span><span class="va">IVD</span>, <span class="fl">0.9</span><span class="op">)</span><span class="op">$</span><span class="va">par</span>
+<span class="va">par1</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/dtasens1.html">dtasens1</a></span><span class="op">(</span><span class="va">IVD</span>, <span class="fl">0.7</span><span class="op">)</span><span class="op">$</span><span class="va">par</span>
+<span class="va">par2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/dtasens2.html">dtasens2</a></span><span class="op">(</span><span class="va">IVD</span>, <span class="fl">0.7</span><span class="op">)</span><span class="op">$</span><span class="va">par</span>
 
-<span class="fu"><a href="reference/sROC.html">sROC</a></span><span class="op">(</span><span class="va">par1</span>, pch <span class="op">=</span> <span class="fl">19</span><span class="op">)</span>
-<span class="fu"><a href="reference/sROC.html">sROC</a></span><span class="op">(</span><span class="va">par2</span>, add <span class="op">=</span> <span class="cn">TRUE</span>, col<span class="op">=</span><span class="fl">2</span>, pch <span class="op">=</span> <span class="fl">19</span><span class="op">)</span>
-<span class="fu"><a href="reference/sROC.html">sROC</a></span><span class="op">(</span><span class="va">par0</span>, add <span class="op">=</span> <span class="cn">TRUE</span>, col<span class="op">=</span><span class="fl">2</span>, pch <span class="op">=</span> <span class="fl">19</span>, lty <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>
+<span class="fu"><a href="reference/sROC.html">sROC</a></span><span class="op">(</span><span class="va">par1</span>, pch <span class="op">=</span> <span class="fl">19</span>, add.ci <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+<span class="fu"><a href="reference/sROC.html">sROC</a></span><span class="op">(</span><span class="va">par2</span>, add <span class="op">=</span> <span class="cn">TRUE</span>, col<span class="op">=</span><span class="fl">2</span>, pch <span class="op">=</span> <span class="fl">19</span>, add.ci <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+<span class="fu"><a href="reference/sROC.html">sROC</a></span><span class="op">(</span><span class="va">par0</span>, add <span class="op">=</span> <span class="cn">TRUE</span>, col<span class="op">=</span><span class="fl">3</span>, pch <span class="op">=</span> <span class="fl">4</span>, add.ci <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="va">IVD</span>, <span class="fu"><a href="https://rdrr.io/r/graphics/points.html">points</a></span><span class="op">(</span><span class="va">FP</span><span class="op">/</span><span class="op">(</span><span class="va">FP</span><span class="op">+</span><span class="va">TN</span><span class="op">)</span>, <span class="va">TP</span><span class="op">/</span><span class="op">(</span><span class="va">TP</span><span class="op">+</span><span class="va">FN</span><span class="op">)</span>, pch <span class="op">=</span> <span class="fl">19</span>, cex <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/legend.html">legend</a></span><span class="op">(</span><span class="st">"bottomright"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"dtasens1"</span>, <span class="st">"dtasens2"</span><span class="op">)</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">2</span><span class="op">)</span>, lty <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">3</span><span class="op">)</span>, pch <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">19</span>,<span class="fl">19</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/title.html">title</a></span><span class="op">(</span><span class="st">"When selection prob = 0.9"</span><span class="op">)</span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-9-1.png" width="100%"></p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="va">IVD</span>, <span class="fu"><a href="https://rdrr.io/r/graphics/points.html">points</a></span><span class="op">(</span><span class="va">FP</span><span class="op">/</span><span class="op">(</span><span class="va">FP</span><span class="op">+</span><span class="va">TN</span><span class="op">)</span>, <span class="va">TP</span><span class="op">/</span><span class="op">(</span><span class="va">TP</span><span class="op">+</span><span class="va">FN</span><span class="op">)</span>, pch <span class="op">=</span> <span class="fl">4</span>, cex <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/legend.html">legend</a></span><span class="op">(</span><span class="st">"bottomright"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"dtasens1"</span>, <span class="st">"dtasens2"</span>, <span class="st">"Reistma"</span>, <span class="st">"data"</span><span class="op">)</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>, <span class="fl">1</span><span class="op">)</span>, lty <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span>, pch <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">19</span>,<span class="fl">19</span>,<span class="fl">4</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/title.html">title</a></span><span class="op">(</span><span class="st">"When selection prob = 0.7"</span><span class="op">)</span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-7-1.png" width="100%"></p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p>A series of ROC</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="va">p.seq</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0.1</span>, <span class="op">-</span><span class="fl">0.1</span><span class="op">)</span>
 <span class="va">estimates1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="va">p.seq</span>, 
                      <span class="kw">function</span><span class="op">(</span><span class="va">p</span><span class="op">)</span> <span class="fu"><a href="reference/dtasens1.html">dtasens1</a></span><span class="op">(</span><span class="va">IVD</span>, <span class="va">p</span>,
                                           b.interval <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">2</span><span class="op">)</span>,
-                                          a.interval <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">5</span>,<span class="fl">0</span><span class="op">)</span><span class="op">)</span><span class="op">$</span><span class="va">par</span><span class="op">)</span>
+                                          a.interval <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">3</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span><span class="op">$</span><span class="va">par</span><span class="op">)</span>
 <span class="va">estimates2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="va">p.seq</span>, 
                      <span class="kw">function</span><span class="op">(</span><span class="va">p</span><span class="op">)</span> <span class="fu"><a href="reference/dtasens2.html">dtasens2</a></span><span class="op">(</span><span class="va">IVD</span>, <span class="va">p</span>,
                                           b.interval <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">2</span><span class="op">)</span>,
-                                          a.interval <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">5</span>,<span class="fl">0</span><span class="op">)</span><span class="op">)</span><span class="op">$</span><span class="va">par</span><span class="op">)</span>
+                                          a.interval <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">3</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span><span class="op">$</span><span class="va">par</span><span class="op">)</span>
 
 <span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="reference/mROC.html">mROC</a></span><span class="op">(</span>par.matrix <span class="op">=</span> <span class="va">estimates1</span><span class="op">)</span>
@@ -742,8 +809,8 @@
 <span class="fu"><a href="reference/mROC.html">mROC</a></span><span class="op">(</span>par.matrix <span class="op">=</span> <span class="va">estimates2</span>, p.vec <span class="op">=</span> <span class="va">p.seq</span><span class="op">)</span>
 <span class="fu"><a href="reference/sROC.html">sROC</a></span><span class="op">(</span><span class="va">par0</span>, add <span class="op">=</span> <span class="cn">TRUE</span>, col <span class="op">=</span> <span class="fl">2</span>, pch <span class="op">=</span> <span class="fl">19</span>, lty <span class="op">=</span><span class="fl">3</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/title.html">title</a></span><span class="op">(</span><span class="st">"dtasens2"</span><span class="op">)</span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-10-1.png" width="100%"></p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<p><img src="reference/figures/README-unnamed-chunk-8-1.png" width="100%"></p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 </div>
 </div>

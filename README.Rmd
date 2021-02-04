@@ -34,30 +34,24 @@ devtools::install_git("meta2020/DTAsens")
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
+This is an example which shows you how to solve a common problem:
 
 ```{r}
 library(DTAsens)
-## basic example code
-```
 
-### Example data 1
-
-```{r}
-
-data(dta)
-kable(head(dta))
+data(IVD)
+kable(head(IVD))
 
 ```
 
 ### Optim 1: dtasens1
 
-For a certain selection probability, e.g., p = 0.5
+For a certain selection probability, e.g., p = 0.7
 
 ```{r}
-dtasens1(dta, p = 0.7)
+dtasens1(IVD, p = 0.7)
 
-dtasens1(dta, p = 0.7, 
+dtasens1(IVD, p = 0.7, 
          show.p.hat = TRUE, show.auc.all = TRUE, show.data = TRUE)
 ```
 
@@ -68,9 +62,9 @@ For a series of selection probabilities, e.g., p = 0.9, 0,8, ...,0.1
 p.seq <- seq(1, 0.1, -0.1)
 
 estimates <- sapply(p.seq, 
-                    function(p) dtasens1(dta, p, 
+                    function(p) dtasens1(IVD, p, 
                                          b.interval = c(0,2), 
-                                         a.interval = c(-5,0), 
+                                         a.interval = c(-3,3), 
                                          a.root.extendInt = "downX")$par)
 
 colnames(estimates)<- paste0("p = ", p.seq)
@@ -79,13 +73,13 @@ kable(estimates)
 
 ### Optim 2: dtasens2
 
-For a certain selection probability, e.g., p = 0.5
+For a certain selection probability, e.g., p = 0.7
 
 ```{r}
 
-dtasens2(dta, p = 0.7)
+dtasens2(IVD, p = 0.7)
 
-dtasens2(dta, p = 0.7, 
+dtasens2(IVD, p = 0.7, 
          show.p.hat = TRUE, show.auc.all = TRUE, show.data = TRUE)
 
 ```
@@ -97,24 +91,14 @@ For a series of selection probabilities, e.g., p = 0.9, 0.8, ...,0.1
 p.seq <- seq(1, 0.1, -0.1)
 
 estimates <- sapply(p.seq, 
-                    function(p) dtasens1(dta, p, 
+                    function(p) dtasens1(IVD, p, 
                                          b.interval = c(0,2), 
-                                         a.interval = c(-5,0), 
+                                         a.interval = c(-3,2), 
                                          a.root.extendInt = "downX")$par)
 
 colnames(estimates)<- paste0("p = ", p.seq)
 kable(estimates)
 ```
-
-### Example data 2 
-
-```{r}
-data("IVD")
-
-kable(head(IVD))
-
-```
-
 
 ### Plot ROC
 
@@ -124,23 +108,23 @@ One ROC
 par(mfrow = c(1,2))
 
 library(mada)
-fit <- reitsma(IVD)
+fit <- reitsma(IVD, correction.control = "single", method = "ml")
 plot(fit)
 title("Reistma model from mada")
 
 
 par0 <- c(fit$coefficients*c(1,-1), c(1,-1)*sqrt(fit$Psi[c(1,4)]), fit$Psi[3]/prod(sqrt(fit$Psi[c(1,4)])))
 
-par1 <- dtasens1(IVD, 0.9)$par
-par2 <- dtasens2(IVD, 0.9)$par
+par1 <- dtasens1(IVD, 0.7)$par
+par2 <- dtasens2(IVD, 0.7)$par
 
-sROC(par1, pch = 19)
-sROC(par2, add = TRUE, col=2, pch = 19)
-sROC(par0, add = TRUE, col=2, pch = 19, lty = 3)
+sROC(par1, pch = 19, add.ci = FALSE)
+sROC(par2, add = TRUE, col=2, pch = 19, add.ci = FALSE)
+sROC(par0, add = TRUE, col=3, pch = 4, add.ci = FALSE)
 
-with(IVD, points(FP/(FP+TN), TP/(TP+FN), pch = 19, cex = 0.5))
-legend("bottomright", c("dtasens1", "dtasens2"), col = c(1,2,2), lty = c(1,1,3), pch = c(19,19,1))
-title("When selection prob = 0.9")
+with(IVD, points(FP/(FP+TN), TP/(TP+FN), pch = 4, cex = 0.5))
+legend("bottomright", c("dtasens1", "dtasens2", "Reistma", "data"), col = c(1,2,3, 1), lty = c(1,1,1, 0), pch = c(19,19,4, 4))
+title("When selection prob = 0.7")
 par(mfrow = c(1,1))
 
 ```
@@ -153,11 +137,11 @@ p.seq <- seq(1, 0.1, -0.1)
 estimates1 <- sapply(p.seq, 
                      function(p) dtasens1(IVD, p,
                                           b.interval = c(0,2),
-                                          a.interval = c(-5,0))$par)
+                                          a.interval = c(-3,2))$par)
 estimates2 <- sapply(p.seq, 
                      function(p) dtasens2(IVD, p,
                                           b.interval = c(0,2),
-                                          a.interval = c(-5,0))$par)
+                                          a.interval = c(-3,2))$par)
 
 par(mfrow = c(1,2))
 mROC(par.matrix = estimates1)
