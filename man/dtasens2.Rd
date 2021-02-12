@@ -17,9 +17,6 @@ dtasens2(
   pos.r = TRUE,
   ci.level = 0.95,
   show.warn.message = FALSE,
-  show.data = FALSE,
-  show.p.hat = FALSE,
-  show.auc.all = FALSE,
   a.root.extendInt = "downX",
   ...
 )
@@ -49,12 +46,6 @@ dtasens2(
 
 \item{show.warn.message}{par}
 
-\item{show.data}{par}
-
-\item{show.p.hat}{par}
-
-\item{show.auc.all}{par}
-
 \item{a.root.extendInt}{par}
 
 \item{...}{...}
@@ -66,6 +57,7 @@ convergence list
 dtasens2 function
 }
 \examples{
-dtasens2(data = IVD, p = 0.7)
+
+opt1 <- dtasens1(IVD, p = 0.7)
 
 }

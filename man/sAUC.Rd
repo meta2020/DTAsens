@@ -4,10 +4,10 @@
 \alias{sAUC}
 \title{Calculate Single AUC}
 \usage{
-sAUC(par.vec)
+sAUC(object)
 }
 \arguments{
-\item{par.vec}{c(u1, u2, t1, t2, r)}
+\item{object}{c(u1, u2, t1, t2, r)}
 }
 \value{
 integrate
@@ -16,7 +16,10 @@ integrate
 Calculate single AUC
 }
 \examples{
-par.vec <- c(1,1, 0.5, 0.5, -0.6)
+
+par.vec <- c(1,1, 0.5, 0.5, -0.7)
 sAUC(par.vec)
 
+opt1 <- dtasens1(IVD, p = 0.7)
+sAUC(opt1)
 }

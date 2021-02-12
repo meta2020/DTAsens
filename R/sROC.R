@@ -2,11 +2,15 @@
 #'
 #' @description Single ROC plot
 #'
-#' @param par.vec c(u1, u2, t1, t2, r)
+#' @param object c(u1, u2, t1, t2, r)
 #' @param add par
-#' @param add.ci par
-#' @param ci.level ci.level
+#' @param roc.col par
+#' @param roc.lty par
+#' @param roc.lwd par
 #' @param add.sum.point par
+#' @param spoint.pch par
+#' @param spoint.col par
+#' @param spoint.cex par
 #' @param ... par
 #'
 #' @return plot
@@ -17,19 +21,33 @@
 
 
 #' @examples
+#'
 #' par.vec <- c(1,1, 0.5, 0.5, -0.6)
-#' sROC(par.vec, ci.level = 0.90)
+#' sROC(par.vec)
+#'
+#' opt1 <- dtasens1(IVD, p = 0.7)
+#' sROC(opt1)
 #'
 #' @export
 
-sROC <- function(par.vec = NULL,
+sROC <- function(object,
                  add = FALSE,
-                 add.ci = TRUE,
-                 ci.level = 0.95,
+                 roc.col = 1,
+                 roc.lty = 1,
+                 roc.lwd = 1,
                  add.sum.point = TRUE,
+                 spoint.pch = 19,
+                 spoint.col = 1,
+                 spoint.cex = 1,
                  ...) {
 
-  if (!is.null(par.vec)) {
+  if(inherits(object,"DTAsens")) par.vec <- object$par else {
+
+    if (is.vector(object) & length(object) >= 5) {
+
+      par.vec <- object} else stop("Please input either DTAsens object or a vector of c(u1, u2, t1, t2, r)")
+
+  }
 
     u1 <- par.vec[1]
     u2 <- par.vec[2]
@@ -37,24 +55,12 @@ sROC <- function(par.vec = NULL,
     t2 <- par.vec[4]
     r  <- par.vec[5]
 
-  }
-
   roc   <- function(x) plogis(u1 - (r*t1/t2) * (qlogis(x) + u2))
-  roc.l <- function(x) plogis(u1 - (r*t1/t2) * (qlogis(x) + u2) - qnorm((1-ci.level)/2, lower.tail = FALSE) * t1* sqrt(1-r^2))
-  roc.u <- function(x) plogis(u1 - (r*t1/t2) * (qlogis(x) + u2) + qnorm((1-ci.level)/2, lower.tail = FALSE) * t1* sqrt(1-r^2))
 
+  curve(roc, xlab = "FPR", ylab = "TPR", add = add, col = roc.col, lwd =roc.lwd,lty = roc.lty,
+        xlim = c(0,1), ylim = c(0,1), ...)
 
-  curve(roc, xlab = "FPR", ylab = "TPR", add = add, ..., xlim = c(0,1), ylim = c(0,1))
-  if(add.ci){
-
-    curve(roc.l, xlab = "FPR", ylab = "TPR", add = TRUE, lty = 3, col = "grey")
-    curve(roc.u, xlab = "FPR", ylab = "TPR", add = TRUE, lty = 3, col = "grey")
-
-  }
-
-
-
-  if(add.sum.point) points(plogis(-u2), plogis(u1),...)
+  if(add.sum.point) points(plogis(-u2), plogis(u1), pch = spoint.pch, col = spoint.col, ...)
 
 
 }
@@ -63,30 +69,49 @@ sROC <- function(par.vec = NULL,
 #'
 #' @description Multiple ROC curves
 #' @param par.matrix cbind(u1, u2, t1, t2, r)
-#' @param s.point s.point
-#' @param s.line s.line
-#' @param new.plot new.plot
-#' @param legend legend
-#' @param p.vec p.vec
-#' @param cols set cols
+#' @param add par
+#' @param ncols ncols
+#' @param roc.lty roc.lty
+#' @param roc.lwd par
+#' @param add.sum.point par
+#' @param legend par
+#' @param p.vec par
+#' @param legend.text par
+#' @param legend.cex par
+#' @param spoint.pch par
+#' @param spoint.cex par
 #' @param ... par
 #'
 #' @return plot
 #'
 #' @examples
-#' par.matrix <-matrix(c(1,1,0.5, 0.5, -0.6, 1,1,1, 2, -0.6), 5,2)
-#' mROC(par.matrix, legend = TRUE, p.vec = c(0.9, 0.5), cols = 1:2)
+#'
+#' par.matrix <-cbind(c(1,1.5,0.5, 0.5, -0.2),c(1, 1, 1, 2, -0.6), c(1.8, 2, 1, 2, -0.6))
+#' p.vec <- seq(0.2,0.6,0.2)
+#' mROC(par.matrix, legend = TRUE, p.vec = p.vec, legend.cex = 0.9)
+#' mROC(par.matrix, legend = TRUE, legend.text = c("l1", "l2", "l3"), legend.cex = 0.9, ncols = 1:3)
 #'
 #' @export
 
 mROC <- function(par.matrix,  ## u1 u2 t12 t22
-                 s.point=TRUE, s.line = FALSE,
-                 new.plot =TRUE,legend = FALSE, p.vec,
-                 cols = NULL,...) {
+                 add = FALSE,
+                 ncols = NULL,
+                 roc.lty = 1,
+                 roc.lwd = 1,
+                 add.sum.point=TRUE,
+                 legend = FALSE,
+                 p.vec,
+                 legend.text = paste0("p = ",p.vec),
+                 legend.cex = 1,
+                 spoint.pch = 19,
+                 spoint.cex = 1,
+                 ...) {
 
-  if (new.plot) plot(NULL, xlim=c(0,1), ylim=c(0,1), xlab = "FPR", ylab = "TPR")
+  if(nrow(par.matrix) < 5) stop("Please check your parameter matrix")
 
-  if (is.null(cols)) cols <- gray.colors(ncol(par.matrix), gamma = 1, start = 0, end = 0.8)
+  if (!add) plot(NULL, xlim=c(0,1), ylim=c(0,1), xlab = "FPR", ylab = "TPR")
+
+  if (is.null(ncols)) ncols <- gray.colors(ncol(par.matrix), gamma = 1, start = 0, end = 0.8)
 
   for (i in 1:ncol(par.matrix)) {
 
@@ -96,23 +121,23 @@ mROC <- function(par.matrix,  ## u1 u2 t12 t22
     t2 = par.matrix[4,i]
     r  = par.matrix[5,i]
 
-    auc <- function(x) plogis(u1 - (r*t1/t2) * (qlogis(x) + u2))
-    curve(auc, 0, 1, col = cols[i], add = TRUE, xlab = "FPR", ylab = "TPR", ...)
+    roc <- function(x) plogis(u1 - (r*t1/t2) * (qlogis(x) + u2))
+    curve(roc, 0, 1, col = ncols[i], add = TRUE,
+          lty = roc.lty, lwd = roc.lwd, ...)
   }
 
   if (legend) legend("bottomright",
-                      legend = p.vec,
-                      col = cols[1:ncol(par.matrix)],
-                     lty = rep(1, ncol(par.matrix)))
+                    legend = legend.text,
+                    col = ncols,
+                    lty = rep(roc.lty, ncol(par.matrix)),
+                    cex = legend.cex,
+                    ...)
 
-  if (s.point) {
+  if (add.sum.point) {
     sens <- plogis(par.matrix[1,])
     spec <- plogis(par.matrix[2,])
-    points(1-spec, sens, col=cols, pch = 19)
+    points(1-spec, sens, col=ncols, pch = spoint.pch, cex = spoint.cex, ...)
   }
 
-  if (s.line)  lines(1-spec, sens)
-
 }
-
 

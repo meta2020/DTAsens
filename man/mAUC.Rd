@@ -16,6 +16,7 @@ auc
 Calculate multiple AUC
 }
 \examples{
+
 par.matrix <-matrix(c(1,1,0.5, 0.5, -0.6, 1,1,1, 2, -0.6), 5,2)
 mAUC(par.matrix)
 

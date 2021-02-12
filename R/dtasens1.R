@@ -14,10 +14,6 @@
 #' @param pos.r permit positive r
 #' @param ci.level 0.95
 #' @param show.warn.message par
-#' @param show.data par
-#' @param show.p.hat par
-#' @param show.auc.all par
-
 #' @param a.root.extendInt par
 #' @param ... par
 #'
@@ -25,12 +21,12 @@
 #'
 #' @importFrom stats integrate nlminb optim plogis pnorm qlogis uniroot qchisq
 #' @importFrom mvmeta mvmeta
-
-#' @examples
-#' dtasens1(IVD, p = 0.7)
 #'
 #' @export
-
+#' @examples
+#'
+#' opt1 <- dtasens1(IVD, p = 0.7)
+#'
 dtasens1 <- function(data,   ## 2 FORMAT: N OR Y, make data name as format
                      p,
                      c1 = sqrt(0.5), ##  0<=c11<=1
@@ -43,9 +39,9 @@ dtasens1 <- function(data,   ## 2 FORMAT: N OR Y, make data name as format
                      pos.r = TRUE,
                      ci.level = 0.95,
                      show.warn.message = FALSE,
-                     show.data = FALSE,
-                     show.p.hat = FALSE,
-                     show.auc.all = FALSE,
+                     #show.data = FALSE,
+                     #show.p.hat = FALSE,
+                     #show.auc.all = FALSE,
 
                      a.root.extendInt = "downX",
                      ...
@@ -142,39 +138,39 @@ dtasens1 <- function(data,   ## 2 FORMAT: N OR Y, make data name as format
     fx <- function(x) fn(par = c(opt$par[1:2], x, opt$par[4:6]))- opt$value - qchisq(ci.level,1)/2
     t1.l <- try(uniroot(fx, c(0, opt$par[3])), silent = TRUE)
     t1.u <- try(uniroot(fx, c(opt$par[3], 3)), silent = TRUE)
-    if (!inherits(t1.l, "try-error")) t1.l <- t1.l$root else t1.l <- NA
-    if (!inherits(t1.u, "try-error")) t1.u <- t1.u$root else t1.u <- NA
+    if (!inherits(t1.l, "try-error")) t1.l <- t1.l$root else t1.l <- 0
+    if (!inherits(t1.u, "try-error")) t1.u <- t1.u$root else t1.u <- 3
 
     # t2
     fx <- function(x) fn(par = c(opt$par[1:3], x, opt$par[5:6]))- opt$value - qchisq(ci.level,1)/2
     t2.l <- try(uniroot(fx, c(0, opt$par[4])), silent = TRUE)
     t2.u <- try(uniroot(fx, c(opt$par[4], 3)), silent = TRUE)
-    if (!inherits(t2.l, "try-error")) t2.l <- t2.l$root else t2.l <- NA
-    if (!inherits(t2.u, "try-error")) t2.u <- t2.u$root else t2.u <- NA
+    if (!inherits(t2.l, "try-error")) t2.l <- t2.l$root else t2.l <- 0
+    if (!inherits(t2.u, "try-error")) t2.u <- t2.u$root else t2.u <- 3
 
     # r
     fx <- function(x) fn(par = c(opt$par[1:4], x, opt$par[6]))- opt$value - qchisq(ci.level,1)/2
     r.l <- try(uniroot(fx, c(-1,   opt$par[5])), silent = TRUE)
     r.u <- try(uniroot(fx, c(opt$par[5], r.up)), silent = TRUE)
-    if (!inherits(r.l, "try-error")) r.l <- r.l$root else r.l <- NA
-    if (!inherits(r.u, "try-error")) r.u <- r.u$root else r.u <- NA
+    if (!inherits(r.l, "try-error")) r.l <- r.l$root else r.l <- -1
+    if (!inherits(r.u, "try-error")) r.u <- r.u$root else r.u <- r.up
 
     # b
     fx <- function(x) fn(par = c(opt$par[1:5], x))- opt$value - qchisq(ci.level,1)/2
     b.l <- try(uniroot(fx, c(b.interval[1], opt$par[6])), silent = TRUE)
     b.u <- try(uniroot(fx, c(opt$par[6], b.interval[2])), silent = TRUE)
-    if (!inherits(b.l, "try-error")) b.l <- b.l$root else b.l <- NA
-    if (!inherits(b.u, "try-error")) b.u <- b.u$root else b.u <- NA
+    if (!inherits(b.l, "try-error")) b.l <- b.l$root else b.l <- b.interval[1]
+    if (!inherits(b.u, "try-error")) b.u <- b.u$root else b.u <- b.interval[2]
 
 
-    opt$prof.llk.ci <- matrix(
-      c(u1.l, opt$par[1], u1.u,
-        u2.l, opt$par[2], u2.u,
-        t1.l, opt$par[3], t1.u,
-        t2.l, opt$par[4], t2.u,
-        r.l,  opt$par[5], r.u,
-        b.l,  opt$par[6], b.u), byrow = TRUE, ncol = 3,
-      dimnames = list(c("u1","u2","t1", "t2", "r", "b"), c("ci.low", "estimate", "ci.up")))
+    opt$ci <- matrix(
+      c(opt$par[1], u1.l, u1.u,
+        opt$par[2], u2.l, u2.u,
+        opt$par[3], t1.l, t1.u,
+        opt$par[4], t2.l, t2.u,
+        opt$par[5], r.l,  r.u,
+        opt$par[6], b.l,  b.u), byrow = TRUE, ncol = 3,
+      dimnames = list(c("u1","u2","t1", "t2", "r", "b"), c("estimate", "ci.low", "ci.up")))
 
 
     ##
@@ -219,9 +215,9 @@ dtasens1 <- function(data,   ## 2 FORMAT: N OR Y, make data name as format
     ## AUC CALC----------------------------------------
     ##
 
-    auc.try <- try(sAUC(c(u1, u2, t1, t2, r)), silent = TRUE)
+    auc.try <- try(sAUC(opt$par[1:5]), silent = TRUE)
 
-    if (show.auc.all) opt$auc <- auc.try
+    opt$auc.all <- auc.try
 
     if (!inherits(auc.try, "try-error")) auc <- auc.try$value else auc <- NA
 
@@ -233,22 +229,22 @@ dtasens1 <- function(data,   ## 2 FORMAT: N OR Y, make data name as format
     ##  P.HAT CALC, FROM b FUNCTION ----------------------------------------
     ##
 
-    if (show.p.hat){
 
-      bp <- pnorm( (a.opt + b * u.ldor/se.ldor) / sq )
 
-      p.hat <- n/sum(1/bp)
+    bp <- pnorm( (a.opt + b * u.ldor/se.ldor) / sq )
 
-      opt$par   <- c(u1, u2, t1, t2, r, t12, b, a.opt, c11, c22, auc, se, sp, p.hat)
-
-      names(opt$par) <- c("u1", "u2", "t1", "t2", "r", "t12", "b", "a", "c11", "c22", "auc", "se", "sp", "p.hat")
-
-    }
+    opt$p.hat <- n/sum(1/bp)
 
   }
 
-  if (!show.data) return(opt) else return(list(data=data, optim = opt))
+  opt$data <- data
+
+  class(opt) <- "DTAsens"
+
+  opt
 
 }
+
+
 
 

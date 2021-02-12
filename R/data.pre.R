@@ -6,21 +6,6 @@
 ## CONTINUITY CORRECTION -------------------------------------------------------
 ##
 
-#' Continuity correction
-#'
-#' @description Continuity correction
-#'
-#' @param data data
-#' @param value value
-#' @param type type
-#'
-#' @return data
-#'
-#' @examples
-#' correction(IVD)
-#'
-#' @export
-#'
 correction <- function(data, value = 0.5,
                        type = c("single", "all")){
 
@@ -52,21 +37,9 @@ correction <- function(data, value = 0.5,
 
 
 ##
-## GENERATE y1 y2 --------------------------------------------------------------
+## TRANSFORM DATA: TO GENERATE y1 y2 --------------------------------------------------------------
 ##
-#' Transform data
-#'
-#' @description Transform data
-#'
-#' @param data data
-#'
-#' @return data
-#'
-#' @examples
-#' logit.data(correction(IVD))
-#'
-#' @export
-#'
+
 logit.data <- function(data){
 
   sens <- data$TP/(data$TP+data$FN)

@@ -6,29 +6,44 @@
 \usage{
 mROC(
   par.matrix,
-  s.point = TRUE,
-  s.line = FALSE,
-  new.plot = TRUE,
+  add = FALSE,
+  ncols = NULL,
+  roc.lty = 1,
+  roc.lwd = 1,
+  add.sum.point = TRUE,
   legend = FALSE,
   p.vec,
-  cols = NULL,
+  legend.text = paste0("p = ", p.vec),
+  legend.cex = 1,
+  spoint.pch = 19,
+  spoint.cex = 1,
   ...
 )
 }
 \arguments{
 \item{par.matrix}{cbind(u1, u2, t1, t2, r)}
 
-\item{s.point}{s.point}
+\item{add}{par}
 
-\item{s.line}{s.line}
+\item{ncols}{ncols}
 
-\item{new.plot}{new.plot}
+\item{roc.lty}{roc.lty}
 
-\item{legend}{legend}
+\item{roc.lwd}{par}
 
-\item{p.vec}{p.vec}
+\item{add.sum.point}{par}
 
-\item{cols}{set cols}
+\item{legend}{par}
+
+\item{p.vec}{par}
+
+\item{legend.text}{par}
+
+\item{legend.cex}{par}
+
+\item{spoint.pch}{par}
+
+\item{spoint.cex}{par}
 
 \item{...}{par}
 }
@@ -39,7 +54,10 @@ plot
 Multiple ROC curves
 }
 \examples{
-par.matrix <-matrix(c(1,1,0.5, 0.5, -0.6, 1,1,1, 2, -0.6), 5,2)
-mROC(par.matrix, legend = TRUE, p.vec = c(0.9, 0.5), cols = 1:2)
+
+par.matrix <-cbind(c(1,1.5,0.5, 0.5, -0.2),c(1, 1, 1, 2, -0.6), c(1.8, 2, 1, 2, -0.6))
+p.vec <- seq(0.2,0.6,0.2)
+mROC(par.matrix, legend = TRUE, p.vec = p.vec, legend.cex = 0.9)
+mROC(par.matrix, legend = TRUE, legend.text = c("l1", "l2", "l3"), legend.cex = 0.9, ncols = 1:3)
 
 }

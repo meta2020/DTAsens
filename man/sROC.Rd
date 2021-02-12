@@ -5,24 +5,36 @@
 \title{Single ROC plot}
 \usage{
 sROC(
-  par.vec = NULL,
+  object,
   add = FALSE,
-  add.ci = TRUE,
-  ci.level = 0.95,
+  roc.col = 1,
+  roc.lty = 1,
+  roc.lwd = 1,
   add.sum.point = TRUE,
+  spoint.pch = 19,
+  spoint.col = 1,
+  spoint.cex = 1,
   ...
 )
 }
 \arguments{
-\item{par.vec}{c(u1, u2, t1, t2, r)}
+\item{object}{c(u1, u2, t1, t2, r)}
 
 \item{add}{par}
 
-\item{add.ci}{par}
+\item{roc.col}{par}
 
-\item{ci.level}{ci.level}
+\item{roc.lty}{par}
+
+\item{roc.lwd}{par}
 
 \item{add.sum.point}{par}
+
+\item{spoint.pch}{par}
+
+\item{spoint.col}{par}
+
+\item{spoint.cex}{par}
 
 \item{...}{par}
 }
@@ -33,7 +45,11 @@ plot
 Single ROC plot
 }
 \examples{
+
 par.vec <- c(1,1, 0.5, 0.5, -0.6)
-sROC(par.vec, ci.level = 0.90)
+sROC(par.vec)
+
+opt1 <- dtasens1(IVD, p = 0.7)
+sROC(opt1)
 
 }
