@@ -5,7 +5,6 @@ Version: 0.1.0
 Authors@R: person("Yi", " ", email = "zhouyi0426@126.com",
                   role = c("aut", "cre"))
 Description: Sensitivity Analysis for Diagnostic Test Accuracy Meta-Analysis.
-    (Logit transformation only).
 License: GPL-3 + file LICENSE
 Depends: R (>= 3.1.0)
 Encoding: UTF-8
