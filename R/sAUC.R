@@ -51,11 +51,11 @@ sAUC <- function(object){
 #' @examples
 #'
 #' par.matrix <-matrix(c(1,1,0.5, 0.5, -0.6, 1,1,1, 2, -0.6), 5,2)
-#' mAUC(par.matrix)
+#' msAUC(par.matrix)
 #'
 #' @export
 
-mAUC <- function(par.matrix){
+msAUC <- function(par.matrix){
 
   if(nrow(par.matrix) < 5) stop("Please check your parameter matrix")
 

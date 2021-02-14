@@ -22,7 +22,7 @@
 #' @export
 #' @examples
 #'
-#' opt1 <- dtasens1(IVD, p = 0.7)
+#' opt2 <- dtasens2(IVD, p = 0.7)
 #'
 dtasens2 <- function(data,
                   p,
@@ -126,36 +126,36 @@ dtasens2 <- function(data,
     fx <- function(x) fn(par = c(opt$par[1:2], x, opt$par[4:7]))- opt$value - qchisq(ci.level,1)/2
     t1.l <- try(uniroot(fx, c(0, opt$par[3])), silent = TRUE)
     t1.u <- try(uniroot(fx, c(opt$par[3], 3)), silent = TRUE)
-    if (!inherits(t1.l, "try-error")) t1.l <- t1.l$root else t1.l <- 0
-    if (!inherits(t1.u, "try-error")) t1.u <- t1.u$root else t1.u <- 3
+    if (!inherits(t1.l, "try-error")) t1.l <- t1.l$root else t1.l <- NA # 0
+    if (!inherits(t1.u, "try-error")) t1.u <- t1.u$root else t1.u <- NA #3
 
     # t2
     fx <- function(x) fn(par = c(opt$par[1:3], x, opt$par[5:7]))- opt$value - qchisq(ci.level,1)/2
     t2.l <- try(uniroot(fx, c(0, opt$par[4])), silent = TRUE)
     t2.u <- try(uniroot(fx, c(opt$par[4], 3)), silent = TRUE)
-    if (!inherits(t2.l, "try-error")) t2.l <- t2.l$root else t2.l <- 0
-    if (!inherits(t2.u, "try-error")) t2.u <- t2.u$root else t2.u <- 3
+    if (!inherits(t2.l, "try-error")) t2.l <- t2.l$root else t2.l <- NA #0
+    if (!inherits(t2.u, "try-error")) t2.u <- t2.u$root else t2.u <- NA #3
 
     # r
     fx <- function(x) fn(par = c(opt$par[1:4], x, opt$par[6:7]))- opt$value - qchisq(ci.level,1)/2
     r.l <- try(uniroot(fx, c(-1,   opt$par[5])), silent = TRUE)
     r.u <- try(uniroot(fx, c(opt$par[5], r.up)), silent = TRUE)
-    if (!inherits(r.l, "try-error")) r.l <- r.l$root else r.l <- -1
-    if (!inherits(r.u, "try-error")) r.u <- r.u$root else r.u <- r.up
+    if (!inherits(r.l, "try-error")) r.l <- r.l$root else r.l <- NA #-1
+    if (!inherits(r.u, "try-error")) r.u <- r.u$root else r.u <- NA #r.up
 
     # b
     fx <- function(x) fn(par = c(opt$par[1:5], x,  opt$par[7]))- opt$value - qchisq(ci.level,1)/2
     b.l <- try(uniroot(fx, c(b.interval[1], opt$par[6])), silent = TRUE)
     b.u <- try(uniroot(fx, c(opt$par[6], b.interval[2])), silent = TRUE)
-    if (!inherits(b.l, "try-error")) b.l <- b.l$root else b.l <- b.interval[1]
-    if (!inherits(b.u, "try-error")) b.u <- b.u$root else b.u <- b.interval[2]
+    if (!inherits(b.l, "try-error")) b.l <- b.l$root else b.l <- NA #b.interval[1]
+    if (!inherits(b.u, "try-error")) b.u <- b.u$root else b.u <- NA #b.interval[2]
 
     # c1
     fx <- function(x) fn(par = c(opt$par[1:6], x))- opt$value - qchisq(ci.level,1)/2
     c.l <- try(uniroot(fx, c(0, opt$par[7])), silent = TRUE)
     c.u <- try(uniroot(fx, c(opt$par[7], 1)), silent = TRUE)
-    if (!inherits(c.l, "try-error")) c.l <- c.l$root else c.l <- 0
-    if (!inherits(c.u, "try-error")) c.u <- c.u$root else c.u <- 1
+    if (!inherits(c.l, "try-error")) c.l <- c.l$root else c.l <- NA #0
+    if (!inherits(c.u, "try-error")) c.u <- c.u$root else c.u <- NA # 1
 
 
     opt$ci <- matrix(
@@ -237,7 +237,22 @@ dtasens2 <- function(data,
 
   }
 
-  opt$data <- data
+    opt$data <- data
+
+    opt$func.name <- "dtasens2"
+
+    opt$pars.infor <- list(p = p,
+                          correct.value = correct.value,
+                          correct.type = correct.type,
+                          start5 = start5,  ## u1, u2, t1, t2, r, b
+                          b0 = b0,
+                          c10 = c10,
+                          b.interval = b.interval,
+                          a.interval = a.interval,
+                          pos.r = pos.r,
+                          ci.level = ci.level,
+                          show.warn.message = show.warn.message,
+                          a.root.extendInt = a.root.extendInt)
 
   class(opt) <- "DTAsens"
 

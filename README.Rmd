@@ -34,124 +34,259 @@ devtools::install_git("meta2020/DTAsens")
 
 ## Example
 
-This is an example which shows you how to solve a common problem:
+This is an example which shows you how to solve a common problem. To take the data "IVD" as example, print the first several lines of data. 
 
 ```{r}
+## Load package
+
 library(DTAsens)
+
+## Load data
 
 data(IVD)
 kable(head(IVD))
 
 ```
 
-### Optim 1: dtasens1
+### Function: dtasens1
 
-For a certain selection probability, e.g., p = 0.7
+This function need to pre-specify the c contrast in the selection function. 
+
+1. Given a certain selection probability $p$, say, $p = 0.7$, we can get the estimation as follows.
+
 
 ```{r}
+## Use default parameters setting
+## Print parameters and profile-likelihood confidence interval
+
 dtasens1(IVD, p = 0.7)
 
-dtasens1(IVD, p = 0.7, 
-         show.p.hat = TRUE, show.auc.all = TRUE, show.data = TRUE)
+## If we change b.interval
+
+dtasens1(IVD, p = 0.7, b.interval = c(0,1))
+
+## To get full results list
+
+opt1 <- dtasens1(IVD, p = 0.7)
+
+str(opt1)
+
 ```
 
-For a series of selection probabilities, e.g., p = 0.9, 0,8, ...,0.1
+2. Given a series of selection probabilities, say, $p = 1, 0.9, 0,8, ...,0.1$. Notice, $p$ must greater than 0 and cannot equal to 0. ($p>0$) 
 
 
 ```{r}
+
+## Set p vectors
+
 p.seq <- seq(1, 0.1, -0.1)
 
-estimates <- sapply(p.seq, 
-                    function(p) dtasens1(IVD, p, 
-                                         b.interval = c(0,2), 
-                                         a.interval = c(-3,3), 
-                                         a.root.extendInt = "downX")$par)
+## Get estimations for each p in p.seq vector
 
-colnames(estimates)<- paste0("p = ", p.seq)
-kable(estimates)
+est1 <- sapply(p.seq, function(p) dtasens1(IVD, p)$par)
+
+## Print estimation
+
+colnames(est1)<- paste0("p = ", p.seq)
+kable(est1)
 ```
 
-### Optim 2: dtasens2
+### Function: dtasens2
 
-For a certain selection probability, e.g., p = 0.7
+This function do not need to pre-specify the c contrast in the selection function. 
+
+1. Given a certain selection probability $p$, say, $p = 0.7$, we can get the estimation as follows.
 
 ```{r}
+## Use default parameters setting
+## Print parameters and profile-likelihood confidence interval
 
 dtasens2(IVD, p = 0.7)
 
-dtasens2(IVD, p = 0.7, 
-         show.p.hat = TRUE, show.auc.all = TRUE, show.data = TRUE)
+## To get full results list
 
+opt2 <- dtasens2(IVD, p = 0.7)
+
+str(opt2)
 ```
 
-For a series of selection probabilities, e.g., p = 0.9, 0.8, ...,0.1
-
+2. Given a series of selection probabilities, say, $p = 1, 0.9, 0,8, ...,0.1$. Notice, $p$ must greater than 0 and cannot equal to 0. ($p>0$) 
 
 ```{r}
+## Set p vectors
+
 p.seq <- seq(1, 0.1, -0.1)
 
-estimates <- sapply(p.seq, 
-                    function(p) dtasens1(IVD, p, 
-                                         b.interval = c(0,2), 
-                                         a.interval = c(-3,2), 
-                                         a.root.extendInt = "downX")$par)
+## Get estimations for each p in p.seq vector
 
-colnames(estimates)<- paste0("p = ", p.seq)
-kable(estimates)
+est2 <- sapply(p.seq, function(p) dtasens2(IVD, p)$par)
+
+## Print estimation
+
+colnames(est2)<- paste0("p = ", p.seq)
+kable(est2)
 ```
 
-### Plot ROC
+### Plot sROC
 
-One ROC
+1. Single sROC
 
 ```{r, fig.height=5, fig.width=10}
 par(mfrow = c(1,2))
 
+## This is the standard method: Reistma model
+## Without taking publication bias (PB) into consideration
+
 library(mada)
 fit <- reitsma(IVD, correction.control = "single", method = "ml")
-plot(fit)
+plot(sroc(fit, type = "naive"), type = "l", ylim = c(0,1), xlim = c(0,1), col = "red")
 title("Reistma model from mada")
 
+## Extact the estimation from Reistma model
 
 par0 <- c(fit$coefficients*c(1,-1), c(1,-1)*sqrt(fit$Psi[c(1,4)]), fit$Psi[3]/prod(sqrt(fit$Psi[c(1,4)])))
 
-par1 <- dtasens1(IVD, 0.7)$par
-par2 <- dtasens2(IVD, 0.7)$par
+## Our model that takes PB into consideration
 
-sROC(par1, pch = 19, add.ci = FALSE)
-sROC(par2, add = TRUE, col=2, pch = 19, add.ci = FALSE)
-sROC(par0, add = TRUE, col=3, pch = 4, add.ci = FALSE)
+# opt1 <- dtasens1(IVD, p = 0.5)
+# opt2 <- dtasens2(IVD, p = 0.5)
+
+## Plot ROC from Reistma model
+sROC(par0, roc.col = "red", spoint.col ="red")
+
+## Add sROC
+sROC(opt1, add = TRUE, roc.col = "black", roc.lty = 2, spoint.pch = 1, spoint.col = "black")
+sROC(opt2, add = TRUE, roc.col = "darkgray", roc.lty = 2, spoint.col = "darkgray")
+
+## Also works by using the extracted parameters
+
+par1 <- opt1$par
+par2 <- opt2$par
+sROC(par1, add = TRUE, roc.col = "black", roc.lty = 2, spoint.pch = 1, spoint.col = "black")
+sROC(par1, add = TRUE, roc.col = "darkgray", roc.lty = 2, spoint.col = "darkgray")
+
+## Calculate the data points (fpr, sens) of IVD
 
 with(IVD, points(FP/(FP+TN), TP/(TP+FN), pch = 4, cex = 0.5))
-legend("bottomright", c("dtasens1", "dtasens2", "Reistma", "data"), col = c(1,2,3, 1), lty = c(1,1,1, 0), pch = c(19,19,4, 4))
-title("When selection prob = 0.7")
+legend("bottomright", c("Reistma", "dtasens1", "dtasens2", "IVD"), 
+       col = c("red", "black", "darkgray", "black"), lty = c(1,2,2, 0), pch = c(19,1,19, 4))
+title("When selection prob = 0.0.5")
 par(mfrow = c(1,1))
 
 ```
 
-A series of ROC
+2. Multiple sROC
 
 ```{r, fig.height=5, fig.width=10}
+## p vector and model
 
-p.seq <- seq(1, 0.1, -0.1)
-estimates1 <- sapply(p.seq, 
-                     function(p) dtasens1(IVD, p,
-                                          b.interval = c(0,2),
-                                          a.interval = c(-3,2))$par)
-estimates2 <- sapply(p.seq, 
-                     function(p) dtasens2(IVD, p,
-                                          b.interval = c(0,2),
-                                          a.interval = c(-3,2))$par)
+# p.seq <- seq(1, 0.1, -0.1)
+# est1 <- sapply(p.seq, function(p) dtasens1(IVD, p)$par)
+# est2 <- sapply(p.seq, function(p) dtasens2(IVD, p)$par)
 
+## Plot multiple sROC
 par(mfrow = c(1,2))
-mROC(par.matrix = estimates1)
-sROC(par0, add = TRUE, col = 2, pch = 19, lty =3)
+msROC(est1, legend = TRUE, p.vec = p.seq, legend.cex = 0.5)
+sROC(par0, add = TRUE, roc.col = "red")
 title("dtasens1")
 
-mROC(par.matrix = estimates2, p.vec = p.seq)
-sROC(par0, add = TRUE, col = 2, pch = 19, lty =3)
+msROC(est2, legend = TRUE, p.vec = p.seq, legend.cex = 0.5)
+sROC(par0, add = TRUE, roc.col = "red")
 title("dtasens2")
 par(mfrow = c(1,1))
 
 
 ```
+
+### Calculate sAUC and confident interval
+
+Although sAUC has output together with the parameters in `dtasens1` and `dtasens2` functions. We can still calculate by using `sAUC` function.
+
+The confidence interval (CI) is calculated by parametric bootstrapping.
+
+1. Single sROC
+
+```{r}
+## Use dtasens object
+
+sAUC(opt1)
+sAUC(opt2)
+
+## Use parameter vector
+par1
+sAUC(par1)
+par2
+sAUC(par2)
+
+## Calculate Parametric Bootstrap CI
+## B (Bootstrapping times) is suggested to be 1000. To save computing time, we use B = 10 to show the functionality.
+
+sAUC.ci(opt1, B=10)
+sAUC.ci(opt2, B=10)
+
+```
+
+2. Multiple sAUC
+
+```{r}
+
+## Calculate Parametric Bootstrap CI
+
+## B (Bootstrapping times) is suggested to be 1000. To save computing time, we use B = 5 to show the functionality.
+
+p.seq <- seq(1, 0.1, -0.1)
+
+sauc1 <- sapply(p.seq, function(p) {
+  opt1 <- dtasens1(IVD, p)
+  sauc <- sAUC.ci(opt1, B=5, hide.progress = TRUE)
+  c(sauc[[1]], sauc[[2]], sauc[[3]])
+  })
+
+
+sauc2 <- sapply(p.seq, function(p) {
+  opt2 <- dtasens2(IVD, p)
+  sauc <- sAUC.ci(opt2, B=5, hide.progress = TRUE)
+  c(sauc[[1]], sauc[[2]], sauc[[3]])
+  })
+
+colnames(sauc1)<- paste0("p = ", p.seq)
+rownames(sauc1)<- c("sAUC", "CI.L", "CI.U")
+kable(sauc1)
+
+colnames(sauc2)<- paste0("p = ", p.seq)
+rownames(sauc2)<- c("sAUC", "CI.L", "CI.U")
+kable(sauc2)
+```
+
+3. Plot sAUC
+
+This is an example of hwo to plot sAUC and CI. In analysis, please set `B = 1000` and then reproduce the plots.
+
+
+```{r, fig.height=5, fig.width=10}
+par(mfrow = c(1,2))
+
+## Use matplot to plot the sAUC and CI
+
+matplot(t(sauc1), type = "b", lty = c(1,2,2), 
+        pch = 19, col = c("black", "grey", "grey"),
+        xlab = "p", ylab = "sAUC",
+        ylim = c(0,1),
+        xaxt = "n")
+axis(1, at = 1:10, labels = p.seq)
+title("dtasens1")
+
+matplot(t(sauc2), type = "b", lty = c(1,2,2), 
+        pch = 19, col = c("black", "grey", "grey"),
+        xlab = "p", ylab = "sAUC",
+        ylim = c(0,1),
+        xaxt = "n")
+axis(1, at = 1:10, labels = p.seq)
+title("dtasens2")
+
+par(mfrow = c(1,1))
+
+```
+
+

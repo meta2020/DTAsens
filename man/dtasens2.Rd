@@ -58,6 +58,6 @@ dtasens2 function
 }
 \examples{
 
-opt1 <- dtasens1(IVD, p = 0.7)
+opt2 <- dtasens2(IVD, p = 0.7)
 
 }

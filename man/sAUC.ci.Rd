@@ -4,7 +4,14 @@
 \alias{sAUC.ci}
 \title{sAUC.ci function}
 \usage{
-sAUC.ci(object, B = 10, ncores, type = "SOCK", ci.level = 0.95)
+sAUC.ci(
+  object,
+  B = 10,
+  ncores,
+  type = "SOCK",
+  ci.level = 0.95,
+  hide.progress = FALSE
+)
 }
 \arguments{
 \item{object}{data}
@@ -16,6 +23,8 @@ sAUC.ci(object, B = 10, ncores, type = "SOCK", ci.level = 0.95)
 \item{type}{c1}
 
 \item{ci.level}{par}
+
+\item{hide.progress}{par}
 }
 \value{
 convergence list
@@ -26,6 +35,6 @@ Parametric Bootstrap CI of sAUC
 \examples{
 
 opt1 <- dtasens1(IVD, p = 0.7)
-(ci <- sAUC.ci(opt1))
+(ci <- sAUC.ci(opt1, B = 5))
 
 }

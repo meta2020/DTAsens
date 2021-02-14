@@ -88,12 +88,12 @@ sROC <- function(object,
 #'
 #' par.matrix <-cbind(c(1,1.5,0.5, 0.5, -0.2),c(1, 1, 1, 2, -0.6), c(1.8, 2, 1, 2, -0.6))
 #' p.vec <- seq(0.2,0.6,0.2)
-#' mROC(par.matrix, legend = TRUE, p.vec = p.vec, legend.cex = 0.9)
-#' mROC(par.matrix, legend = TRUE, legend.text = c("l1", "l2", "l3"), legend.cex = 0.9, ncols = 1:3)
+#' msROC(par.matrix, legend = TRUE, p.vec = p.vec, legend.cex = 0.9)
+#' msROC(par.matrix, legend = TRUE, legend.text = c("l1", "l2", "l3"), legend.cex = 0.9, ncols = 1:3)
 #'
 #' @export
 
-mROC <- function(par.matrix,  ## u1 u2 t12 t22
+msROC <- function(par.matrix,  ## u1 u2 t12 t22
                  add = FALSE,
                  ncols = NULL,
                  roc.lty = 1,
