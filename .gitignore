@@ -37,3 +37,5 @@ vignettes/*.pdf
 
 make.R
 docs
+backup/
+
