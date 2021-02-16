@@ -26,9 +26,9 @@
 sAUC.ci <- function(object, B = 10, ncores, type = "SOCK", ci.level = 0.95,
                     hide.progress = FALSE)
 {
-  if(!requireNamespace("foreach")) install.packages("foreach")
-  if(!requireNamespace("parallel")) install.packages("parallel")
-  if(!requireNamespace("doSNOW")) install.packages("doSNOW")
+  if(!requireNamespace("foreach")) install.packages("foreach")   else require(foreach)
+  if(!requireNamespace("parallel")) install.packages("parallel") else require(parallel)
+  if(!requireNamespace("doSNOW")) install.packages("doSNOW")     else require(doSNOW)
 
   if(!inherits(object, "DTAsens")) stop("Only valid for dtasens1 or dtasens2")
 
