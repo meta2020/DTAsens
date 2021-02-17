@@ -27,7 +27,7 @@
 dtasens2 <- function(data,
                   p,
                   correct.value = 0.5,
-                  correct.type = "single",
+                  correct.type = "all",
                   start5 = NULL,  ## u1, u2, t1, t2, r
                   b0 = 0.1,
                   c10 = sqrt(0.5),

@@ -9,7 +9,7 @@ dtasens1(
   p,
   c1 = sqrt(0.5),
   correct.value = 0.5,
-  correct.type = "single",
+  correct.type = "all",
   start5 = NULL,
   b0 = 0.1,
   b.interval = c(0, 2),

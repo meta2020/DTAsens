@@ -7,7 +7,7 @@
 ##
 
 correction <- function(data, value = 0.5,
-                       type = c("single", "all")){
+                       type = c("all", "single")){
 
   type <- match.arg(type)
 
@@ -20,7 +20,9 @@ correction <- function(data, value = 0.5,
     data$FP <- correction + data$FP
     data$TN <- correction + data$TN
 
-  } else{
+  }
+
+  if(type == "all"){
 
     if(any(c(data$TP,data$FN,data$FP,data$TN) == 0)){
 

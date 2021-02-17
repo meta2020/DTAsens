@@ -31,7 +31,7 @@ dtasens1 <- function(data,   ## 2 FORMAT: N OR Y, make data name as format
                      p,
                      c1 = sqrt(0.5), ##  0<=c11<=1
                      correct.value = 0.5,
-                     correct.type = "single",
+                     correct.type = "all",
                      start5 = NULL,  ## u1, u2, t1, t2, r, b
                      b0 = 0.1,
                      b.interval = c(0, 2),
