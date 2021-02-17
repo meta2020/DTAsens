@@ -10,7 +10,11 @@ sAUC.ci(
   ncores,
   type = "SOCK",
   ci.level = 0.95,
-  hide.progress = FALSE
+  hide.progress = FALSE,
+  plot.ROC = FALSE,
+  add.sum.point = FALSE,
+  roc.col = 1,
+  ...
 )
 }
 \arguments{
@@ -25,6 +29,14 @@ sAUC.ci(
 \item{ci.level}{par}
 
 \item{hide.progress}{par}
+
+\item{plot.ROC}{par}
+
+\item{add.sum.point}{add.sum.point}
+
+\item{roc.col}{roc.col}
+
+\item{...}{...}
 }
 \value{
 convergence list
