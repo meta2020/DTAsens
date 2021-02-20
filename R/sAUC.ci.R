@@ -99,7 +99,8 @@ sAUC.ci <- function(object, B = 10,
   PAR <- matrix(par, nrow = 6)
   sauc.t   <- PAR[6,]
 
-  se <- sd(sauc.t, na.rm = TRUE)
+  n <- length(sauc.t)
+  se <- (n-1)/n * sd(sauc.t, na.rm = TRUE)
   sl.sauc.t <- (sauc.t - mean(sauc.t, na.rm = TRUE))/se
 
   s.sauc.r <- order(sl.sauc.t)
@@ -115,6 +116,7 @@ sAUC.ci <- function(object, B = 10,
   list <- list(sAUC = sauc,
        CI.L = max(sauc+q1*se, 0),
        CI.U = min(sauc+q2*se, 1),
+       bs.par  = PAR,
        cluster = cl)
 
   class(list) <- "sAUC.ci"
