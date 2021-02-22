@@ -16,7 +16,7 @@
 #' @return plot
 #'
 #' @importFrom grDevices gray.colors
-#' @importFrom graphics curve lines points
+#' @importFrom graphics curve lines points matplot
 #' @importFrom stats qnorm
 
 

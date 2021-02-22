@@ -207,27 +207,50 @@ The confidence interval (CI) is calculated by parametric bootstrapping.
 
 1. Single sROC
 
-```{r}
+```{r, fig.width=12, fig.height=6}
 ## Use dtasens object
 
 sAUC(opt1)
 sAUC(opt2)
 
 ## Use parameter vector
-par1
+par1 <- opt1$par
+par2 <- opt2$par
 sAUC(par1)
-par2
 sAUC(par2)
 
-## Calculate Parametric Bootstrap CI
-## B (Bootstrapping times) is suggested to be 1000. To save computing time, we use B = 10 to show the functionality.
 
-sAUC.ci(opt1, B=10)
-sAUC.ci(opt2, B=10)
+par(mfrow = c(1,2))
+
+sROC(opt1)
+title("dtasens1")
+sROC(opt2)
+title("dtasens2")
+
+par(mfrow = c(1,1))
+
 
 ```
 
-2. Multiple sAUC
+2. Single sROC with CI
+
+```{r, fig.width=12, fig.height=6}
+
+## Calculate Parametric Bootstrap CI
+## B (Bootstrapping times) is suggested to be 1000. To save computing time, we use B = 10 to show the functionality.
+par(mfrow = c(1,2))
+
+sAUC.ci(opt1, B=5, plot.ROC.ci = TRUE, hide.progress = TRUE)
+title("dtasens1")
+sAUC.ci(opt2, B=5, plot.ROC.ci = TRUE, hide.progress = TRUE)
+title("dtasens2")
+
+par(mfrow = c(1,1))
+
+```
+
+
+3. Multiple sAUC
 
 ```{r}
 

@@ -8,9 +8,11 @@
 #' @param type c1
 #' @param ci.level par
 #' @param hide.progress par
-#' @param plot.ROC par
+#' @param plot.ROC.ci par
 #' @param add.sum.point add.sum.point
-#' @param roc.col roc.col
+#' @param roc.ci.col add.sum.point
+#' @param roc.ci.lty roc.col
+#' @param roc.ci.lwd roc.ci.lwd
 #' @param ... ...
 #'
 #' @return convergence list
@@ -25,14 +27,16 @@
 #' @examples
 #'
 #' opt1 <- dtasens1(IVD, p = 0.7)
-#' (ci <- sAUC.ci(opt1, B = 5))
+#' (ci <- sAUC.ci(opt1, B = 5, plot.ROC.ci = FALSE))
 #'
 sAUC.ci <- function(object, B = 10,
                     ncores, type = "SOCK", ci.level = 0.95,
                     hide.progress = FALSE,
-                    plot.ROC = FALSE,
+                    plot.ROC.ci = FALSE,
                     add.sum.point = FALSE,
-                    roc.col = 1,
+                    roc.ci.col = "grey",
+                    roc.ci.lty = 1,
+                    roc.ci.lwd = 1,
                     ...)
 {
   if(!requireNamespace("foreach")) install.packages("foreach")   else requireNamespace("foreach")
@@ -121,13 +125,31 @@ sAUC.ci <- function(object, B = 10,
 
   class(list) <- "sAUC.ci"
 
-  if(plot.ROC){
+  if(plot.ROC.ci){
 
-    q1.pos <- which.min(abs(s.sauc.t - q1))
-    q2.pos <- which.min(abs(s.sauc.t - q2))
+    fpr.t <- seq(0,1,0.001)
+    se.t  <- sapply(1:B, function(i){
 
-    msROC(PAR.r[, q1.pos:q2.pos], add.sum.point = add.sum.point, ncols = rep("grey", B))
-    sROC(object, add = TRUE, add.sum.point = add.sum.point, roc.col = roc.col,...)
+      u1 <- PAR[1,i]
+      u2 <- PAR[2,i]
+      t1 <- PAR[3,i]
+      t2 <- PAR[4,i]
+      r  <- PAR[5,i]
+      plogis(u1 - (r*t1/t2) * (qlogis(fpr.t) + u2))
+
+    })
+
+    sROC(object, add.sum.point = add.sum.point, ...)
+
+    ci <- cbind(
+
+      apply(se.t, 1, function(x) quantile(x, (1-ci.level)/2, na.rm = TRUE)),
+      apply(se.t, 1, function(x) quantile(x, probs = 1-(1-ci.level)/2, na.rm = TRUE))
+      )
+
+    matplot(x = fpr.t, y = ci, type = "l",
+            col = roc.ci.col, lty = roc.ci.lty, lwd = roc.ci.lwd,
+            add = TRUE)
 
   }
 

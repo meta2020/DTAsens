@@ -11,9 +11,11 @@ sAUC.ci(
   type = "SOCK",
   ci.level = 0.95,
   hide.progress = FALSE,
-  plot.ROC = FALSE,
+  plot.ROC.ci = FALSE,
   add.sum.point = FALSE,
-  roc.col = 1,
+  roc.ci.col = "grey",
+  roc.ci.lty = 1,
+  roc.ci.lwd = 1,
   ...
 )
 }
@@ -30,11 +32,15 @@ sAUC.ci(
 
 \item{hide.progress}{par}
 
-\item{plot.ROC}{par}
+\item{plot.ROC.ci}{par}
 
 \item{add.sum.point}{add.sum.point}
 
-\item{roc.col}{roc.col}
+\item{roc.ci.col}{add.sum.point}
+
+\item{roc.ci.lty}{roc.col}
+
+\item{roc.ci.lwd}{roc.ci.lwd}
 
 \item{...}{...}
 }
@@ -47,6 +53,6 @@ Parametric Bootstrap CI of sAUC
 \examples{
 
 opt1 <- dtasens1(IVD, p = 0.7)
-(ci <- sAUC.ci(opt1, B = 5))
+(ci <- sAUC.ci(opt1, B = 5, plot.ROC.ci = FALSE))
 
 }
