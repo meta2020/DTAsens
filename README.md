@@ -139,7 +139,7 @@ str(opt1)
 #>   ..$ ci.level         : num 0.95
 #>   ..$ show.warn.message: logi FALSE
 #>   ..$ a.root.extendInt : chr "downX"
-#>  - attr(*, "class")= chr "DTAsens"
+#>  - attr(*, "class")= chr "dtasens"
 ```
 
 2.  Given a series of selection probabilities, say,
@@ -258,7 +258,7 @@ str(opt2)
 #>   ..$ ci.level         : num 0.95
 #>   ..$ show.warn.message: logi FALSE
 #>   ..$ a.root.extendInt : chr "downX"
-#>  - attr(*, "class")= chr "DTAsens"
+#>  - attr(*, "class")= chr "dtasens"
 ```
 
 2.  Given a series of selection probabilities, say,
@@ -395,10 +395,10 @@ Although sAUC has output together with the parameters in `dtasens1` and
 `dtasens2` functions. We can still calculate by using `sAUC` function.
 
 The confidence interval (CI) is calculated by parametric bootstrapping.
+To save computing time, we set bootstrapping times as 5 (`B = 5`). Hence
+the results are not reliable.
 
-1.  Single sROC
-
-<!-- end list -->
+#### 1\. Single sROC
 
 ``` r
 ## Use dtasens object
@@ -432,9 +432,7 @@ title("dtasens2")
 par(mfrow = c(1,1))
 ```
 
-2.  Single sROC with CI
-
-<!-- end list -->
+#### 2\. Single sROC with CI
 
 ``` r
 
@@ -444,11 +442,11 @@ par(mfrow = c(1,2))
 
 sAUC.ci(opt1, B=5, plot.ROC.ci = TRUE, hide.progress = TRUE)
 #>  sAUC  CI.L  CI.L 
-#> 0.836 0.780 0.885
+#> 0.836 0.819 0.865
 title("dtasens1")
 sAUC.ci(opt2, B=5, plot.ROC.ci = TRUE, hide.progress = TRUE)
 #>  sAUC  CI.L  CI.L 
-#> 0.836 0.756 0.873
+#> 0.836 0.821 0.848
 title("dtasens2")
 ```
 
@@ -459,9 +457,7 @@ title("dtasens2")
 par(mfrow = c(1,1))
 ```
 
-3.  Multiple sAUC
-
-<!-- end list -->
+#### 3\. Multiple sAUC
 
 ``` r
 
@@ -492,8 +488,8 @@ kable(sauc1)
 |      | p = 1 | p = 0.9 | p = 0.8 | p = 0.7 | p = 0.6 | p = 0.5 | p = 0.4 | p = 0.3 | p = 0.2 | p = 0.1 |
 | :--- | ----: | ------: | ------: | ------: | ------: | ------: | ------: | ------: | ------: | ------: |
 | sAUC | 0.859 |   0.857 |   0.849 |   0.836 |   0.819 |   0.795 |   0.763 |   0.720 |   0.659 |   0.554 |
-| CI.L | 0.848 |   0.850 |   0.831 |   0.794 |   0.788 |   0.683 |   0.670 |   0.508 |   0.506 |   0.329 |
-| CI.U | 0.866 |   0.874 |   0.875 |   0.875 |   0.845 |   0.853 |   0.839 |   0.929 |   0.872 |   0.884 |
+| CI.L | 0.845 |   0.822 |   0.830 |   0.797 |   0.740 |   0.762 |   0.711 |   0.574 |   0.513 |   0.406 |
+| CI.U | 0.874 |   0.878 |   0.875 |   0.872 |   0.867 |   0.828 |   0.852 |   0.811 |   0.839 |   0.677 |
 
 ``` r
 
@@ -505,12 +501,12 @@ kable(sauc2)
 |      | p = 1 | p = 0.9 | p = 0.8 | p = 0.7 | p = 0.6 | p = 0.5 | p = 0.4 | p = 0.3 | p = 0.2 | p = 0.1 |
 | :--- | ----: | ------: | ------: | ------: | ------: | ------: | ------: | ------: | ------: | ------: |
 | sAUC | 0.859 |   0.857 |   0.849 |   0.836 |   0.819 |   0.799 |   0.773 |   0.744 |   0.704 |   0.642 |
-| CI.L | 0.830 |   0.830 |   0.831 |   0.816 |   0.705 |   0.677 |   0.756 |   0.678 |   0.633 |   0.502 |
-| CI.U | 0.892 |   0.876 |   0.860 |   0.860 |   0.862 |   0.883 |   0.816 |   0.841 |   0.784 |   0.776 |
+| CI.L | 0.851 |   0.842 |   0.817 |   0.813 |   0.759 |   0.691 |   0.725 |   0.665 |   0.463 |   0.260 |
+| CI.U | 0.869 |   0.874 |   0.878 |   0.862 |   0.856 |   0.864 |   0.813 |   0.825 |   0.881 |   0.910 |
 
-3.  Plot sAUC
+#### 4\. Plot sAUC
 
-This is an example of hwo to plot sAUC and CI. In analysis, please set
+This is an example of how to plot sAUC and CI. In analysis, please set
 `B = 1000` and then reproduce the plots.
 
 ``` r

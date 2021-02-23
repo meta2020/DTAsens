@@ -3,21 +3,24 @@
 \docType{data}
 \name{IVD}
 \alias{IVD}
-\title{IVD data}
+\title{Example data 1: IVD data}
 \format{
 A data frame with 33 rows and 5 variables:
 \describe{
-  \item{study}{}
-  \item{TP}{}
-  \item{FN}{}
-  \item{FP}{}
-  \item{TN}{}
+  \item{study}{study ID}
+  \item{TP}{True positive}
+  \item{FN}{False negative}
+  \item{FP}{False positive}
+  \item{TN}{True negative}
 }
+}
+\source{
+\url{http://www.ncbi.nlm.nih.gov/pubmed/9315770}
 }
 \usage{
 IVD
 }
 \description{
-IVD data
+{``To identify the most accurate methods for diagnosis of IVD-related bloodstream infection.''}
 }
 \keyword{datasets}

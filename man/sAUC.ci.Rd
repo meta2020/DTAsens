@@ -2,12 +2,12 @@
 % Please edit documentation in R/sAUC.ci.R
 \name{sAUC.ci}
 \alias{sAUC.ci}
-\title{sAUC.ci function}
+\title{Confidence interval of summary AUC}
 \usage{
 sAUC.ci(
   object,
-  B = 10,
-  ncores,
+  B = 1000,
+  ncores = 0,
   type = "SOCK",
   ci.level = 0.95,
   hide.progress = FALSE,
@@ -20,39 +20,60 @@ sAUC.ci(
 )
 }
 \arguments{
-\item{object}{data}
+\item{object}{object from function \code{dtasens1} or \code{dtasens2}.}
 
-\item{B}{p}
+\item{B}{The times for parametric bootstrapping.
+Default is 1000. 
+It may be time consuming.}
 
-\item{ncores}{ncores}
+\item{ncores}{Set the an integer number of cores that will be used in parallel computing.
+Default is 0, which detect the number of cores in the local device.}
 
-\item{type}{c1}
+\item{type}{Computing types in the parallel computing.
+See \code{type} augment in function \code{\link[parallel]{makeCluster}}.}
 
-\item{ci.level}{par}
+\item{ci.level}{The significant value for confidence interval.
+Default is 0.95, hence, a 2-tailed 95% CIs will be calculated by
+profile likelihood.}
 
-\item{hide.progress}{par}
+\item{hide.progress}{Whether to hide the progress bar in the calculation.
+Default is not to hide.}
 
-\item{plot.ROC.ci}{par}
+\item{plot.ROC.ci}{Whether to show the plot of sROC with the CIs lines.
+Default is not to plot.}
 
-\item{add.sum.point}{add.sum.point}
+\item{add.sum.point}{Whether to add the summary point in the sROC plot.
+Default it not the add.}
 
-\item{roc.ci.col}{add.sum.point}
+\item{roc.ci.col}{The color of the CIs of sROC.
+Default is grey.}
 
-\item{roc.ci.lty}{roc.col}
+\item{roc.ci.lty}{The line type of CIs.
+Default is solid line.}
 
-\item{roc.ci.lwd}{roc.ci.lwd}
+\item{roc.ci.lwd}{The line width of CIs.
+Defalt is 1.}
 
-\item{...}{...}
+\item{...}{Other augments in function \code{\link{sROC}}.}
 }
 \value{
-convergence list
+CI of sAUC; sROC plot with CIs
 }
 \description{
-Parametric Bootstrap CI of sAUC
+Calculate the parametric bootstrap confidence interval (CI) for sROC and sAUC
 }
 \examples{
+
+## Here, we set B = 5 to save time in the calculation. 
+## But, the results are not reliable.
 
 opt1 <- dtasens1(IVD, p = 0.7)
 (ci <- sAUC.ci(opt1, B = 5, plot.ROC.ci = FALSE))
 
+}
+\seealso{
+\code{\link[parallel]{makeCluster}},
+\code{\link{sROC}},
+\code{\link[graphics]{matplot}},
+\code{\link[base]{plot}}.
 }

@@ -2,22 +2,25 @@
 % Please edit documentation in R/sAUC.R
 \name{msAUC}
 \alias{msAUC}
-\title{Calculate multiple AUC}
+\title{Calculate multiple sAUC values}
 \usage{
 msAUC(par.matrix)
 }
 \arguments{
-\item{par.matrix}{cbind(u1, u2, t1, t2, r)}
+\item{par.matrix}{A matrix with 5 rows.
+Each column is the vector \code{c(u1, u2, t1, t2, r)}.}
 }
 \value{
-auc
+sAUC values
 }
 \description{
-Calculate multiple AUC
+Calculate multiple sAUC values
 }
 \examples{
 
-par.matrix <-matrix(c(1,1,0.5, 0.5, -0.6, 1,1,1, 2, -0.6), 5,2)
+par.matrix <-cbind(c(1,1,0.5, 0.5, -0.6),
+                   c(1,1,1, 2, -0.6))
+
 msAUC(par.matrix)
 
 }

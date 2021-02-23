@@ -1,21 +1,44 @@
-#' sAUC.ci function
+#' @title Confidence interval of summary AUC
 #'
-#' @description Parametric Bootstrap CI of sAUC
+#' @description Calculate the parametric bootstrap confidence interval (CI) for sROC and sAUC
 #'
-#' @param object data
-#' @param B p
-#' @param ncores ncores
-#' @param type c1
-#' @param ci.level par
-#' @param hide.progress par
-#' @param plot.ROC.ci par
-#' @param add.sum.point add.sum.point
-#' @param roc.ci.col add.sum.point
-#' @param roc.ci.lty roc.col
-#' @param roc.ci.lwd roc.ci.lwd
-#' @param ... ...
+#' @param object object from function \code{dtasens1} or \code{dtasens2}.
+#' 
+#' @param B The times for parametric bootstrapping.
+#' Default is 1000. 
+#' It may be time consuming.
+#' 
+#' @param ncores Set the an integer number of cores that will be used in parallel computing.
+#' Default is 0, which detect the number of cores in the local device.
+#' 
+#' @param type Computing types in the parallel computing.
+#' See \code{type} augment in function \code{\link[parallel]{makeCluster}}.
+#' 
+#' @param ci.level The significant value for confidence interval.
+#' Default is 0.95, hence, a 2-tailed 95% CIs will be calculated by
+#' profile likelihood.
+#' 
+#' @param hide.progress Whether to hide the progress bar in the calculation.
+#' Default is not to hide.
+#' 
+#' @param plot.ROC.ci Whether to show the plot of sROC with the CIs lines.
+#' Default is not to plot.
+#' 
+#' @param add.sum.point Whether to add the summary point in the sROC plot.
+#' Default it not the add.
+#' 
+#' @param roc.ci.col The color of the CIs of sROC.
+#' Default is grey.
+#' 
+#' @param roc.ci.lty The line type of CIs.
+#' Default is solid line.
+#' 
+#' @param roc.ci.lwd The line width of CIs.
+#' Defalt is 1.
+#' 
+#' @param ... Other augments in function \code{\link{sROC}}.
 #'
-#' @return convergence list
+#' @return CI of sAUC; sROC plot with CIs
 #'
 #' @importFrom foreach foreach %dopar%
 #' @importFrom doSNOW registerDoSNOW
@@ -23,14 +46,24 @@
 #' @importFrom stats quantile rnorm sd
 #' @importFrom utils setTxtProgressBar txtProgressBar install.packages
 #'
-#' @export
+#' @seealso 
+#' \code{\link[parallel]{makeCluster}},
+#' \code{\link{sROC}},
+#' \code{\link[graphics]{matplot}},
+#' \code{\link[base]{plot}}.
+#' 
 #' @examples
-#'
+#' 
+#' ## Here, we set B = 5 to save time in the calculation. 
+#' ## But, the results are not reliable.
+#' 
 #' opt1 <- dtasens1(IVD, p = 0.7)
 #' (ci <- sAUC.ci(opt1, B = 5, plot.ROC.ci = FALSE))
 #'
-sAUC.ci <- function(object, B = 10,
-                    ncores, type = "SOCK", ci.level = 0.95,
+#' @export
+
+sAUC.ci <- function(object, B = 1000,
+                    ncores = 0, type = "SOCK", ci.level = 0.95,
                     hide.progress = FALSE,
                     plot.ROC.ci = FALSE,
                     add.sum.point = FALSE,
@@ -39,11 +72,11 @@ sAUC.ci <- function(object, B = 10,
                     roc.ci.lwd = 1,
                     ...)
 {
-  if(!requireNamespace("foreach")) install.packages("foreach")   else requireNamespace("foreach")
-  if(!requireNamespace("parallel")) install.packages("parallel") else requireNamespace("parallel")
-  if(!requireNamespace("doSNOW")) install.packages("doSNOW")     else requireNamespace("doSNOW")
+  if(!requireNamespace("foreach"))  install.packages("foreach")   else requireNamespace("foreach")
+  if(!requireNamespace("parallel")) install.packages("parallel")  else requireNamespace("parallel")
+  if(!requireNamespace("doSNOW"))   install.packages("doSNOW")    else requireNamespace("doSNOW")
 
-  if(!inherits(object, "DTAsens")) stop("Only valid for dtasens1 or dtasens2")
+  if(!inherits(object, "dtasens")) stop("ONLY VALID FOR RESULTS OF dtasens1 OR dtasens2")
 
   data <- object$data
   S  <- nrow(data)
@@ -52,7 +85,7 @@ sAUC.ci <- function(object, B = 10,
   v1 <- data$v1
   v2 <- data$v2
 
-  if(missing(ncores)) ncores <- parallel::detectCores()
+  if(ncores == 0) ncores <- parallel::detectCores() else ncores <- ceiling(ncores)
 
   cl <- parallel::makeCluster(ncores, type = type)
   doSNOW::registerDoSNOW(cl)
@@ -157,19 +190,27 @@ sAUC.ci <- function(object, B = 10,
 
 }
 
-#' Print sAUC CI
+#' @title Print sAUC.ci
 #'
-#' @description Print sAUC CI
+#' @description Print results from function \code{\link{sAUC.ci}}
 #'
-#' @param x object
-#' @param digits digits
-#' @param ... graphical parameters to plot
-#'
+#' @param x object from function \code{\link{sAUC.ci}}.
+#' 
+#' @param digits digits of the results.
+#' 
+#' @param ... other parameters in function \code{\link{print}}.
+#' 
+#' @seealso 
+#' \code{\link{sAUC.ci}};
+#' \code{\link[base]{print}}
+#' 
 #' @rdname print.sAUC.ci
+#' 
 #' @export
+#' 
 print.sAUC.ci <- function(x, digits = 3, ...){
 
-  if(!inherits(x, "sAUC.ci")) stop("Only valid for sAUC.ci")
+  if(!inherits(x, "sAUC.ci")) stop("ONLY VALID FOR RESULTS OF sAUC.ci")
 
   sAUC <- c(x$sAUC, x$CI.L, x$CI.U)
   names(sAUC) <-c("sAUC", "CI.L", "CI.L")

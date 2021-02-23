@@ -1,31 +1,34 @@
-#' Calculate Single AUC
+#' @title Calculate a single summary AUC value
 #'
-#' @description Calculate single AUC
+#' @description Calculate a single sAUC value
 #'
-#' @param object c(u1, u2, t1, t2, r)
+#' @param object The object from function \code{dtasens1} or \code{dtasens2};
+#' or a vector of \code{c(u1, u2, t1, t2, r)}
 #'
-#' @return integrate
+#' @return sAUC value
 #'
 #' @importFrom grDevices gray.colors
 #' @importFrom graphics curve lines points
-
+#'
+#' @seealso \code{\link[stats]{integrate}}
+#'
 #' @examples
+#'
+#' opt1 <- dtasens1(IVD, p = 0.7)
+#' sAUC(opt1)
 #'
 #' par.vec <- c(1,1, 0.5, 0.5, -0.7)
 #' sAUC(par.vec)
 #'
-#' opt1 <- dtasens1(IVD, p = 0.7)
-#' sAUC(opt1)
-
 #' @export
 
 sAUC <- function(object){
 
-  if(inherits(object,"DTAsens")) par.vec <- object$par else {
+  if(inherits(object, "dtasens")) par.vec <- object$par else {
 
     if (is.vector(object) & length(object) >= 5) {
 
-      par.vec <- object} else stop("Please input either DTAsens object or a vector of c(u1, u2, t1, t2, r)")
+      par.vec <- object} else stop("PLEASE INPUT EITHER dtasens OBJECTS OR A VECTOR OF c(u1, u2, t1, t2, r)")
 
   }
 
@@ -41,23 +44,27 @@ sAUC <- function(object){
 
 
 
-#' Calculate multiple AUC
+#' @title Calculate multiple sAUC values
 #'
-#' @description Calculate multiple AUC
-#' @param par.matrix cbind(u1, u2, t1, t2, r)
+#' @description Calculate multiple sAUC values
 #'
-#' @return auc
+#' @param par.matrix A matrix with 5 rows.
+#' Each column is the vector \code{c(u1, u2, t1, t2, r)}.
+#'
+#' @return sAUC values
 #'
 #' @examples
 #'
-#' par.matrix <-matrix(c(1,1,0.5, 0.5, -0.6, 1,1,1, 2, -0.6), 5,2)
+#' par.matrix <-cbind(c(1,1,0.5, 0.5, -0.6),
+#'                    c(1,1,1, 2, -0.6))
+#'
 #' msAUC(par.matrix)
 #'
 #' @export
 
 msAUC <- function(par.matrix){
 
-  if(nrow(par.matrix) < 5) stop("Please check your parameter matrix")
+  if(nrow(par.matrix) < 5) stop("PLEASE CHECK THE INPUT MATRIX")
 
   sapply(1:ncol(par.matrix), function(i) {
 

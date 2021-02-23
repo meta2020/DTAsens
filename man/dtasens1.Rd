@@ -2,7 +2,7 @@
 % Please edit documentation in R/dtasens1.R
 \name{dtasens1}
 \alias{dtasens1}
-\title{dtasens1 function}
+\title{DTAsens function 1}
 \usage{
 dtasens1(
   data,
@@ -22,42 +22,79 @@ dtasens1(
 )
 }
 \arguments{
-\item{data}{data}
+\item{data}{Data with variable names either
+\{TP, FN, TN, FP\} or \{y1, y2, v1, v2\}.
+If not, please change the variable names.
+Either data with the number of subjects or logit transformed data works.}
 
-\item{p}{p}
+\item{p}{Specified probability of selection (or publication); Pr(select) = p}
 
-\item{c1}{c1}
+\item{c1}{Pre-specified \eqn{c_1}{c1}. 
+Default value is 0.5;
+hence, \eqn{c_2^2 = 1 - c_1^2}{c1^2 = 1-c2^2}}
 
-\item{correct.value}{par}
+\item{correct.value}{Imputation value for ``continuity correction''.
+Default is 0.5;
+When zero cell exists, add some value.}
 
-\item{correct.type}{"single", "all"}
+\item{correct.type}{2 ways for ``continuity correction''.
+Default is \code{all}: add \code{correct.value} into all the cells of the row with zero value;
+if \code{single}: add \code{correct.value} into only the cells with zero value.}
 
-\item{start5}{A vector of u1 u2 t1 t2 r}
+\item{start5}{Starting values used for estimating the parameters.
+Default is \code{NULL}, which set the estimation from standard model as starting values;
+It should be changed by a vector of u1 u2 t1 t2 r, \code{c(u1, u2, t1, t2, r)}.
+Bad starting values will cause non-convergence results.}
 
-\item{b0}{A start value of b}
+\item{b0}{A starting value of \eqn{\beta}{b}. 
+Default is 0.1.
+Avoid to start from 0.
+Bad starting value will cause non-convergence results.}
 
-\item{b.interval}{par}
+\item{b.interval}{The constraint interval for \eqn{\beta}{b}.
+Default is in the interval \code{c(0,2)}.
+Positive side (>0) is recommended to be adopted.
+The estimation of \eqn{\beta}{b} will be searched within the interval.}
 
-\item{a.interval}{par}
+\item{a.interval}{The constraint interval for \eqn{\alpha}{a}.
+Default is in the interval \code{c(-5,3)}.
+then, the root of \eqn{\alpha}{a} will be searched within the interval.}
 
-\item{pos.r}{permit positive r}
+\item{pos.r}{Whether to permit correlation parameter \eqn{\rho}{r} to be a positive value,
+though it is often a negative value
+Default is to permit positive.}
 
-\item{ci.level}{0.95}
+\item{ci.level}{The significant value for confidence interval.
+Default is 0.95, hence, a 2-tailed 95% confidence interval will be calculated by
+profile likelihood.}
 
-\item{show.warn.message}{par}
+\item{show.warn.message}{Whether to show the warning messages.
+Default is to hide warning messages.}
 
-\item{a.root.extendInt}{par}
+\item{a.root.extendInt}{See \code{extendInt} augment in function \code{\link[stats]{uniroot}}.}
 
-\item{...}{par}
+\item{...}{See other augments in function \code{\link[stats]{uniroot}}.}
 }
 \value{
-convergence list
+confidence interval,
+convergence list,
+logit transformed data
 }
 \description{
-dtasens1 function
+DTA sensitivity analysis with pre-specified c1 and c2
+}
+\details{
+\describe{
+\item{Continuity correction}{\url{https://en.wikipedia.org/wiki/Continuity_correction}}
+}
 }
 \examples{
 
 opt1 <- dtasens1(IVD, p = 0.7)
+opt1
 
+}
+\seealso{
+\code{\link[stats]{uniroot}},
+\code{\link{dtasens2}}.
 }

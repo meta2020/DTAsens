@@ -11,17 +11,6 @@ correction <- function(data, value = 0.5,
 
   type <- match.arg(type)
 
-  if(type == "single"){
-
-    correction = ((((data$TP == 0)|(data$FN == 0))|(data$FP == 0))| (data$TN == 0)) * value
-
-    data$TP <- correction + data$TP
-    data$FN <- correction + data$FN
-    data$FP <- correction + data$FP
-    data$TN <- correction + data$TN
-
-  }
-
   if(type == "all"){
 
     if(any(c(data$TP,data$FN,data$FP,data$TN) == 0)){
@@ -31,6 +20,17 @@ correction <- function(data, value = 0.5,
       data$FP <- data$FP + value
       data$TN <- data$TN + value
     }
+  }
+
+  if(type == "single"){
+
+    correction = ((((data$TP == 0)|(data$FN == 0))|(data$FP == 0))| (data$TN == 0)) * value
+
+    data$TP <- correction + data$TP
+    data$FN <- correction + data$FN
+    data$FP <- correction + data$FP
+    data$TN <- correction + data$TN
+
   }
 
   return(data)

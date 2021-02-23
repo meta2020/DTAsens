@@ -2,24 +2,29 @@
 % Please edit documentation in R/sAUC.R
 \name{sAUC}
 \alias{sAUC}
-\title{Calculate Single AUC}
+\title{Calculate a single summary AUC value}
 \usage{
 sAUC(object)
 }
 \arguments{
-\item{object}{c(u1, u2, t1, t2, r)}
+\item{object}{The object from function \code{dtasens1} or \code{dtasens2};
+or a vector of \code{c(u1, u2, t1, t2, r)}}
 }
 \value{
-integrate
+sAUC value
 }
 \description{
-Calculate single AUC
+Calculate a single sAUC value
 }
 \examples{
+
+opt1 <- dtasens1(IVD, p = 0.7)
+sAUC(opt1)
 
 par.vec <- c(1,1, 0.5, 0.5, -0.7)
 sAUC(par.vec)
 
-opt1 <- dtasens1(IVD, p = 0.7)
-sAUC(opt1)
+}
+\seealso{
+\code{\link[stats]{integrate}}
 }

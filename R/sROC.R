@@ -1,32 +1,55 @@
-#' Single ROC plot
+#' @title Plot a single summary ROC plot
 #'
-#' @description Single ROC plot
+#' @description Plot a single sROC plot
 #'
-#' @param object c(u1, u2, t1, t2, r)
-#' @param add par
-#' @param roc.col par
-#' @param roc.lty par
-#' @param roc.lwd par
-#' @param add.sum.point par
-#' @param spoint.pch par
-#' @param spoint.col par
-#' @param spoint.cex par
-#' @param ... par
+#' @param object The object from function \code{dtasens1} or \code{dtasens2};
+#' or a vector of \code{c(u1, u2, t1, t2, r)}
+#' 
+#' @param add Whether to add the plot into an existed plot.
+#' Default is \code{FALSE}, to create a new plot.
+#' 
+#' @param roc.col The color of sROC.
+#' Default is black.
+#' 
+#' @param roc.lty The line type of sROC.
+#' Default is solid.
+#' 
+#' @param roc.lwd The line width of sROC.
+#' Default is 1.
+#' 
+#' @param add.sum.point Whether to add the summary point in the sROC plot.
+#' Default it not the add.
+#' 
+#' @param spoint.pch The type of the point.
+#' Default is 19.
+#' 
+#' @param spoint.col The color of the point.
+#' Default is black.
+#' 
+#' @param spoint.cex The size of the point.
+#' Default is 1.
+#' 
+#' @param ... Other augments in function \code{\link{points}} or function \code{\link{curve}}
 #'
-#' @return plot
+#' @return sROC plot
 #'
 #' @importFrom grDevices gray.colors
 #' @importFrom graphics curve lines points matplot
 #' @importFrom stats qnorm
-
-
+#' 
+#' @seealso 
+#' \code{\link[graphics]{points}},
+#' \code{\link[graphics]{curve}},
+#' \code{\link{dtasens1}},
+#' \code{\link{dtasens2}}.
+#' 
 #' @examples
-#'
-#' par.vec <- c(1,1, 0.5, 0.5, -0.6)
-#' sROC(par.vec)
 #'
 #' opt1 <- dtasens1(IVD, p = 0.7)
 #' sROC(opt1)
+#' 
+#' par.vec <- c(1,1, 0.5, 0.5, -0.6)
+#' sROC(par.vec)
 #'
 #' @export
 
@@ -41,11 +64,11 @@ sROC <- function(object,
                  spoint.cex = 1,
                  ...) {
 
-  if(inherits(object,"DTAsens")) par.vec <- object$par else {
+  if(inherits(object,"dtasens")) par.vec <- object$par else {
 
     if (is.vector(object) & length(object) >= 5) {
 
-      par.vec <- object} else stop("Please input either DTAsens object or a vector of c(u1, u2, t1, t2, r)")
+      par.vec <- object} else stop("PLEASE INPUT EITHER dtasens OBJECTS OR A VECTOR OF c(u1, u2, t1, t2, r)")
 
   }
 
@@ -65,31 +88,67 @@ sROC <- function(object,
 
 }
 
-#' Multiple ROC curves
+
+#' @title Plot multiple summary ROC curves
 #'
-#' @description Multiple ROC curves
-#' @param par.matrix cbind(u1, u2, t1, t2, r)
-#' @param add par
-#' @param ncols ncols
-#' @param roc.lty roc.lty
-#' @param roc.lwd par
-#' @param add.sum.point par
-#' @param legend par
-#' @param p.vec par
-#' @param legend.text par
-#' @param legend.cex par
-#' @param spoint.pch par
-#' @param spoint.cex par
-#' @param ... par
+#' @description Plot multiple ROC curves
+#' 
+#' @param par.matrix A matrix with 5 rows. 
+#' Each column is the vector \code{c(u1, u2, t1, t2, r)}.
+#' 
+#' @param add Whether to add the plot into an existed plot.
+#' Default is \code{FALSE}, to create a new plot.
+#' 
+#' @param ncols Set different colors for multiple sROC.
+#' Defult is \code{NULL}, that uses different grey's colors.
+#' 
+#' @param roc.lty The line tyoe of sROC.
+#' Default is solid lines.
+#' 
+#' @param roc.lwd The line width of sROC.
+#' Default is 1.
+#' 
+#' @param add.sum.point Whether to add the summary point in the sROC plot.
+#' Default it not the add.
+#' 
+#' @param legend Whether to add legend into the plot.
+#' Default is not to add.
+#' 
+#' @param p.vec If add the legend (\code{legend = TRUE}),
+#' define the probability sequence.
+#' 
+#' @param legend.text If add the legend (\code{legend = TRUE}),
+#' define the legend context.
+#' 
+#' @param legend.cex The font size of legend.
+#' 
+#' @param spoint.pch The point type of the summary point in sROC.
 #'
-#' @return plot
+#' @param spoint.cex The point size of the summary point in sROC.
+#' 
+#' @param ... Other augments in function \code{\link{points}} or function \code{\link{curve}}
+#'
+#' @return sROC plot
+#' 
+#' @seealso 
+#' \code{\link[graphics]{points}},
+#' \code{\link[graphics]{curve}},
+#' \code{\link{dtasens1}},
+#' \code{\link{dtasens2}}.
+#' 
 #'
 #' @examples
 #'
-#' par.matrix <-cbind(c(1,1.5,0.5, 0.5, -0.2),c(1, 1, 1, 2, -0.6), c(1.8, 2, 1, 2, -0.6))
+#' par.matrix <-cbind(c(1,1.5,0.5, 0.5, -0.2),
+#'                    c(1, 1, 1, 2, -0.6), 
+#'                    c(1.8, 2, 1, 2, -0.6))
+#' 
 #' p.vec <- seq(0.2,0.6,0.2)
+#' 
 #' msROC(par.matrix, legend = TRUE, p.vec = p.vec, legend.cex = 0.9)
-#' msROC(par.matrix, legend = TRUE, legend.text = c("l1", "l2", "l3"), legend.cex = 0.9, ncols = 1:3)
+#' msROC(par.matrix, legend = TRUE, 
+#'       legend.text = c("l1", "l2", "l3"), 
+#'       legend.cex = 0.9, ncols = 1:3)
 #'
 #' @export
 
@@ -107,7 +166,7 @@ msROC <- function(par.matrix,  ## u1 u2 t12 t22
                  spoint.cex = 1,
                  ...) {
 
-  if(nrow(par.matrix) < 5) stop("Please check your parameter matrix")
+  if(nrow(par.matrix) < 5) stop("PLEASE CHECK THE INPUT MATRIX")
 
   if (!add) plot(NULL, xlim=c(0,1), ylim=c(0,1), xlab = "FPR", ylab = "TPR")
 

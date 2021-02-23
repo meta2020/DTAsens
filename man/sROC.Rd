@@ -2,7 +2,7 @@
 % Please edit documentation in R/sROC.R
 \name{sROC}
 \alias{sROC}
-\title{Single ROC plot}
+\title{Plot a single summary ROC plot}
 \usage{
 sROC(
   object,
@@ -18,38 +18,53 @@ sROC(
 )
 }
 \arguments{
-\item{object}{c(u1, u2, t1, t2, r)}
+\item{object}{The object from function \code{dtasens1} or \code{dtasens2};
+or a vector of \code{c(u1, u2, t1, t2, r)}}
 
-\item{add}{par}
+\item{add}{Whether to add the plot into an existed plot.
+Default is \code{FALSE}, to create a new plot.}
 
-\item{roc.col}{par}
+\item{roc.col}{The color of sROC.
+Default is black.}
 
-\item{roc.lty}{par}
+\item{roc.lty}{The line type of sROC.
+Default is solid.}
 
-\item{roc.lwd}{par}
+\item{roc.lwd}{The line width of sROC.
+Default is 1.}
 
-\item{add.sum.point}{par}
+\item{add.sum.point}{Whether to add the summary point in the sROC plot.
+Default it not the add.}
 
-\item{spoint.pch}{par}
+\item{spoint.pch}{The type of the point.
+Default is 19.}
 
-\item{spoint.col}{par}
+\item{spoint.col}{The color of the point.
+Default is black.}
 
-\item{spoint.cex}{par}
+\item{spoint.cex}{The size of the point.
+Default is 1.}
 
-\item{...}{par}
+\item{...}{Other augments in function \code{\link{points}} or function \code{\link{curve}}}
 }
 \value{
-plot
+sROC plot
 }
 \description{
-Single ROC plot
+Plot a single sROC plot
 }
 \examples{
-
-par.vec <- c(1,1, 0.5, 0.5, -0.6)
-sROC(par.vec)
 
 opt1 <- dtasens1(IVD, p = 0.7)
 sROC(opt1)
 
+par.vec <- c(1,1, 0.5, 0.5, -0.6)
+sROC(par.vec)
+
+}
+\seealso{
+\code{\link[graphics]{points}},
+\code{\link[graphics]{curve}},
+\code{\link{dtasens1}},
+\code{\link{dtasens2}}.
 }

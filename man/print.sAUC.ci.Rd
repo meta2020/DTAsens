@@ -2,17 +2,21 @@
 % Please edit documentation in R/sAUC.ci.R
 \name{print.sAUC.ci}
 \alias{print.sAUC.ci}
-\title{Print sAUC CI}
+\title{Print sAUC.ci}
 \usage{
 \method{print}{sAUC.ci}(x, digits = 3, ...)
 }
 \arguments{
-\item{x}{object}
+\item{x}{object from function \code{\link{sAUC.ci}}.}
 
-\item{digits}{digits}
+\item{digits}{digits of the results.}
 
-\item{...}{graphical parameters to plot}
+\item{...}{other parameters in function \code{\link{print}}.}
 }
 \description{
-Print sAUC CI
+Print results from function \code{\link{sAUC.ci}}
+}
+\seealso{
+\code{\link{sAUC.ci}};
+\code{\link[base]{print}}
 }

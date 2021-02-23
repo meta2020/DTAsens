@@ -2,7 +2,7 @@
 % Please edit documentation in R/sROC.R
 \name{msROC}
 \alias{msROC}
-\title{Multiple ROC curves}
+\title{Plot multiple summary ROC curves}
 \usage{
 msROC(
   par.matrix,
@@ -21,43 +21,64 @@ msROC(
 )
 }
 \arguments{
-\item{par.matrix}{cbind(u1, u2, t1, t2, r)}
+\item{par.matrix}{A matrix with 5 rows. 
+Each column is the vector \code{c(u1, u2, t1, t2, r)}.}
 
-\item{add}{par}
+\item{add}{Whether to add the plot into an existed plot.
+Default is \code{FALSE}, to create a new plot.}
 
-\item{ncols}{ncols}
+\item{ncols}{Set different colors for multiple sROC.
+Defult is \code{NULL}, that uses different grey's colors.}
 
-\item{roc.lty}{roc.lty}
+\item{roc.lty}{The line tyoe of sROC.
+Default is solid lines.}
 
-\item{roc.lwd}{par}
+\item{roc.lwd}{The line width of sROC.
+Default is 1.}
 
-\item{add.sum.point}{par}
+\item{add.sum.point}{Whether to add the summary point in the sROC plot.
+Default it not the add.}
 
-\item{legend}{par}
+\item{legend}{Whether to add legend into the plot.
+Default is not to add.}
 
-\item{p.vec}{par}
+\item{p.vec}{If add the legend (\code{legend = TRUE}),
+define the probability sequence.}
 
-\item{legend.text}{par}
+\item{legend.text}{If add the legend (\code{legend = TRUE}),
+define the legend context.}
 
-\item{legend.cex}{par}
+\item{legend.cex}{The font size of legend.}
 
-\item{spoint.pch}{par}
+\item{spoint.pch}{The point type of the summary point in sROC.}
 
-\item{spoint.cex}{par}
+\item{spoint.cex}{The point size of the summary point in sROC.}
 
-\item{...}{par}
+\item{...}{Other augments in function \code{\link{points}} or function \code{\link{curve}}}
 }
 \value{
-plot
+sROC plot
 }
 \description{
-Multiple ROC curves
+Plot multiple ROC curves
 }
 \examples{
 
-par.matrix <-cbind(c(1,1.5,0.5, 0.5, -0.2),c(1, 1, 1, 2, -0.6), c(1.8, 2, 1, 2, -0.6))
-p.vec <- seq(0.2,0.6,0.2)
-msROC(par.matrix, legend = TRUE, p.vec = p.vec, legend.cex = 0.9)
-msROC(par.matrix, legend = TRUE, legend.text = c("l1", "l2", "l3"), legend.cex = 0.9, ncols = 1:3)
+par.matrix <-cbind(c(1,1.5,0.5, 0.5, -0.2),
+                   c(1, 1, 1, 2, -0.6), 
+                   c(1.8, 2, 1, 2, -0.6))
 
+p.vec <- seq(0.2,0.6,0.2)
+
+msROC(par.matrix, legend = TRUE, p.vec = p.vec, legend.cex = 0.9)
+msROC(par.matrix, legend = TRUE, 
+      legend.text = c("l1", "l2", "l3"), 
+      legend.cex = 0.9, ncols = 1:3)
+
+}
+\seealso{
+\code{\link[graphics]{points}},
+\code{\link[graphics]{curve}},
+\code{\link{dtasens1}},
+\code{\link{dtasens2}}.
 }

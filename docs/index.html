@@ -155,36 +155,36 @@
 <span class="fu"><a href="reference/dtasens1.html">dtasens1</a></span><span class="op">(</span><span class="va">IVD</span>, p <span class="op">=</span> <span class="fl">0.7</span><span class="op">)</span>
 <span class="co">#&gt; $par</span>
 <span class="co">#&gt;     u1     u2     t1     t2      r    t12      b      a    c11    c22    auc </span>
-<span class="co">#&gt;  1.380  1.740  0.596  0.845 -0.354 -0.178  2.000 -4.290  0.500  0.500  0.851 </span>
+<span class="co">#&gt;  1.299  1.717  0.552  0.842 -0.343 -0.159  2.000 -4.308  0.500  0.500  0.836 </span>
 <span class="co">#&gt;     se     sp </span>
-<span class="co">#&gt;  0.799  0.851 </span>
+<span class="co">#&gt;  0.786  0.848 </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $ci</span>
 <span class="co">#&gt;    estimate ci.low ci.up</span>
-<span class="co">#&gt; u1    1.380  1.081  1.67</span>
-<span class="co">#&gt; u2    1.740  1.459  2.02</span>
-<span class="co">#&gt; t1    0.596  0.303  1.01</span>
-<span class="co">#&gt; t2    0.845  0.645  1.15</span>
-<span class="co">#&gt; r    -0.354 -0.748  0.15</span>
-<span class="co">#&gt; b     2.000  0.972    NA</span>
+<span class="co">#&gt; u1    1.299  1.017 1.576</span>
+<span class="co">#&gt; u2    1.717  1.436 1.993</span>
+<span class="co">#&gt; t1    0.552  0.275 0.933</span>
+<span class="co">#&gt; t2    0.842  0.643 1.149</span>
+<span class="co">#&gt; r    -0.343 -0.746 0.164</span>
+<span class="co">#&gt; b     2.000  0.929    NA</span>
 
 <span class="co">## If we change b.interval</span>
 
 <span class="fu"><a href="reference/dtasens1.html">dtasens1</a></span><span class="op">(</span><span class="va">IVD</span>, p <span class="op">=</span> <span class="fl">0.7</span>, b.interval <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; $par</span>
 <span class="co">#&gt;     u1     u2     t1     t2      r    t12      b      a    c11    c22    auc </span>
-<span class="co">#&gt;  1.367  1.729  0.592  0.845 -0.353 -0.177  1.000 -2.077  0.500  0.500  0.849 </span>
+<span class="co">#&gt;  1.288  1.707  0.548  0.842 -0.344 -0.159  1.000 -2.106  0.500  0.500  0.834 </span>
 <span class="co">#&gt;     se     sp </span>
-<span class="co">#&gt;  0.797  0.849 </span>
+<span class="co">#&gt;  0.784  0.846 </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $ci</span>
 <span class="co">#&gt;    estimate ci.low ci.up</span>
-<span class="co">#&gt; u1    1.367  1.060 1.672</span>
-<span class="co">#&gt; u2    1.729  1.441 2.015</span>
-<span class="co">#&gt; t1    0.592  0.298 1.005</span>
-<span class="co">#&gt; t2    0.845  0.645 1.151</span>
-<span class="co">#&gt; r    -0.353 -0.748 0.152</span>
-<span class="co">#&gt; b     1.000  0.633    NA</span>
+<span class="co">#&gt; u1    1.288  1.000 1.574</span>
+<span class="co">#&gt; u2    1.707  1.420 1.992</span>
+<span class="co">#&gt; t1    0.548  0.272 0.930</span>
+<span class="co">#&gt; t2    0.842  0.643 1.149</span>
+<span class="co">#&gt; r    -0.344 -0.747 0.164</span>
+<span class="co">#&gt; b     1.000  0.623    NA</span>
 
 <span class="co">## To get full results list</span>
 
@@ -192,39 +192,39 @@
 
 <span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">opt1</span><span class="op">)</span>
 <span class="co">#&gt; List of 11</span>
-<span class="co">#&gt;  $ par        : Named num [1:13] 1.38 1.74 0.596 0.845 -0.354 ...</span>
+<span class="co">#&gt;  $ par        : Named num [1:13] 1.299 1.717 0.552 0.842 -0.343 ...</span>
 <span class="co">#&gt;   ..- attr(*, "names")= chr [1:13] "u1" "u2" "t1" "t2" ...</span>
-<span class="co">#&gt;  $ value      : num 22.9</span>
+<span class="co">#&gt;  $ value      : num 20.9</span>
 <span class="co">#&gt;  $ counts     : Named int [1:2] 18 18</span>
 <span class="co">#&gt;   ..- attr(*, "names")= chr [1:2] "function" "gradient"</span>
 <span class="co">#&gt;  $ convergence: int 0</span>
 <span class="co">#&gt;  $ message    : chr "CONVERGENCE: REL_REDUCTION_OF_F &lt;= FACTR*EPSMCH"</span>
-<span class="co">#&gt;  $ ci         : num [1:6, 1:3] 1.38 1.74 0.596 0.845 -0.354 ...</span>
+<span class="co">#&gt;  $ ci         : num [1:6, 1:3] 1.299 1.717 0.552 0.842 -0.343 ...</span>
 <span class="co">#&gt;   ..- attr(*, "dimnames")=List of 2</span>
 <span class="co">#&gt;   .. ..$ : chr [1:6] "u1" "u2" "t1" "t2" ...</span>
 <span class="co">#&gt;   .. ..$ : chr [1:3] "estimate" "ci.low" "ci.up"</span>
 <span class="co">#&gt;  $ auc.all    :List of 5</span>
-<span class="co">#&gt;   ..$ value       : num 0.851</span>
-<span class="co">#&gt;   ..$ abs.error   : num 1.09e-06</span>
+<span class="co">#&gt;   ..$ value       : num 0.836</span>
+<span class="co">#&gt;   ..$ abs.error   : num 8.84e-07</span>
 <span class="co">#&gt;   ..$ subdivisions: int 10</span>
 <span class="co">#&gt;   ..$ message     : chr "OK"</span>
 <span class="co">#&gt;   ..$ call        : language integrate(f = function(x) {     plogis(u1 - (r * t1/t2) * (qlogis(x) + u2)) ...</span>
 <span class="co">#&gt;   ..- attr(*, "class")= chr "integrate"</span>
 <span class="co">#&gt;  $ p.hat      : num 0.7</span>
 <span class="co">#&gt;  $ data       :'data.frame': 33 obs. of  7 variables:</span>
-<span class="co">#&gt;   ..$ sens  : num [1:33] 0.962 0.833 0.944 0.964 0.9 ...</span>
-<span class="co">#&gt;   ..$ spec  : num [1:33] 0.908 0.837 0.702 0.785 0.913 ...</span>
-<span class="co">#&gt;   ..$ y1    : num [1:33] 3.22 1.61 2.83 3.3 2.2 ...</span>
-<span class="co">#&gt;   ..$ y2    : num [1:33] 2.284 1.638 0.859 1.294 2.35 ...</span>
-<span class="co">#&gt;   ..$ v1    : num [1:33] 2.08 0.6 1.06 2.07 2.22 ...</span>
-<span class="co">#&gt;   ..$ v2    : num [1:33] 0.0374 0.0853 0.0395 0.0689 0.0509 ...</span>
-<span class="co">#&gt;   ..$ ldor.t: num [1:33] 3.78 3.92 3.52 3.14 3.02 ...</span>
+<span class="co">#&gt;   ..$ sens  : num [1:33] 0.962 0.808 0.921 0.964 0.9 ...</span>
+<span class="co">#&gt;   ..$ spec  : num [1:33] 0.908 0.833 0.701 0.785 0.913 ...</span>
+<span class="co">#&gt;   ..$ y1    : num [1:33] 3.22 1.44 2.46 3.3 2.2 ...</span>
+<span class="co">#&gt;   ..$ y2    : num [1:33] 2.284 1.609 0.851 1.294 2.35 ...</span>
+<span class="co">#&gt;   ..$ v1    : num [1:33] 2.08 0.495 0.724 2.074 2.222 ...</span>
+<span class="co">#&gt;   ..$ v2    : num [1:33] 0.0374 0.0828 0.0391 0.0689 0.0509 ...</span>
+<span class="co">#&gt;   ..$ ldor.t: num [1:33] 3.78 4 3.79 3.14 3.02 ...</span>
 <span class="co">#&gt;  $ func.name  : chr "dtasens1"</span>
 <span class="co">#&gt;  $ pars.info  :List of 12</span>
 <span class="co">#&gt;   ..$ p                : num 0.7</span>
 <span class="co">#&gt;   ..$ c1               : num 0.707</span>
 <span class="co">#&gt;   ..$ correct.value    : num 0.5</span>
-<span class="co">#&gt;   ..$ correct.type     : chr "single"</span>
+<span class="co">#&gt;   ..$ correct.type     : chr "all"</span>
 <span class="co">#&gt;   ..$ start5           : NULL</span>
 <span class="co">#&gt;   ..$ b0               : num 0.1</span>
 <span class="co">#&gt;   ..$ b.interval       : num [1:2] 0 2</span>
@@ -233,7 +233,7 @@
 <span class="co">#&gt;   ..$ ci.level         : num 0.95</span>
 <span class="co">#&gt;   ..$ show.warn.message: logi FALSE</span>
 <span class="co">#&gt;   ..$ a.root.extendInt : chr "downX"</span>
-<span class="co">#&gt;  - attr(*, "class")= chr "DTAsens"</span></code></pre></div>
+<span class="co">#&gt;  - attr(*, "class")= chr "dtasens"</span></code></pre></div>
 <ol>
 <li>Given a series of selection probabilities, say, <span class="math inline"><em>p</em> = 1, 0.9, 0, 8, ..., 0.1</span>. Notice, <span class="math inline"><em>p</em></span> must greater than 0 and cannot equal to 0. (<span class="math inline"><em>p</em> &gt; 0</span>)</li>
 </ol>
@@ -268,81 +268,81 @@
 <tbody>
 <tr class="odd">
 <td align="left">u1</td>
-<td align="right">1.484</td>
-<td align="right">1.478</td>
-<td align="right">1.442</td>
-<td align="right">1.380</td>
-<td align="right">1.301</td>
-<td align="right">1.207</td>
-<td align="right">1.091</td>
-<td align="right">0.933</td>
-<td align="right">0.704</td>
-<td align="right">0.280</td>
+<td align="right">1.388</td>
+<td align="right">1.383</td>
+<td align="right">1.352</td>
+<td align="right">1.299</td>
+<td align="right">1.230</td>
+<td align="right">1.146</td>
+<td align="right">1.040</td>
+<td align="right">0.902</td>
+<td align="right">0.707</td>
+<td align="right">0.322</td>
 </tr>
 <tr class="even">
 <td align="left">u2</td>
-<td align="right">1.824</td>
-<td align="right">1.819</td>
-<td align="right">1.791</td>
-<td align="right">1.740</td>
-<td align="right">1.671</td>
-<td align="right">1.582</td>
-<td align="right">1.464</td>
-<td align="right">1.299</td>
-<td align="right">1.054</td>
-<td align="right">0.610</td>
+<td align="right">1.804</td>
+<td align="right">1.799</td>
+<td align="right">1.769</td>
+<td align="right">1.717</td>
+<td align="right">1.645</td>
+<td align="right">1.553</td>
+<td align="right">1.430</td>
+<td align="right">1.267</td>
+<td align="right">1.036</td>
+<td align="right">0.584</td>
 </tr>
 <tr class="odd">
 <td align="left">t1</td>
-<td align="right">0.597</td>
-<td align="right">0.599</td>
-<td align="right">0.600</td>
-<td align="right">0.596</td>
-<td align="right">0.592</td>
-<td align="right">0.594</td>
-<td align="right">0.605</td>
-<td align="right">0.634</td>
-<td align="right">0.688</td>
-<td align="right">0.793</td>
+<td align="right">0.545</td>
+<td align="right">0.548</td>
+<td align="right">0.550</td>
+<td align="right">0.552</td>
+<td align="right">0.554</td>
+<td align="right">0.561</td>
+<td align="right">0.578</td>
+<td align="right">0.606</td>
+<td align="right">0.649</td>
+<td align="right">0.745</td>
 </tr>
 <tr class="even">
 <td align="left">t2</td>
-<td align="right">0.826</td>
-<td align="right">0.828</td>
-<td align="right">0.835</td>
-<td align="right">0.845</td>
+<td align="right">0.819</td>
+<td align="right">0.822</td>
+<td align="right">0.830</td>
+<td align="right">0.842</td>
 <td align="right">0.857</td>
-<td align="right">0.873</td>
-<td align="right">0.897</td>
-<td align="right">0.933</td>
-<td align="right">0.986</td>
-<td align="right">1.077</td>
+<td align="right">0.876</td>
+<td align="right">0.903</td>
+<td align="right">0.940</td>
+<td align="right">0.990</td>
+<td align="right">1.085</td>
 </tr>
 <tr class="odd">
 <td align="left">r</td>
-<td align="right">-0.424</td>
-<td align="right">-0.415</td>
-<td align="right">-0.388</td>
-<td align="right">-0.354</td>
-<td align="right">-0.310</td>
-<td align="right">-0.254</td>
-<td align="right">-0.176</td>
-<td align="right">-0.068</td>
-<td align="right">0.071</td>
-<td align="right">0.256</td>
+<td align="right">-0.423</td>
+<td align="right">-0.412</td>
+<td align="right">-0.382</td>
+<td align="right">-0.343</td>
+<td align="right">-0.294</td>
+<td align="right">-0.233</td>
+<td align="right">-0.151</td>
+<td align="right">-0.050</td>
+<td align="right">0.069</td>
+<td align="right">0.252</td>
 </tr>
 <tr class="even">
 <td align="left">t12</td>
-<td align="right">-0.209</td>
-<td align="right">-0.206</td>
-<td align="right">-0.195</td>
-<td align="right">-0.178</td>
-<td align="right">-0.158</td>
-<td align="right">-0.132</td>
-<td align="right">-0.096</td>
-<td align="right">-0.040</td>
-<td align="right">0.048</td>
-<td align="right">0.218</td>
+<td align="right">-0.189</td>
+<td align="right">-0.186</td>
+<td align="right">-0.175</td>
+<td align="right">-0.159</td>
+<td align="right">-0.140</td>
+<td align="right">-0.114</td>
+<td align="right">-0.079</td>
+<td align="right">-0.029</td>
+<td align="right">0.044</td>
+<td align="right">0.204</td>
 </tr>
 <tr class="odd">
 <td align="left">b</td>
@@ -353,22 +353,22 @@
 <td align="right">2.000</td>
 <td align="right">2.000</td>
 <td align="right">2.000</td>
-<td align="right">2.000</td>
-<td align="right">1.930</td>
-<td align="right">1.820</td>
+<td align="right">1.915</td>
+<td align="right">1.759</td>
+<td align="right">1.674</td>
 </tr>
 <tr class="even">
 <td align="left">a</td>
 <td align="right">10.650</td>
-<td align="right">-2.553</td>
-<td align="right">-3.636</td>
-<td align="right">-4.290</td>
-<td align="right">-4.757</td>
-<td align="right">-5.123</td>
-<td align="right">-5.425</td>
-<td align="right">-5.679</td>
-<td align="right">-5.729</td>
-<td align="right">-5.664</td>
+<td align="right">-2.556</td>
+<td align="right">-3.647</td>
+<td align="right">-4.308</td>
+<td align="right">-4.781</td>
+<td align="right">-5.151</td>
+<td align="right">-5.456</td>
+<td align="right">-5.506</td>
+<td align="right">-5.352</td>
+<td align="right">-5.358</td>
 </tr>
 <tr class="odd">
 <td align="left">c11</td>
@@ -398,42 +398,42 @@
 </tr>
 <tr class="odd">
 <td align="left">auc</td>
-<td align="right">0.874</td>
-<td align="right">0.872</td>
-<td align="right">0.864</td>
-<td align="right">0.851</td>
-<td align="right">0.834</td>
-<td align="right">0.810</td>
-<td align="right">0.778</td>
-<td align="right">0.729</td>
-<td align="right">0.657</td>
-<td align="right">0.540</td>
+<td align="right">0.859</td>
+<td align="right">0.857</td>
+<td align="right">0.849</td>
+<td align="right">0.836</td>
+<td align="right">0.819</td>
+<td align="right">0.795</td>
+<td align="right">0.763</td>
+<td align="right">0.720</td>
+<td align="right">0.659</td>
+<td align="right">0.554</td>
 </tr>
 <tr class="even">
 <td align="left">se</td>
-<td align="right">0.815</td>
-<td align="right">0.814</td>
-<td align="right">0.809</td>
+<td align="right">0.800</td>
 <td align="right">0.799</td>
+<td align="right">0.794</td>
 <td align="right">0.786</td>
-<td align="right">0.770</td>
-<td align="right">0.749</td>
-<td align="right">0.718</td>
-<td align="right">0.669</td>
-<td align="right">0.570</td>
+<td align="right">0.774</td>
+<td align="right">0.759</td>
+<td align="right">0.739</td>
+<td align="right">0.711</td>
+<td align="right">0.670</td>
+<td align="right">0.580</td>
 </tr>
 <tr class="odd">
 <td align="left">sp</td>
-<td align="right">0.861</td>
-<td align="right">0.860</td>
-<td align="right">0.857</td>
-<td align="right">0.851</td>
-<td align="right">0.842</td>
-<td align="right">0.829</td>
-<td align="right">0.812</td>
-<td align="right">0.786</td>
-<td align="right">0.742</td>
-<td align="right">0.648</td>
+<td align="right">0.859</td>
+<td align="right">0.858</td>
+<td align="right">0.854</td>
+<td align="right">0.848</td>
+<td align="right">0.838</td>
+<td align="right">0.825</td>
+<td align="right">0.807</td>
+<td align="right">0.780</td>
+<td align="right">0.738</td>
+<td align="right">0.642</td>
 </tr>
 </tbody>
 </table>
@@ -452,19 +452,19 @@
 <span class="fu"><a href="reference/dtasens2.html">dtasens2</a></span><span class="op">(</span><span class="va">IVD</span>, p <span class="op">=</span> <span class="fl">0.7</span><span class="op">)</span>
 <span class="co">#&gt; $par</span>
 <span class="co">#&gt;     u1     u2     t1     t2      r    t12      b      a    c11    c22    auc </span>
-<span class="co">#&gt;  1.379  1.741  0.596  0.844 -0.353 -0.178  2.000 -4.254  0.509  0.491  0.851 </span>
+<span class="co">#&gt;  1.297  1.719  0.552  0.841 -0.342 -0.159  2.000 -4.257  0.514  0.486  0.836 </span>
 <span class="co">#&gt;     se     sp </span>
-<span class="co">#&gt;  0.799  0.851 </span>
+<span class="co">#&gt;  0.785  0.848 </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $ci</span>
 <span class="co">#&gt;    estimate ci.low ci.up</span>
-<span class="co">#&gt; u1    1.379  1.079 1.672</span>
-<span class="co">#&gt; u2    1.741  1.460 2.018</span>
-<span class="co">#&gt; t1    0.596  0.303 1.009</span>
-<span class="co">#&gt; t2    0.844  0.645 1.149</span>
-<span class="co">#&gt; r    -0.353 -0.748 0.150</span>
-<span class="co">#&gt; b     2.000  0.977    NA</span>
-<span class="co">#&gt; c1    0.714  0.418 0.918</span>
+<span class="co">#&gt; u1    1.297  1.015 1.574</span>
+<span class="co">#&gt; u2    1.719  1.438 1.995</span>
+<span class="co">#&gt; t1    0.552  0.275 0.936</span>
+<span class="co">#&gt; t2    0.841  0.642 1.147</span>
+<span class="co">#&gt; r    -0.342 -0.745 0.164</span>
+<span class="co">#&gt; b     2.000  0.937    NA</span>
+<span class="co">#&gt; c1    0.717  0.411 0.919</span>
 
 <span class="co">## To get full results list</span>
 
@@ -472,38 +472,38 @@
 
 <span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">opt2</span><span class="op">)</span>
 <span class="co">#&gt; List of 11</span>
-<span class="co">#&gt;  $ par        : Named num [1:13] 1.379 1.741 0.596 0.844 -0.353 ...</span>
+<span class="co">#&gt;  $ par        : Named num [1:13] 1.297 1.719 0.552 0.841 -0.342 ...</span>
 <span class="co">#&gt;   ..- attr(*, "names")= chr [1:13] "u1" "u2" "t1" "t2" ...</span>
-<span class="co">#&gt;  $ value      : num 22.9</span>
-<span class="co">#&gt;  $ counts     : Named int [1:2] 19 19</span>
+<span class="co">#&gt;  $ value      : num 20.9</span>
+<span class="co">#&gt;  $ counts     : Named int [1:2] 16 16</span>
 <span class="co">#&gt;   ..- attr(*, "names")= chr [1:2] "function" "gradient"</span>
 <span class="co">#&gt;  $ convergence: int 0</span>
 <span class="co">#&gt;  $ message    : chr "CONVERGENCE: REL_REDUCTION_OF_F &lt;= FACTR*EPSMCH"</span>
-<span class="co">#&gt;  $ ci         : num [1:7, 1:3] 1.379 1.741 0.596 0.844 -0.353 ...</span>
+<span class="co">#&gt;  $ ci         : num [1:7, 1:3] 1.297 1.719 0.552 0.841 -0.342 ...</span>
 <span class="co">#&gt;   ..- attr(*, "dimnames")=List of 2</span>
 <span class="co">#&gt;   .. ..$ : chr [1:7] "u1" "u2" "t1" "t2" ...</span>
 <span class="co">#&gt;   .. ..$ : chr [1:3] "estimate" "ci.low" "ci.up"</span>
 <span class="co">#&gt;  $ auc.all    :List of 5</span>
-<span class="co">#&gt;   ..$ value       : num 0.851</span>
-<span class="co">#&gt;   ..$ abs.error   : num 1.09e-06</span>
+<span class="co">#&gt;   ..$ value       : num 0.836</span>
+<span class="co">#&gt;   ..$ abs.error   : num 8.84e-07</span>
 <span class="co">#&gt;   ..$ subdivisions: int 10</span>
 <span class="co">#&gt;   ..$ message     : chr "OK"</span>
 <span class="co">#&gt;   ..$ call        : language integrate(f = function(x) {     plogis(u1 - (r * t1/t2) * (qlogis(x) + u2)) ...</span>
 <span class="co">#&gt;   ..- attr(*, "class")= chr "integrate"</span>
 <span class="co">#&gt;  $ p.hat      : num 0.7</span>
 <span class="co">#&gt;  $ data       :'data.frame': 33 obs. of  7 variables:</span>
-<span class="co">#&gt;   ..$ sens  : num [1:33] 0.962 0.833 0.944 0.964 0.9 ...</span>
-<span class="co">#&gt;   ..$ spec  : num [1:33] 0.908 0.837 0.702 0.785 0.913 ...</span>
-<span class="co">#&gt;   ..$ y1    : num [1:33] 3.22 1.61 2.83 3.3 2.2 ...</span>
-<span class="co">#&gt;   ..$ y2    : num [1:33] 2.284 1.638 0.859 1.294 2.35 ...</span>
-<span class="co">#&gt;   ..$ v1    : num [1:33] 2.08 0.6 1.06 2.07 2.22 ...</span>
-<span class="co">#&gt;   ..$ v2    : num [1:33] 0.0374 0.0853 0.0395 0.0689 0.0509 ...</span>
-<span class="co">#&gt;   ..$ ldor.t: num [1:33] 3.78 3.92 3.52 3.14 3.02 ...</span>
+<span class="co">#&gt;   ..$ sens  : num [1:33] 0.962 0.808 0.921 0.964 0.9 ...</span>
+<span class="co">#&gt;   ..$ spec  : num [1:33] 0.908 0.833 0.701 0.785 0.913 ...</span>
+<span class="co">#&gt;   ..$ y1    : num [1:33] 3.22 1.44 2.46 3.3 2.2 ...</span>
+<span class="co">#&gt;   ..$ y2    : num [1:33] 2.284 1.609 0.851 1.294 2.35 ...</span>
+<span class="co">#&gt;   ..$ v1    : num [1:33] 2.08 0.495 0.724 2.074 2.222 ...</span>
+<span class="co">#&gt;   ..$ v2    : num [1:33] 0.0374 0.0828 0.0391 0.0689 0.0509 ...</span>
+<span class="co">#&gt;   ..$ ldor.t: num [1:33] 3.78 4 3.79 3.14 3.02 ...</span>
 <span class="co">#&gt;  $ func.name  : chr "dtasens2"</span>
 <span class="co">#&gt;  $ pars.infor :List of 12</span>
 <span class="co">#&gt;   ..$ p                : num 0.7</span>
 <span class="co">#&gt;   ..$ correct.value    : num 0.5</span>
-<span class="co">#&gt;   ..$ correct.type     : chr "single"</span>
+<span class="co">#&gt;   ..$ correct.type     : chr "all"</span>
 <span class="co">#&gt;   ..$ start5           : NULL</span>
 <span class="co">#&gt;   ..$ b0               : num 0.1</span>
 <span class="co">#&gt;   ..$ c10              : num 0.707</span>
@@ -513,7 +513,7 @@
 <span class="co">#&gt;   ..$ ci.level         : num 0.95</span>
 <span class="co">#&gt;   ..$ show.warn.message: logi FALSE</span>
 <span class="co">#&gt;   ..$ a.root.extendInt : chr "downX"</span>
-<span class="co">#&gt;  - attr(*, "class")= chr "DTAsens"</span></code></pre></div>
+<span class="co">#&gt;  - attr(*, "class")= chr "dtasens"</span></code></pre></div>
 <ol>
 <li>Given a series of selection probabilities, say, <span class="math inline"><em>p</em> = 1, 0.9, 0, 8, ..., 0.1</span>. Notice, <span class="math inline"><em>p</em></span> must greater than 0 and cannot equal to 0. (<span class="math inline"><em>p</em> &gt; 0</span>)</li>
 </ol>
@@ -547,81 +547,81 @@
 <tbody>
 <tr class="odd">
 <td align="left">u1</td>
-<td align="right">1.484</td>
-<td align="right">1.478</td>
-<td align="right">1.439</td>
-<td align="right">1.379</td>
-<td align="right">1.309</td>
-<td align="right">1.230</td>
-<td align="right">1.137</td>
-<td align="right">1.018</td>
+<td align="right">1.388</td>
+<td align="right">1.382</td>
+<td align="right">1.349</td>
+<td align="right">1.297</td>
+<td align="right">1.236</td>
+<td align="right">1.168</td>
+<td align="right">1.086</td>
+<td align="right">0.998</td>
 <td align="right">0.867</td>
-<td align="right">0.587</td>
+<td align="right">0.624</td>
 </tr>
 <tr class="even">
 <td align="left">u2</td>
-<td align="right">1.824</td>
-<td align="right">1.820</td>
-<td align="right">1.794</td>
-<td align="right">1.741</td>
-<td align="right">1.665</td>
-<td align="right">1.563</td>
-<td align="right">1.427</td>
-<td align="right">1.237</td>
-<td align="right">0.960</td>
-<td align="right">0.434</td>
+<td align="right">1.804</td>
+<td align="right">1.800</td>
+<td align="right">1.773</td>
+<td align="right">1.719</td>
+<td align="right">1.640</td>
+<td align="right">1.535</td>
+<td align="right">1.396</td>
+<td align="right">1.215</td>
+<td align="right">0.938</td>
+<td align="right">0.405</td>
 </tr>
 <tr class="odd">
 <td align="left">t1</td>
-<td align="right">0.597</td>
-<td align="right">0.600</td>
-<td align="right">0.601</td>
-<td align="right">0.596</td>
-<td align="right">0.590</td>
-<td align="right">0.586</td>
-<td align="right">0.587</td>
-<td align="right">0.599</td>
-<td align="right">0.618</td>
-<td align="right">0.668</td>
+<td align="right">0.545</td>
+<td align="right">0.549</td>
+<td align="right">0.552</td>
+<td align="right">0.552</td>
+<td align="right">0.551</td>
+<td align="right">0.552</td>
+<td align="right">0.558</td>
+<td align="right">0.564</td>
+<td align="right">0.582</td>
+<td align="right">0.624</td>
 </tr>
 <tr class="even">
 <td align="left">t2</td>
-<td align="right">0.826</td>
+<td align="right">0.819</td>
+<td align="right">0.821</td>
 <td align="right">0.828</td>
-<td align="right">0.833</td>
-<td align="right">0.844</td>
+<td align="right">0.841</td>
 <td align="right">0.859</td>
-<td align="right">0.881</td>
-<td align="right">0.911</td>
-<td align="right">0.957</td>
-<td align="right">1.022</td>
-<td align="right">1.142</td>
+<td align="right">0.884</td>
+<td align="right">0.919</td>
+<td align="right">0.963</td>
+<td align="right">1.029</td>
+<td align="right">1.154</td>
 </tr>
 <tr class="odd">
 <td align="left">r</td>
-<td align="right">-0.424</td>
-<td align="right">-0.416</td>
-<td align="right">-0.388</td>
-<td align="right">-0.353</td>
-<td align="right">-0.312</td>
-<td align="right">-0.261</td>
-<td align="right">-0.194</td>
-<td align="right">-0.103</td>
-<td align="right">0.005</td>
-<td align="right">0.172</td>
+<td align="right">-0.423</td>
+<td align="right">-0.412</td>
+<td align="right">-0.382</td>
+<td align="right">-0.342</td>
+<td align="right">-0.297</td>
+<td align="right">-0.243</td>
+<td align="right">-0.174</td>
+<td align="right">-0.104</td>
+<td align="right">-0.003</td>
+<td align="right">0.156</td>
 </tr>
 <tr class="even">
 <td align="left">t12</td>
-<td align="right">-0.209</td>
-<td align="right">-0.206</td>
-<td align="right">-0.195</td>
-<td align="right">-0.178</td>
-<td align="right">-0.158</td>
-<td align="right">-0.135</td>
-<td align="right">-0.104</td>
-<td align="right">-0.059</td>
-<td align="right">0.003</td>
-<td align="right">0.131</td>
+<td align="right">-0.189</td>
+<td align="right">-0.186</td>
+<td align="right">-0.175</td>
+<td align="right">-0.159</td>
+<td align="right">-0.141</td>
+<td align="right">-0.119</td>
+<td align="right">-0.089</td>
+<td align="right">-0.056</td>
+<td align="right">-0.002</td>
+<td align="right">0.112</td>
 </tr>
 <tr class="odd">
 <td align="left">b</td>
@@ -631,88 +631,88 @@
 <td align="right">2.000</td>
 <td align="right">2.000</td>
 <td align="right">2.000</td>
-<td align="right">2.000</td>
-<td align="right">1.981</td>
-<td align="right">1.836</td>
-<td align="right">1.736</td>
+<td align="right">1.994</td>
+<td align="right">1.801</td>
+<td align="right">1.683</td>
+<td align="right">1.600</td>
 </tr>
 <tr class="even">
 <td align="left">a</td>
 <td align="right">10.650</td>
-<td align="right">-2.201</td>
-<td align="right">-3.450</td>
-<td align="right">-4.254</td>
-<td align="right">-4.855</td>
-<td align="right">-5.329</td>
-<td align="right">-5.708</td>
-<td align="right">-5.979</td>
-<td align="right">-5.889</td>
-<td align="right">-5.888</td>
+<td align="right">-2.176</td>
+<td align="right">-3.440</td>
+<td align="right">-4.257</td>
+<td align="right">-4.870</td>
+<td align="right">-5.352</td>
+<td align="right">-5.723</td>
+<td align="right">-5.567</td>
+<td align="right">-5.537</td>
+<td align="right">-5.581</td>
 </tr>
 <tr class="odd">
 <td align="left">c11</td>
 <td align="right">0.500</td>
-<td align="right">0.603</td>
-<td align="right">0.551</td>
-<td align="right">0.509</td>
-<td align="right">0.475</td>
+<td align="right">0.615</td>
+<td align="right">0.558</td>
+<td align="right">0.514</td>
+<td align="right">0.477</td>
 <td align="right">0.450</td>
 <td align="right">0.431</td>
-<td align="right">0.417</td>
-<td align="right">0.399</td>
-<td align="right">0.384</td>
+<td align="right">0.408</td>
+<td align="right">0.393</td>
+<td align="right">0.378</td>
 </tr>
 <tr class="even">
 <td align="left">c22</td>
 <td align="right">0.500</td>
-<td align="right">0.397</td>
-<td align="right">0.449</td>
-<td align="right">0.491</td>
-<td align="right">0.525</td>
+<td align="right">0.385</td>
+<td align="right">0.442</td>
+<td align="right">0.486</td>
+<td align="right">0.523</td>
 <td align="right">0.550</td>
 <td align="right">0.569</td>
-<td align="right">0.583</td>
-<td align="right">0.601</td>
-<td align="right">0.616</td>
+<td align="right">0.592</td>
+<td align="right">0.607</td>
+<td align="right">0.622</td>
 </tr>
 <tr class="odd">
 <td align="left">auc</td>
-<td align="right">0.874</td>
-<td align="right">0.872</td>
-<td align="right">0.864</td>
-<td align="right">0.851</td>
-<td align="right">0.834</td>
-<td align="right">0.813</td>
-<td align="right">0.786</td>
-<td align="right">0.749</td>
+<td align="right">0.859</td>
+<td align="right">0.857</td>
+<td align="right">0.849</td>
+<td align="right">0.836</td>
+<td align="right">0.819</td>
+<td align="right">0.799</td>
+<td align="right">0.773</td>
+<td align="right">0.744</td>
 <td align="right">0.704</td>
-<td align="right">0.632</td>
+<td align="right">0.642</td>
 </tr>
 <tr class="even">
 <td align="left">se</td>
-<td align="right">0.815</td>
-<td align="right">0.814</td>
-<td align="right">0.808</td>
+<td align="right">0.800</td>
 <td align="right">0.799</td>
-<td align="right">0.787</td>
-<td align="right">0.774</td>
-<td align="right">0.757</td>
-<td align="right">0.735</td>
+<td align="right">0.794</td>
+<td align="right">0.785</td>
+<td align="right">0.775</td>
+<td align="right">0.763</td>
+<td align="right">0.748</td>
+<td align="right">0.731</td>
 <td align="right">0.704</td>
-<td align="right">0.643</td>
+<td align="right">0.651</td>
 </tr>
 <tr class="odd">
 <td align="left">sp</td>
-<td align="right">0.861</td>
-<td align="right">0.861</td>
-<td align="right">0.857</td>
-<td align="right">0.851</td>
-<td align="right">0.841</td>
-<td align="right">0.827</td>
-<td align="right">0.806</td>
-<td align="right">0.775</td>
-<td align="right">0.723</td>
-<td align="right">0.607</td>
+<td align="right">0.859</td>
+<td align="right">0.858</td>
+<td align="right">0.855</td>
+<td align="right">0.848</td>
+<td align="right">0.838</td>
+<td align="right">0.823</td>
+<td align="right">0.802</td>
+<td align="right">0.771</td>
+<td align="right">0.719</td>
+<td align="right">0.600</td>
 </tr>
 </tbody>
 </table>
@@ -810,41 +810,54 @@
 <code class="sourceCode R"><span class="co">## Use dtasens object</span>
 
 <span class="fu"><a href="reference/sAUC.html">sAUC</a></span><span class="op">(</span><span class="va">opt1</span><span class="op">)</span>
-<span class="co">#&gt; 0.851 with absolute error &lt; 1.1e-06</span>
+<span class="co">#&gt; 0.836 with absolute error &lt; 8.8e-07</span>
 <span class="fu"><a href="reference/sAUC.html">sAUC</a></span><span class="op">(</span><span class="va">opt2</span><span class="op">)</span>
-<span class="co">#&gt; 0.851 with absolute error &lt; 1.1e-06</span>
+<span class="co">#&gt; 0.836 with absolute error &lt; 8.8e-07</span>
 
 <span class="co">## Use parameter vector</span>
-<span class="va">par1</span>
-<span class="co">#&gt;     u1     u2     t1     t2      r    t12      b      a    c11    c22    auc </span>
-<span class="co">#&gt;  1.380  1.740  0.596  0.845 -0.354 -0.178  2.000 -4.290  0.500  0.500  0.851 </span>
-<span class="co">#&gt;     se     sp </span>
-<span class="co">#&gt;  0.799  0.851</span>
+<span class="va">par1</span> <span class="op">&lt;-</span> <span class="va">opt1</span><span class="op">$</span><span class="va">par</span>
+<span class="va">par2</span> <span class="op">&lt;-</span> <span class="va">opt2</span><span class="op">$</span><span class="va">par</span>
 <span class="fu"><a href="reference/sAUC.html">sAUC</a></span><span class="op">(</span><span class="va">par1</span><span class="op">)</span>
-<span class="co">#&gt; 0.851 with absolute error &lt; 1.1e-06</span>
-<span class="va">par2</span>
-<span class="co">#&gt;     u1     u2     t1     t2      r    t12      b      a    c11    c22    auc </span>
-<span class="co">#&gt;  1.379  1.741  0.596  0.844 -0.353 -0.178  2.000 -4.254  0.509  0.491  0.851 </span>
-<span class="co">#&gt;     se     sp </span>
-<span class="co">#&gt;  0.799  0.851</span>
+<span class="co">#&gt; 0.836 with absolute error &lt; 8.8e-07</span>
 <span class="fu"><a href="reference/sAUC.html">sAUC</a></span><span class="op">(</span><span class="va">par2</span><span class="op">)</span>
-<span class="co">#&gt; 0.851 with absolute error &lt; 1.1e-06</span>
+<span class="co">#&gt; 0.836 with absolute error &lt; 8.8e-07</span>
 
+
+<span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span>
+
+<span class="fu"><a href="reference/sROC.html">sROC</a></span><span class="op">(</span><span class="va">opt1</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/title.html">title</a></span><span class="op">(</span><span class="st">"dtasens1"</span><span class="op">)</span>
+<span class="fu"><a href="reference/sROC.html">sROC</a></span><span class="op">(</span><span class="va">opt2</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/title.html">title</a></span><span class="op">(</span><span class="st">"dtasens2"</span><span class="op">)</span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-9-1.png" width="100%"></p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R">
+<span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<ol>
+<li>Single sROC with CI</li>
+</ol>
+<!-- end list --><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R">
 <span class="co">## Calculate Parametric Bootstrap CI</span>
 <span class="co">## B (Bootstrapping times) is suggested to be 1000. To save computing time, we use B = 10 to show the functionality.</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span>
 
-<span class="fu"><a href="reference/sAUC.ci.html">sAUC.ci</a></span><span class="op">(</span><span class="va">opt1</span>, B<span class="op">=</span><span class="fl">10</span><span class="op">)</span>
-<span class="co">#&gt;   |                                                |                                        |   0%  |                                                |====                                    |  10%  |                                                |========                                |  20%  |                                                |============                            |  30%  |                                                |================                        |  40%  |                                                |====================                    |  50%  |                                                |========================                |  60%  |                                                |============================            |  70%  |                                                |================================        |  80%  |                                                |====================================    |  90%  |                                                |========================================| 100%</span>
+<span class="fu"><a href="reference/sAUC.ci.html">sAUC.ci</a></span><span class="op">(</span><span class="va">opt1</span>, B<span class="op">=</span><span class="fl">5</span>, plot.ROC.ci <span class="op">=</span> <span class="cn">TRUE</span>, hide.progress <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="co">#&gt;  sAUC  CI.L  CI.L </span>
-<span class="co">#&gt; 0.851 0.774 0.930</span>
-<span class="fu"><a href="reference/sAUC.ci.html">sAUC.ci</a></span><span class="op">(</span><span class="va">opt2</span>, B<span class="op">=</span><span class="fl">10</span><span class="op">)</span>
-<span class="co">#&gt;   |                                                |                                        |   0%  |                                                |====                                    |  10%  |                                                |========                                |  20%  |                                                |============                            |  30%  |                                                |================                        |  40%  |                                                |====================                    |  50%  |                                                |========================                |  60%  |                                                |============================            |  70%  |                                                |================================        |  80%  |                                                |====================================    |  90%  |                                                |========================================| 100%</span>
+<span class="co">#&gt; 0.836 0.788 0.864</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/title.html">title</a></span><span class="op">(</span><span class="st">"dtasens1"</span><span class="op">)</span>
+<span class="fu"><a href="reference/sAUC.ci.html">sAUC.ci</a></span><span class="op">(</span><span class="va">opt2</span>, B<span class="op">=</span><span class="fl">5</span>, plot.ROC.ci <span class="op">=</span> <span class="cn">TRUE</span>, hide.progress <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="co">#&gt;  sAUC  CI.L  CI.L </span>
-<span class="co">#&gt; 0.851 0.804 0.878</span></code></pre></div>
+<span class="co">#&gt; 0.836 0.800 0.863</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/title.html">title</a></span><span class="op">(</span><span class="st">"dtasens2"</span><span class="op">)</span></code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-10-1.png" width="100%"></p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R">
+<span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <ol>
 <li>Multiple sAUC</li>
 </ol>
-<!-- end list --><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<!-- end list --><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="co">## Calculate Parametric Bootstrap CI</span>
 
@@ -885,46 +898,46 @@
 <tbody>
 <tr class="odd">
 <td align="left">sAUC</td>
-<td align="right">0.874</td>
-<td align="right">0.872</td>
-<td align="right">0.864</td>
-<td align="right">0.851</td>
-<td align="right">0.834</td>
-<td align="right">0.810</td>
-<td align="right">0.778</td>
-<td align="right">0.729</td>
-<td align="right">0.657</td>
-<td align="right">0.540</td>
+<td align="right">0.859</td>
+<td align="right">0.857</td>
+<td align="right">0.849</td>
+<td align="right">0.836</td>
+<td align="right">0.819</td>
+<td align="right">0.795</td>
+<td align="right">0.763</td>
+<td align="right">0.72</td>
+<td align="right">0.659</td>
+<td align="right">0.554</td>
 </tr>
 <tr class="even">
 <td align="left">CI.L</td>
-<td align="right">0.852</td>
+<td align="right">0.820</td>
 <td align="right">0.845</td>
-<td align="right">0.821</td>
-<td align="right">0.720</td>
-<td align="right">0.715</td>
-<td align="right">0.645</td>
-<td align="right">0.686</td>
+<td align="right">0.797</td>
+<td align="right">0.819</td>
+<td align="right">0.719</td>
+<td align="right">0.725</td>
 <td align="right">0.629</td>
-<td align="right">0.534</td>
-<td align="right">0.392</td>
+<td align="right">0.46</td>
+<td align="right">0.583</td>
+<td align="right">0.333</td>
 </tr>
 <tr class="odd">
 <td align="left">CI.U</td>
-<td align="right">0.897</td>
-<td align="right">0.894</td>
-<td align="right">0.899</td>
-<td align="right">0.927</td>
-<td align="right">0.932</td>
-<td align="right">0.950</td>
-<td align="right">0.944</td>
-<td align="right">0.920</td>
-<td align="right">0.987</td>
-<td align="right">0.966</td>
+<td align="right">0.898</td>
+<td align="right">0.873</td>
+<td align="right">0.886</td>
+<td align="right">0.849</td>
+<td align="right">0.862</td>
+<td align="right">0.900</td>
+<td align="right">0.847</td>
+<td align="right">0.91</td>
+<td align="right">0.751</td>
+<td align="right">0.783</td>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">sauc2</span><span class="op">)</span><span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"p = "</span>, <span class="va">p.seq</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">sauc2</span><span class="op">)</span><span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"sAUC"</span>, <span class="st">"CI.L"</span>, <span class="st">"CI.U"</span><span class="op">)</span>
@@ -946,42 +959,42 @@
 <tbody>
 <tr class="odd">
 <td align="left">sAUC</td>
-<td align="right">0.874</td>
-<td align="right">0.872</td>
-<td align="right">0.864</td>
-<td align="right">0.851</td>
-<td align="right">0.834</td>
-<td align="right">0.813</td>
-<td align="right">0.786</td>
-<td align="right">0.749</td>
+<td align="right">0.859</td>
+<td align="right">0.857</td>
+<td align="right">0.849</td>
+<td align="right">0.836</td>
+<td align="right">0.819</td>
+<td align="right">0.799</td>
+<td align="right">0.773</td>
+<td align="right">0.744</td>
 <td align="right">0.704</td>
-<td align="right">0.632</td>
+<td align="right">0.642</td>
 </tr>
 <tr class="even">
 <td align="left">CI.L</td>
-<td align="right">0.827</td>
-<td align="right">0.804</td>
-<td align="right">0.837</td>
-<td align="right">0.780</td>
-<td align="right">0.806</td>
-<td align="right">0.648</td>
-<td align="right">0.696</td>
-<td align="right">0.576</td>
-<td align="right">0.506</td>
-<td align="right">0.442</td>
+<td align="right">0.843</td>
+<td align="right">0.811</td>
+<td align="right">0.788</td>
+<td align="right">0.805</td>
+<td align="right">0.758</td>
+<td align="right">0.728</td>
+<td align="right">0.710</td>
+<td align="right">0.641</td>
+<td align="right">0.504</td>
+<td align="right">0.199</td>
 </tr>
 <tr class="odd">
 <td align="left">CI.U</td>
-<td align="right">0.914</td>
-<td align="right">0.899</td>
-<td align="right">0.887</td>
-<td align="right">0.901</td>
-<td align="right">0.868</td>
-<td align="right">0.876</td>
-<td align="right">0.862</td>
-<td align="right">0.822</td>
-<td align="right">0.849</td>
-<td align="right">0.811</td>
+<td align="right">0.875</td>
+<td align="right">0.886</td>
+<td align="right">0.913</td>
+<td align="right">0.861</td>
+<td align="right">0.865</td>
+<td align="right">0.831</td>
+<td align="right">0.845</td>
+<td align="right">0.826</td>
+<td align="right">0.891</td>
+<td align="right">0.864</td>
 </tr>
 </tbody>
 </table>
@@ -989,7 +1002,7 @@
 <li>Plot sAUC</li>
 </ol>
 <p>This is an example of hwo to plot sAUC and CI. In analysis, please set <code>B = 1000</code> and then reproduce the plots.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span>
 
 <span class="co">## Use matplot to plot the sAUC and CI</span>
@@ -1009,8 +1022,8 @@
         xaxt <span class="op">=</span> <span class="st">"n"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/axis.html">axis</a></span><span class="op">(</span><span class="fl">1</span>, at <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, labels <span class="op">=</span> <span class="va">p.seq</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/title.html">title</a></span><span class="op">(</span><span class="st">"dtasens2"</span><span class="op">)</span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-11-1.png" width="100%"></p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<p><img src="reference/figures/README-unnamed-chunk-12-1.png" width="100%"></p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 </div>
