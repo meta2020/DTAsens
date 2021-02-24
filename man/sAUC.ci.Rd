@@ -12,6 +12,7 @@ sAUC.ci(
   ci.level = 0.95,
   hide.progress = FALSE,
   plot.ROC.ci = FALSE,
+  add.plot.ROC.ci = FALSE,
   add.sum.point = FALSE,
   roc.ci.col = "grey",
   roc.ci.lty = 1,
@@ -23,7 +24,7 @@ sAUC.ci(
 \item{object}{object from function \code{dtasens1} or \code{dtasens2}.}
 
 \item{B}{The times for parametric bootstrapping.
-Default is 1000. 
+Default is 1000.
 It may be time consuming.}
 
 \item{ncores}{Set the an integer number of cores that will be used in parallel computing.
@@ -41,6 +42,10 @@ Default is not to hide.}
 
 \item{plot.ROC.ci}{Whether to show the plot of sROC with the CIs lines.
 Default is not to plot.}
+
+\item{add.plot.ROC.ci}{Whether to add the plot of sROC with the CIs lines
+onto a new plot.
+Default is not to add.}
 
 \item{add.sum.point}{Whether to add the summary point in the sROC plot.
 Default it not the add.}
@@ -64,7 +69,7 @@ Calculate the parametric bootstrap confidence interval (CI) for sROC and sAUC
 }
 \examples{
 
-## Here, we set B = 5 to save time in the calculation. 
+## Here, we set B = 5 to save time in the calculation.
 ## But, the results are not reliable.
 
 opt1 <- dtasens1(IVD, p = 0.7)

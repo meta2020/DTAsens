@@ -802,11 +802,11 @@
 <h3 class="hasAnchor">
 <a href="#calculate-sauc-and-confident-interval" class="anchor"></a>Calculate sAUC and confident interval</h3>
 <p>Although sAUC has output together with the parameters in <code>dtasens1</code> and <code>dtasens2</code> functions. We can still calculate by using <code>sAUC</code> function.</p>
-<p>The confidence interval (CI) is calculated by parametric bootstrapping.</p>
-<ol>
-<li>Single sROC</li>
-</ol>
-<!-- end list --><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<p>The confidence interval (CI) is calculated by parametric bootstrapping. To save computing time, we set bootstrapping times as 5 (<code>B = 5</code>). Hence the results are not reliable.</p>
+<div id="1-single-sroc" class="section level4">
+<h4 class="hasAnchor">
+<a href="#1-single-sroc" class="anchor"></a>1. Single sROC</h4>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## Use dtasens object</span>
 
 <span class="fu"><a href="reference/sAUC.html">sAUC</a></span><span class="op">(</span><span class="va">opt1</span><span class="op">)</span>
@@ -833,10 +833,11 @@
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<ol>
-<li>Single sROC with CI</li>
-</ol>
-<!-- end list --><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+</div>
+<div id="2-single-sroc-with-ci" class="section level4">
+<h4 class="hasAnchor">
+<a href="#2-single-sroc-with-ci" class="anchor"></a>2. Single sROC with CI</h4>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="co">## Calculate Parametric Bootstrap CI</span>
 <span class="co">## B (Bootstrapping times) is suggested to be 1000. To save computing time, we use B = 10 to show the functionality.</span>
@@ -844,20 +845,21 @@
 
 <span class="fu"><a href="reference/sAUC.ci.html">sAUC.ci</a></span><span class="op">(</span><span class="va">opt1</span>, B<span class="op">=</span><span class="fl">5</span>, plot.ROC.ci <span class="op">=</span> <span class="cn">TRUE</span>, hide.progress <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="co">#&gt;  sAUC  CI.L  CI.L </span>
-<span class="co">#&gt; 0.836 0.788 0.864</span>
+<span class="co">#&gt; 0.836 0.819 0.865</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/title.html">title</a></span><span class="op">(</span><span class="st">"dtasens1"</span><span class="op">)</span>
 <span class="fu"><a href="reference/sAUC.ci.html">sAUC.ci</a></span><span class="op">(</span><span class="va">opt2</span>, B<span class="op">=</span><span class="fl">5</span>, plot.ROC.ci <span class="op">=</span> <span class="cn">TRUE</span>, hide.progress <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="co">#&gt;  sAUC  CI.L  CI.L </span>
-<span class="co">#&gt; 0.836 0.800 0.863</span>
+<span class="co">#&gt; 0.836 0.821 0.848</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/title.html">title</a></span><span class="op">(</span><span class="st">"dtasens2"</span><span class="op">)</span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-10-1.png" width="100%"></p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<ol>
-<li>Multiple sAUC</li>
-</ol>
-<!-- end list --><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+</div>
+<div id="3-multiple-sauc" class="section level4">
+<h4 class="hasAnchor">
+<a href="#3-multiple-sauc" class="anchor"></a>3. Multiple sAUC</h4>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="co">## Calculate Parametric Bootstrap CI</span>
 
@@ -905,35 +907,35 @@
 <td align="right">0.819</td>
 <td align="right">0.795</td>
 <td align="right">0.763</td>
-<td align="right">0.72</td>
+<td align="right">0.720</td>
 <td align="right">0.659</td>
 <td align="right">0.554</td>
 </tr>
 <tr class="even">
 <td align="left">CI.L</td>
-<td align="right">0.820</td>
 <td align="right">0.845</td>
+<td align="right">0.822</td>
+<td align="right">0.830</td>
 <td align="right">0.797</td>
-<td align="right">0.819</td>
-<td align="right">0.719</td>
-<td align="right">0.725</td>
-<td align="right">0.629</td>
-<td align="right">0.46</td>
-<td align="right">0.583</td>
-<td align="right">0.333</td>
+<td align="right">0.740</td>
+<td align="right">0.762</td>
+<td align="right">0.711</td>
+<td align="right">0.574</td>
+<td align="right">0.513</td>
+<td align="right">0.406</td>
 </tr>
 <tr class="odd">
 <td align="left">CI.U</td>
-<td align="right">0.898</td>
-<td align="right">0.873</td>
-<td align="right">0.886</td>
-<td align="right">0.849</td>
-<td align="right">0.862</td>
-<td align="right">0.900</td>
-<td align="right">0.847</td>
-<td align="right">0.91</td>
-<td align="right">0.751</td>
-<td align="right">0.783</td>
+<td align="right">0.874</td>
+<td align="right">0.878</td>
+<td align="right">0.875</td>
+<td align="right">0.872</td>
+<td align="right">0.867</td>
+<td align="right">0.828</td>
+<td align="right">0.852</td>
+<td align="right">0.811</td>
+<td align="right">0.839</td>
+<td align="right">0.677</td>
 </tr>
 </tbody>
 </table>
@@ -972,36 +974,37 @@
 </tr>
 <tr class="even">
 <td align="left">CI.L</td>
-<td align="right">0.843</td>
-<td align="right">0.811</td>
-<td align="right">0.788</td>
-<td align="right">0.805</td>
-<td align="right">0.758</td>
-<td align="right">0.728</td>
-<td align="right">0.710</td>
-<td align="right">0.641</td>
-<td align="right">0.504</td>
-<td align="right">0.199</td>
+<td align="right">0.851</td>
+<td align="right">0.842</td>
+<td align="right">0.817</td>
+<td align="right">0.813</td>
+<td align="right">0.759</td>
+<td align="right">0.691</td>
+<td align="right">0.725</td>
+<td align="right">0.665</td>
+<td align="right">0.463</td>
+<td align="right">0.260</td>
 </tr>
 <tr class="odd">
 <td align="left">CI.U</td>
-<td align="right">0.875</td>
-<td align="right">0.886</td>
-<td align="right">0.913</td>
-<td align="right">0.861</td>
-<td align="right">0.865</td>
-<td align="right">0.831</td>
-<td align="right">0.845</td>
-<td align="right">0.826</td>
-<td align="right">0.891</td>
+<td align="right">0.869</td>
+<td align="right">0.874</td>
+<td align="right">0.878</td>
+<td align="right">0.862</td>
+<td align="right">0.856</td>
 <td align="right">0.864</td>
+<td align="right">0.813</td>
+<td align="right">0.825</td>
+<td align="right">0.881</td>
+<td align="right">0.910</td>
 </tr>
 </tbody>
 </table>
-<ol>
-<li>Plot sAUC</li>
-</ol>
-<p>This is an example of hwo to plot sAUC and CI. In analysis, please set <code>B = 1000</code> and then reproduce the plots.</p>
+</div>
+<div id="4-plot-sauc" class="section level4">
+<h4 class="hasAnchor">
+<a href="#4-plot-sauc" class="anchor"></a>4. Plot sAUC</h4>
+<p>This is an example of how to plot sAUC and CI. In analysis, please set <code>B = 1000</code> and then reproduce the plots.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span>
 
@@ -1026,6 +1029,7 @@
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 <span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+</div>
 </div>
 </div>
 </div>
