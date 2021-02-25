@@ -73,7 +73,7 @@ Calculate the parametric bootstrap confidence interval (CI) for sROC and sAUC
 ## But, the results are not reliable.
 
 opt1 <- dtasens1(IVD, p = 0.7)
-(ci <- sAUC.ci(opt1, B = 5, plot.ROC.ci = FALSE))
+(ci <- sAUC.ci(opt1, B = 5, plot.ROC.ci = TRUE))
 
 }
 \seealso{

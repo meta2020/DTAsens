@@ -62,7 +62,7 @@
 #' ## But, the results are not reliable.
 #'
 #' opt1 <- dtasens1(IVD, p = 0.7)
-#' (ci <- sAUC.ci(opt1, B = 5, plot.ROC.ci = FALSE))
+#' (ci <- sAUC.ci(opt1, B = 5, plot.ROC.ci = TRUE))
 #'
 #' @export
 
@@ -161,7 +161,6 @@ sAUC.ci <- function(object, B = 1000,
        bs.par  = PAR,
        cluster = cl)
 
-  class(list) <- "sAUC.ci"
 
   if(plot.ROC.ci){
 
@@ -177,19 +176,26 @@ sAUC.ci <- function(object, B = 1000,
 
     })
 
+
     sROC(object, add.sum.point = add.sum.point, add = add.plot.ROC.ci,...)
 
     ci <- cbind(
 
       apply(se.t, 1, function(x) quantile(x, (1-ci.level)/2, na.rm = TRUE)),
       apply(se.t, 1, function(x) quantile(x, probs = 1-(1-ci.level)/2, na.rm = TRUE))
+
       )
 
     matplot(x = fpr.t, y = ci, type = "l",
             col = roc.ci.col, lty = roc.ci.lty, lwd = roc.ci.lwd,
             add = TRUE)
 
+    list <- c(list, roc.ci <- list(x = fpr.t, y = ci))
+
+
   }
+
+  class(list) <- "sAUC.ci"
 
   list
 
