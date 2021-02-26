@@ -10,6 +10,7 @@ sAUC.ci(
   ncores = 0,
   type = "SOCK",
   ci.level = 0.95,
+  set.seed = NULL,
   hide.progress = FALSE,
   plot.ROC.ci = FALSE,
   add.plot.ROC.ci = FALSE,
@@ -36,6 +37,9 @@ See \code{type} augment in function \code{\link[parallel]{makeCluster}}.}
 \item{ci.level}{The significant value for confidence interval.
 Default is 0.95, hence, a 2-tailed 95% CIs will be calculated by
 profile likelihood.}
+
+\item{set.seed}{Give a integer to set the seed.
+Default is NULL, which does not set any seed to fix the bootstrap results.}
 
 \item{hide.progress}{Whether to hide the progress bar in the calculation.
 Default is not to hide.}
@@ -73,7 +77,7 @@ Calculate the parametric bootstrap confidence interval (CI) for sROC and sAUC
 ## But, the results are not reliable.
 
 opt1 <- dtasens1(IVD, p = 0.7)
-(ci <- sAUC.ci(opt1, B = 5, plot.ROC.ci = TRUE))
+(ci <- sAUC.ci(opt1, B = 5, set.seed = 1, plot.ROC.ci = TRUE))
 
 }
 \seealso{
