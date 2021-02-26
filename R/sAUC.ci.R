@@ -117,8 +117,8 @@ sAUC.ci <- function(object, B = 1000,
     set.seed(set.seed)
     par <- foreach(r=1:B, .combine=c, .packages="DTAsens", .options.snow = opts)  %dorng%  {
 
-      y1.t <- sapply(1:S, function(i) rnorm(1,y1[i],v1[i]))
-      y2.t <- sapply(1:S, function(i) rnorm(1,y2[i],v2[i]))
+      y1.t <- sapply(1:S, function(i) rnorm(1,y1[i],sqrt(v1[i])))
+      y2.t <- sapply(1:S, function(i) rnorm(1,y2[i],sqrt(v2[i])))
 
       data.t <- data.frame(y1 = y1.t, y2 = y2.t, v1 = v1, v2 = v2)
 
@@ -135,8 +135,8 @@ sAUC.ci <- function(object, B = 1000,
 
     par <- foreach(r=1:B, .combine=c, .packages="DTAsens", .options.snow = opts)  %dorng%  {
 
-      y1.t <- sapply(1:S, function(i) rnorm(1,y1[i],v1[i]))
-      y2.t <- sapply(1:S, function(i) rnorm(1,y2[i],v2[i]))
+      y1.t <- sapply(1:S, function(i) rnorm(1,y1[i], sqrt(v1[i])))
+      y2.t <- sapply(1:S, function(i) rnorm(1,y2[i], sqrt(v2[i])))
 
       data.t <- data.frame(y1 = y1.t, y2 = y2.t, v1 = v1, v2 = v2)
       args <- c(list(data = data.t), object$pars.info)
