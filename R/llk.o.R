@@ -1,9 +1,9 @@
 
 ##
-## LIKELIHOOD FUNCTION (8 PARS)-----------------------------------------------
+## LIKELIHOOD FUNCTION (OBSERVED)-----------------------------------------------
 ##
 
-llk.fn <- function(par, data, p, a.interval, a.root.extendInt, show.warn.message,...) {
+llk.o <- function(par, data, p, a.interval, a.root.extendInt, show.warn.message,...) {
 
   n <- nrow(data)
 

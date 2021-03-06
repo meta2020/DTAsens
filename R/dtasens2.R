@@ -22,12 +22,12 @@
 #' It should be changed by a vector of u1 u2 t1 t2 r, \code{c(u1, u2, t1, t2, r)}.
 #' Bad starting values will cause non-convergence results.
 #'
-#' @param b0 A starting value of \eqn{\beta}{b}. 
+#' @param b0 A starting value of \eqn{\beta}{b}.
 #' Default is 0.1.
 #' Avoid to start from 0.
 #' Bad starting value will cause non-convergence results.
 #'
-#' @param c10 A starting value of \eqn{c_1}{c1}. 
+#' @param c10 A starting value of \eqn{c_1}{c1}.
 #' Default is \eqn{\sqrt{0.5}}{0.701}.
 #' Avoid to start from 0.
 #' Bad starting value will cause non-convergence results.
@@ -134,7 +134,7 @@ dtasens2 <- function(data,
         p1 <- round(sqrt(fit.m$Psi[1]),1)
         p2 <- round(sqrt(fit.m$Psi[4]),1)
         p.r<- round(fit.m$Psi[3]/(p1*p2),1)
-        start7 <- c(round(fit.m$coefficients,1), p1,p2, p.r, b0, c10)
+        start7[1:5] <- c(round(fit.m$coefficients,1), p1, p2, p.r)
 
       }
 
@@ -142,14 +142,14 @@ dtasens2 <- function(data,
 
     if(!pos.r) r.up <- 0 else  r.up <- 1
 
-    fn <- function(par) llk.fn(par,
+    fn <- function(par) llk.o(par,
                                data = data, p = p,
                                a.root.extendInt = a.root.extendInt, a.interval = a.interval,
                                show.warn.message = show.warn.message, ...)
 
-    opt <- try(optim(start7,
+    opt <- try(nlminb(start7,
                      fn,
-                     method="L-BFGS-B",
+                     #method="L-BFGS-B",
                      lower = c(-5, -5, 0, 0,-1, b.interval[1], 0),
                      upper = c( 5,  5, 3, 3, r.up, b.interval[2], 1)
     ),silent = TRUE)
@@ -161,49 +161,49 @@ dtasens2 <- function(data,
     ##
 
     # u1
-    fx <- function(x) fn(par = c(x, opt$par[c(2:7)]))- opt$value - qchisq(ci.level,1)/2
+    fx <- function(x) fn(par = c(x, opt$par[c(2:7)]))- opt$objective - qchisq(ci.level,1)/2
     u1.l <- try(uniroot(fx, c(-5, opt$par[1])), silent = TRUE)
     u1.u <- try(uniroot(fx, c(opt$par[1],  5)), silent = TRUE)
     if (!inherits(u1.l, "try-error")) u1.l <- u1.l$root else u1.l <- NA
     if (!inherits(u1.u, "try-error")) u1.u <- u1.u$root else u1.u <- NA
 
     # u2
-    fx <- function(x) fn(par = c(opt$par[1], x, opt$par[3:7]))- opt$value - qchisq(ci.level,1)/2
+    fx <- function(x) fn(par = c(opt$par[1], x, opt$par[3:7]))- opt$objective - qchisq(ci.level,1)/2
     u2.l <- try(uniroot(fx, c(-5, opt$par[2])), silent = TRUE)
     u2.u <- try(uniroot(fx, c(opt$par[2],  5)), silent = TRUE)
     if (!inherits(u2.l, "try-error")) u2.l <- u2.l$root else u2.l <- NA
     if (!inherits(u2.u, "try-error")) u2.u <- u2.u$root else u2.u <- NA
 
     # t1
-    fx <- function(x) fn(par = c(opt$par[1:2], x, opt$par[4:7]))- opt$value - qchisq(ci.level,1)/2
+    fx <- function(x) fn(par = c(opt$par[1:2], x, opt$par[4:7]))- opt$objective - qchisq(ci.level,1)/2
     t1.l <- try(uniroot(fx, c(0, opt$par[3])), silent = TRUE)
     t1.u <- try(uniroot(fx, c(opt$par[3], 3)), silent = TRUE)
     if (!inherits(t1.l, "try-error")) t1.l <- t1.l$root else t1.l <- NA # 0
     if (!inherits(t1.u, "try-error")) t1.u <- t1.u$root else t1.u <- NA #3
 
     # t2
-    fx <- function(x) fn(par = c(opt$par[1:3], x, opt$par[5:7]))- opt$value - qchisq(ci.level,1)/2
+    fx <- function(x) fn(par = c(opt$par[1:3], x, opt$par[5:7]))- opt$objective - qchisq(ci.level,1)/2
     t2.l <- try(uniroot(fx, c(0, opt$par[4])), silent = TRUE)
     t2.u <- try(uniroot(fx, c(opt$par[4], 3)), silent = TRUE)
     if (!inherits(t2.l, "try-error")) t2.l <- t2.l$root else t2.l <- NA #0
     if (!inherits(t2.u, "try-error")) t2.u <- t2.u$root else t2.u <- NA #3
 
     # r
-    fx <- function(x) fn(par = c(opt$par[1:4], x, opt$par[6:7]))- opt$value - qchisq(ci.level,1)/2
+    fx <- function(x) fn(par = c(opt$par[1:4], x, opt$par[6:7]))- opt$objective - qchisq(ci.level,1)/2
     r.l <- try(uniroot(fx, c(-1,   opt$par[5])), silent = TRUE)
     r.u <- try(uniroot(fx, c(opt$par[5], r.up)), silent = TRUE)
     if (!inherits(r.l, "try-error")) r.l <- r.l$root else r.l <- NA #-1
     if (!inherits(r.u, "try-error")) r.u <- r.u$root else r.u <- NA #r.up
 
     # b
-    fx <- function(x) fn(par = c(opt$par[1:5], x,  opt$par[7]))- opt$value - qchisq(ci.level,1)/2
+    fx <- function(x) fn(par = c(opt$par[1:5], x,  opt$par[7]))- opt$objective - qchisq(ci.level,1)/2
     b.l <- try(uniroot(fx, c(b.interval[1], opt$par[6])), silent = TRUE)
     b.u <- try(uniroot(fx, c(opt$par[6], b.interval[2])), silent = TRUE)
     if (!inherits(b.l, "try-error")) b.l <- b.l$root else b.l <- NA #b.interval[1]
     if (!inherits(b.u, "try-error")) b.u <- b.u$root else b.u <- NA #b.interval[2]
 
     # c1
-    fx <- function(x) fn(par = c(opt$par[1:6], x))- opt$value - qchisq(ci.level,1)/2
+    fx <- function(x) fn(par = c(opt$par[1:6], x))- opt$objective - qchisq(ci.level,1)/2
     c.l <- try(uniroot(fx, c(0, opt$par[7])), silent = TRUE)
     c.u <- try(uniroot(fx, c(opt$par[7], 1)), silent = TRUE)
     if (!inherits(c.l, "try-error")) c.l <- c.l$root else c.l <- NA #0

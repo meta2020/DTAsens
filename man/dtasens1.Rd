@@ -29,7 +29,7 @@ Either data with the number of subjects or logit transformed data works.}
 
 \item{p}{Specified probability of selection (or publication); Pr(select) = p}
 
-\item{c1}{Pre-specified \eqn{c_1}{c1}. 
+\item{c1}{Pre-specified \eqn{c_1}{c1}.
 Default value is 0.5;
 hence, \eqn{c_2^2 = 1 - c_1^2}{c1^2 = 1-c2^2}}
 
@@ -46,7 +46,7 @@ Default is \code{NULL}, which set the estimation from standard model as starting
 It should be changed by a vector of u1 u2 t1 t2 r, \code{c(u1, u2, t1, t2, r)}.
 Bad starting values will cause non-convergence results.}
 
-\item{b0}{A starting value of \eqn{\beta}{b}. 
+\item{b0}{A starting value of \eqn{\beta}{b}.
 Default is 0.1.
 Avoid to start from 0.
 Bad starting value will cause non-convergence results.}

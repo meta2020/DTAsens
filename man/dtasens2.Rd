@@ -42,12 +42,12 @@ Default is \code{NULL}, which set the estimation from standard model as starting
 It should be changed by a vector of u1 u2 t1 t2 r, \code{c(u1, u2, t1, t2, r)}.
 Bad starting values will cause non-convergence results.}
 
-\item{b0}{A starting value of \eqn{\beta}{b}. 
+\item{b0}{A starting value of \eqn{\beta}{b}.
 Default is 0.1.
 Avoid to start from 0.
 Bad starting value will cause non-convergence results.}
 
-\item{c10}{A starting value of \eqn{c_1}{c1}. 
+\item{c10}{A starting value of \eqn{c_1}{c1}.
 Default is \eqn{\sqrt{0.5}}{0.701}.
 Avoid to start from 0.
 Bad starting value will cause non-convergence results.}
