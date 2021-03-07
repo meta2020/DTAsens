@@ -4,31 +4,37 @@
 #'
 #' @param object The object from function \code{dtasens1} or \code{dtasens2};
 #' or a vector of \code{c(u1, u2, t1, t2, r)}
-#' 
+#'
 #' @param add Whether to add the plot into an existed plot.
 #' Default is \code{FALSE}, to create a new plot.
-#' 
+#'
 #' @param roc.col The color of sROC.
 #' Default is black.
-#' 
+#'
 #' @param roc.lty The line type of sROC.
 #' Default is solid.
-#' 
+#'
 #' @param roc.lwd The line width of sROC.
 #' Default is 1.
-#' 
+#'
 #' @param add.sum.point Whether to add the summary point in the sROC plot.
 #' Default it not the add.
-#' 
+#'
 #' @param spoint.pch The type of the point.
 #' Default is 19.
-#' 
+#'
 #' @param spoint.col The color of the point.
 #' Default is black.
-#' 
+#'
 #' @param spoint.cex The size of the point.
 #' Default is 1.
-#' 
+#'
+#' @param xlab The label of x-axis.
+#' Default is: 1-specificity.
+#'
+#' @param ylab The label of y-axis.
+#' Default is Sensitivity.
+#'
 #' @param ... Other augments in function \code{\link{points}} or function \code{\link{curve}}
 #'
 #' @return sROC plot
@@ -36,18 +42,18 @@
 #' @importFrom grDevices gray.colors
 #' @importFrom graphics curve lines points matplot
 #' @importFrom stats qnorm
-#' 
-#' @seealso 
+#'
+#' @seealso
 #' \code{\link[graphics]{points}},
 #' \code{\link[graphics]{curve}},
 #' \code{\link{dtasens1}},
 #' \code{\link{dtasens2}}.
-#' 
+#'
 #' @examples
 #'
 #' opt1 <- dtasens1(IVD, p = 0.7)
 #' sROC(opt1)
-#' 
+#'
 #' par.vec <- c(1,1, 0.5, 0.5, -0.6)
 #' sROC(par.vec)
 #'
@@ -62,6 +68,8 @@ sROC <- function(object,
                  spoint.pch = 19,
                  spoint.col = 1,
                  spoint.cex = 1,
+                 xlab = "1-specificity",
+                 ylab = "Sensitivity",
                  ...) {
 
   if(inherits(object,"dtasens")) par.vec <- object$par else {
@@ -80,7 +88,7 @@ sROC <- function(object,
 
   roc   <- function(x) plogis(u1 - (r*t1/t2) * (qlogis(x) + u2))
 
-  curve(roc, xlab = "FPR", ylab = "TPR", add = add, col = roc.col, lwd =roc.lwd,lty = roc.lty,
+  curve(roc, xlab = xlab, ylab = ylab, add = add, col = roc.col, lwd =roc.lwd,lty = roc.lty,
         xlim = c(0,1), ylim = c(0,1), ...)
 
   if(add.sum.point) points(plogis(-u2), plogis(u1), pch = spoint.pch, col = spoint.col, ...)
@@ -92,62 +100,68 @@ sROC <- function(object,
 #' @title Plot multiple summary ROC curves
 #'
 #' @description Plot multiple ROC curves
-#' 
-#' @param par.matrix A matrix with 5 rows. 
+#'
+#' @param par.matrix A matrix with 5 rows.
 #' Each column is the vector \code{c(u1, u2, t1, t2, r)}.
-#' 
+#'
 #' @param add Whether to add the plot into an existed plot.
 #' Default is \code{FALSE}, to create a new plot.
-#' 
+#'
 #' @param ncols Set different colors for multiple sROC.
 #' Defult is \code{NULL}, that uses different grey's colors.
-#' 
+#'
 #' @param roc.lty The line tyoe of sROC.
 #' Default is solid lines.
-#' 
+#'
 #' @param roc.lwd The line width of sROC.
 #' Default is 1.
-#' 
+#'
 #' @param add.sum.point Whether to add the summary point in the sROC plot.
 #' Default it not the add.
-#' 
+#'
 #' @param legend Whether to add legend into the plot.
 #' Default is not to add.
-#' 
+#'
 #' @param p.vec If add the legend (\code{legend = TRUE}),
 #' define the probability sequence.
-#' 
+#'
 #' @param legend.text If add the legend (\code{legend = TRUE}),
 #' define the legend context.
-#' 
+#'
 #' @param legend.cex The font size of legend.
-#' 
+#'
 #' @param spoint.pch The point type of the summary point in sROC.
 #'
 #' @param spoint.cex The point size of the summary point in sROC.
-#' 
+#'
+#' @param xlab The label of x-axis.
+#' Default is: 1-specificity.
+#'
+#' @param ylab The label of y-axis.
+#' Default is Sensitivity.
+#'
 #' @param ... Other augments in function \code{\link{points}} or function \code{\link{curve}}
 #'
 #' @return sROC plot
-#' 
-#' @seealso 
+#'
+#' @seealso
 #' \code{\link[graphics]{points}},
 #' \code{\link[graphics]{curve}},
 #' \code{\link{dtasens1}},
 #' \code{\link{dtasens2}}.
-#' 
+#'
 #'
 #' @examples
 #'
 #' par.matrix <-cbind(c(1,1.5,0.5, 0.5, -0.2),
-#'                    c(1, 1, 1, 2, -0.6), 
+#'                    c(1, 1, 1, 2, -0.6),
 #'                    c(1.8, 2, 1, 2, -0.6))
-#' 
+#'
 #' p.vec <- seq(0.2,0.6,0.2)
-#' 
+#'
 #' msROC(par.matrix, legend = TRUE, p.vec = p.vec, legend.cex = 0.9)
-#' msROC(par.matrix, legend = TRUE, 
-#'       legend.text = c("l1", "l2", "l3"), 
+#' msROC(par.matrix, legend = TRUE,
+#'       legend.text = c("l1", "l2", "l3"),
 #'       legend.cex = 0.9, ncols = 1:3)
 #'
 #' @export
@@ -164,11 +178,14 @@ msROC <- function(par.matrix,  ## u1 u2 t12 t22
                  legend.cex = 1,
                  spoint.pch = 19,
                  spoint.cex = 1,
+                 xlab = "1 - specificity",
+                 ylab = "Sensitivity",
+
                  ...) {
 
   if(nrow(par.matrix) < 5) stop("PLEASE CHECK THE INPUT MATRIX")
 
-  if (!add) plot(NULL, xlim=c(0,1), ylim=c(0,1), xlab = "FPR", ylab = "TPR")
+  if (!add) plot(NULL, xlim=c(0,1), ylim=c(0,1), xlab = xlab, ylab = ylab)
 
   if (is.null(ncols)) ncols <- gray.colors(ncol(par.matrix), gamma = 1, start = 0, end = 0.8)
 

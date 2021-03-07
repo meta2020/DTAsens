@@ -17,11 +17,13 @@ msROC(
   legend.cex = 1,
   spoint.pch = 19,
   spoint.cex = 1,
+  xlab = "1 - specificity",
+  ylab = "Sensitivity",
   ...
 )
 }
 \arguments{
-\item{par.matrix}{A matrix with 5 rows. 
+\item{par.matrix}{A matrix with 5 rows.
 Each column is the vector \code{c(u1, u2, t1, t2, r)}.}
 
 \item{add}{Whether to add the plot into an existed plot.
@@ -54,6 +56,12 @@ define the legend context.}
 
 \item{spoint.cex}{The point size of the summary point in sROC.}
 
+\item{xlab}{The label of x-axis.
+Default is: 1-specificity.}
+
+\item{ylab}{The label of y-axis.
+Default is Sensitivity.}
+
 \item{...}{Other augments in function \code{\link{points}} or function \code{\link{curve}}}
 }
 \value{
@@ -65,14 +73,14 @@ Plot multiple ROC curves
 \examples{
 
 par.matrix <-cbind(c(1,1.5,0.5, 0.5, -0.2),
-                   c(1, 1, 1, 2, -0.6), 
+                   c(1, 1, 1, 2, -0.6),
                    c(1.8, 2, 1, 2, -0.6))
 
 p.vec <- seq(0.2,0.6,0.2)
 
 msROC(par.matrix, legend = TRUE, p.vec = p.vec, legend.cex = 0.9)
-msROC(par.matrix, legend = TRUE, 
-      legend.text = c("l1", "l2", "l3"), 
+msROC(par.matrix, legend = TRUE,
+      legend.text = c("l1", "l2", "l3"),
       legend.cex = 0.9, ncols = 1:3)
 
 }

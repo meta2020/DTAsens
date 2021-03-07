@@ -14,6 +14,8 @@ sROC(
   spoint.pch = 19,
   spoint.col = 1,
   spoint.cex = 1,
+  xlab = "1-specificity",
+  ylab = "Sensitivity",
   ...
 )
 }
@@ -44,6 +46,12 @@ Default is black.}
 
 \item{spoint.cex}{The size of the point.
 Default is 1.}
+
+\item{xlab}{The label of x-axis.
+Default is: 1-specificity.}
+
+\item{ylab}{The label of y-axis.
+Default is Sensitivity.}
 
 \item{...}{Other augments in function \code{\link{points}} or function \code{\link{curve}}}
 }
