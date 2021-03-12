@@ -1,10 +1,10 @@
-Package: DTAsens
+Package: dtametasa
 Type: Package
-Title: Sensitivity Analysis for Diagnostic Test Accuracy Meta-Analysis
+Title: Sensitivity Analysis for Meta-analysis of Diagnostic Test Accuracy 
 Version: 0.1.0
 Authors@R: person("Yi", " ", email = "zhouyi0426@126.com",
                   role = c("aut", "cre"))
-Description: Sensitivity Analysis for Diagnostic Test Accuracy Meta-Analysis.
+Description: Sensitivity analysis for meta-analysis of diagnostic test accuracy.
 License: GPL-3 + file LICENSE
 Depends: R (>= 3.1.0)
 Encoding: UTF-8

@@ -1,8 +1,8 @@
-#' @title Confidence interval of summary AUC
+#' @title Parametric bootstrapped confidence interval of summary AUC
 #'
-#' @description Calculate the parametric bootstrap confidence interval (CI) for sROC and sAUC
+#' @description Calculate the parametric bootstrap confidence interval (CI) for sAUC
 #'
-#' @param object object from function \code{dtasens1} or \code{dtasens2}.
+#' @param object object from function \code{dtametasa.fc} or \code{dtametasa.rc}.
 #'
 #' @param B The times for parametric bootstrapping.
 #' Default is 1000.
@@ -53,6 +53,8 @@
 #' @importFrom stats quantile rnorm sd
 #' @importFrom utils setTxtProgressBar txtProgressBar install.packages
 #' @importFrom doRNG %dorng%
+#' @importFrom graphics matplot
+
 
 #'
 #' @seealso
@@ -66,12 +68,13 @@
 #' ## Here, we set B = 5 to save time in the calculation.
 #' ## But, the results are not reliable.
 #'
-#' opt1 <- dtasens1(IVD, p = 0.7)
-#' (ci <- sAUC.ci(opt1, B = 5, set.seed = 1, plot.ROC.ci = TRUE))
+#' sa1 <- dtametasa.fc(IVD, p = 0.7)
+#' (ci <- sAUC.ci(sa1, B = 5, set.seed = 1, plot.ROC.ci = FALSE))
 #'
 #' @export
 
-sAUC.ci <- function(object, B = 1000,
+sAUC.ci <- function(object,
+                    B = 1000,
                     ncores = 0, type = "SOCK", ci.level = 0.95,
                     set.seed = NULL,
                     hide.progress = FALSE,
@@ -88,19 +91,20 @@ sAUC.ci <- function(object, B = 1000,
   if(!requireNamespace("doSNOW"))   install.packages("doSNOW")    else requireNamespace("doSNOW")
   if(!requireNamespace("doRNG"))    install.packages("doRNG")     else requireNamespace("doRNG")
 
-  if(!inherits(object, "dtasens")) stop("ONLY VALID FOR RESULTS OF dtasens1 OR dtasens2")
+  if(!inherits(object, "dtametasa")) stop("ONLY VALID FOR RESULTS OF dtametasa.fc OR dtametasa.rc")
 
   data <- object$data
+
   S  <- nrow(data)
   y1 <- data$y1
   y2 <- data$y2
   v1 <- data$v1
   v2 <- data$v2
 
-  if(ncores == 0) ncores <- parallel::detectCores() else ncores <- ceiling(ncores)
+  if(ncores == 0) ncores <- detectCores() else ncores <- ceiling(ncores)
 
-  cl <- parallel::makeCluster(ncores, type = type)
-  doSNOW::registerDoSNOW(cl)
+  cl <- makeCluster(ncores, type = type)
+  registerDoSNOW(cl)
 
   opts <- NULL
 
@@ -112,10 +116,10 @@ sAUC.ci <- function(object, B = 1000,
   }
 
 
-  if(object$func.name == "dtasens1"){
+  if(object$func.name == "dtametasa.fc"){
 
     set.seed(set.seed)
-    par <- foreach(r=1:B, .combine=c, .packages="DTAsens", .options.snow = opts)  %dorng%  {
+    par <- foreach(r=1:B, .combine=rbind, .packages = "dtametasa", .options.snow = opts)  %dorng%  {
 
       y1.t <- sapply(1:S, function(i) rnorm(1,y1[i],sqrt(v1[i])))
       y2.t <- sapply(1:S, function(i) rnorm(1,y2[i],sqrt(v2[i])))
@@ -123,34 +127,34 @@ sAUC.ci <- function(object, B = 1000,
       data.t <- data.frame(y1 = y1.t, y2 = y2.t, v1 = v1, v2 = v2)
 
       args <- c(list(data = data.t), object$pars.info)
-      opt1.t <- do.call("dtasens1", args)
-      opt1.t$par[c(1:5, 11)]
+      sa1 <- do.call("dtametasa.fc", args)
+      sa1$par[c(1,2,4,5, 10)]
 
     }
   }
 
-  if(object$func.name == "dtasens2"){
+  if(object$func.name == "dtametasa.rc"){
 
     set.seed(set.seed)
 
-    par <- foreach(r=1:B, .combine=c, .packages="DTAsens", .options.snow = opts)  %dorng%  {
+    par <- foreach(r=1:B, .combine=rbind, .packages = "dtametasa", .options.snow = opts)  %dorng%  {
 
       y1.t <- sapply(1:S, function(i) rnorm(1,y1[i], sqrt(v1[i])))
       y2.t <- sapply(1:S, function(i) rnorm(1,y2[i], sqrt(v2[i])))
 
       data.t <- data.frame(y1 = y1.t, y2 = y2.t, v1 = v1, v2 = v2)
       args <- c(list(data = data.t), object$pars.info)
-      opt2.t <- do.call("dtasens2", args)
-      opt2.t$par[c(1:5, 11)]
+      opt2.t <- do.call("dtametasa.rc", args)
+      opt2.t$par[c(1,2,4,5, 10)]
 
   }
   }
 
   if (!hide.progress) close(pb)
-  parallel::stopCluster(cl)
+  stopCluster(cl)
 
-  PAR <- matrix(par, nrow = 6)
-  sauc.t   <- PAR[6,]
+  PAR <- as.matrix(par)
+  sauc.t   <- PAR[,5]
 
   n <- length(sauc.t)
   se <- (n-1)/n * sd(sauc.t, na.rm = TRUE)
@@ -164,11 +168,11 @@ sAUC.ci <- function(object, B = 1000,
   q1 <- quantile(s.sauc.t, probs = (1-ci.level)/2, na.rm = TRUE)
   q2 <- quantile(s.sauc.t, probs = 1-(1-ci.level)/2, na.rm = TRUE)
 
-  sauc <- unlist(object$auc.all$value)
+  sauc <- object$par[10]
 
-  list <- list(sAUC = sauc,
-       CI.L = max(sauc+q1*se, 0),
-       CI.U = min(sauc+q2*se, 1),
+  list <- list(sauc = sauc,
+       ci.l = max(sauc+q1*se, 0),
+       ci.u = min(sauc+q2*se, 1),
        bs.par  = PAR,
        cluster = cl)
 
@@ -178,17 +182,17 @@ sAUC.ci <- function(object, B = 1000,
     fpr.t <- seq(0,1,0.001)
     se.t  <- sapply(1:B, function(i){
 
-      u1 <- PAR[1,i]
-      u2 <- PAR[2,i]
-      t1 <- PAR[3,i]
-      t2 <- PAR[4,i]
-      r  <- PAR[5,i]
-      plogis(u1 - (r*t1/t2) * (qlogis(fpr.t) + u2))
+      u1  <- PAR[i,1]
+      u2  <- PAR[i,2]
+      t22 <- PAR[i,3]
+      t12 <- PAR[i,4]
+
+      plogis(u1 - (t12/t22) * (qlogis(fpr.t) + u2))
 
     })
 
 
-    sROC(object, add.sum.point = add.sum.point, add = add.plot.ROC.ci,...)
+    sROC(object, add.sum.point = add.sum.point, add = add.plot.ROC.ci, ...)
 
     ci <- cbind(
 
@@ -212,7 +216,7 @@ sAUC.ci <- function(object, B = 1000,
 
 }
 
-#' @title Print sAUC.ci
+#' @title Print sAUC.ci results
 #'
 #' @description Print results from function \code{\link{sAUC.ci}}
 #'
@@ -234,9 +238,9 @@ print.sAUC.ci <- function(x, digits = 3, ...){
 
   if(!inherits(x, "sAUC.ci")) stop("ONLY VALID FOR RESULTS OF sAUC.ci")
 
-  sAUC <- c(x$sAUC, x$CI.L, x$CI.U)
-  names(sAUC) <-c("sAUC", "CI.L", "CI.L")
+  sauc <- c(x$sauc, x$ci.l, x$ci.u)
+  names(sauc) <- c("sauc", "ci.l", "ci.u")
 
-  print(sAUC, digits = digits, ...)
+  print(sauc, digits = digits, ...)
 
 }

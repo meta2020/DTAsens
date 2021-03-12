@@ -1,8 +1,8 @@
-#' @title Plot a single summary ROC plot
+#' @title Plot a summary ROC plot for dtametasa object
 #'
 #' @description Plot a single sROC plot
 #'
-#' @param object The object from function \code{dtasens1} or \code{dtasens2};
+#' @param object The object from function \code{dtametasa.fc} or \code{dtametasa.rc};
 #' or a vector of \code{c(u1, u2, t1, t2, r)}
 #'
 #' @param add Whether to add the plot into an existed plot.
@@ -46,16 +46,13 @@
 #' @seealso
 #' \code{\link[graphics]{points}},
 #' \code{\link[graphics]{curve}},
-#' \code{\link{dtasens1}},
-#' \code{\link{dtasens2}}.
+#' \code{\link{dtametasa.fc}},
+#' \code{\link{dtametasa.rc}}.
 #'
 #' @examples
 #'
-#' opt1 <- dtasens1(IVD, p = 0.7)
-#' sROC(opt1)
-#'
-#' par.vec <- c(1,1, 0.5, 0.5, -0.6)
-#' sROC(par.vec)
+#' sa1 <- dtametasa.fc(IVD, p = 0.7)
+#' sROC(sa1)
 #'
 #' @export
 
@@ -72,21 +69,20 @@ sROC <- function(object,
                  ylab = "Sensitivity",
                  ...) {
 
-  if(inherits(object,"dtasens")) par.vec <- object$par else {
+  if(inherits(object,"dtametasa")) par.vec <- object$par[c(1,2,4,5)] else {
 
-    if (is.vector(object) & length(object) >= 5) {
+    if (is.vector(object) & length(object) >= 4) {
 
-      par.vec <- object} else stop("PLEASE INPUT EITHER dtasens OBJECTS OR A VECTOR OF c(u1, u2, t1, t2, r)")
+      par.vec <- object} else stop("PLEASE INPUT EITHER dtametasa OBJECTS OR A VECTOR OF c(u1, u2, t22, t12)")
 
   }
 
-    u1 <- par.vec[1]
-    u2 <- par.vec[2]
-    t1 <- par.vec[3]
-    t2 <- par.vec[4]
-    r  <- par.vec[5]
+  u1  <- par.vec[1]
+  u2  <- par.vec[2]
+  t22 <- par.vec[3]
+  t12 <- par.vec[4]
 
-  roc   <- function(x) plogis(u1 - (r*t1/t2) * (qlogis(x) + u2))
+  roc   <- function(x) plogis(u1 - (t12/t22) * (qlogis(x) + u2))
 
   curve(roc, xlab = xlab, ylab = ylab, add = add, col = roc.col, lwd =roc.lwd,lty = roc.lty,
         xlim = c(0,1), ylim = c(0,1), ...)
@@ -97,12 +93,15 @@ sROC <- function(object,
 }
 
 
-#' @title Plot multiple summary ROC curves
+
+
+#' @title Plot summary ROC curves
 #'
 #' @description Plot multiple ROC curves
 #'
-#' @param par.matrix A matrix with 5 rows.
-#' Each column is the vector \code{c(u1, u2, t1, t2, r)}.
+#' @param par It can be a vector of (u1 u2 t22 t12),
+#' or a matrix with 4 rows.
+#' Each column is the vector \code{c(u1, u2, t22, t12)}.
 #'
 #' @param add Whether to add the plot into an existed plot.
 #' Default is \code{FALSE}, to create a new plot.
@@ -142,31 +141,41 @@ sROC <- function(object,
 #'
 #' @param ... Other augments in function \code{\link{points}} or function \code{\link{curve}}
 #'
+#' @importFrom grDevices gray.colors
+#' @importFrom graphics curve points
+#'
 #' @return sROC plot
 #'
 #' @seealso
 #' \code{\link[graphics]{points}},
 #' \code{\link[graphics]{curve}},
-#' \code{\link{dtasens1}},
-#' \code{\link{dtasens2}}.
+#' \code{\link{dtametasa.fc}},
+#' \code{\link{dtametasa.rc}}.
 #'
 #'
 #' @examples
 #'
-#' par.matrix <-cbind(c(1,1.5,0.5, 0.5, -0.2),
-#'                    c(1, 1, 1, 2, -0.6),
-#'                    c(1.8, 2, 1, 2, -0.6))
+#' # Use matrix
 #'
-#' p.vec <- seq(0.2,0.6,0.2)
+#' par.matrix <-cbind(c(1, 1.5, 0.5, -0.2),
+#'                    c(1, 1, 1, -0.6),
+#'                    c(1.8, 2, 1,-0.6))
 #'
-#' msROC(par.matrix, legend = TRUE, p.vec = p.vec, legend.cex = 0.9)
-#' msROC(par.matrix, legend = TRUE,
+#' sROC.matrix(par.matrix, legend = TRUE, p.vec = seq(0.2,0.6,0.2), legend.cex = 0.9)
+#'
+#' sROC.matrix(par.matrix, legend = TRUE,
 #'       legend.text = c("l1", "l2", "l3"),
 #'       legend.cex = 0.9, ncols = 1:3)
 #'
+#' # Use vector
+#'
+#' par.vec <- c(1,1.5,0.5,-0.2)
+#'
+#' sROC.matrix(par.vec)
+#'
 #' @export
 
-msROC <- function(par.matrix,  ## u1 u2 t12 t22
+sROC.matrix <- function(par,  ## u1 u2 t12 t22
                  add = FALSE,
                  ncols = NULL,
                  roc.lty = 1,
@@ -180,24 +189,26 @@ msROC <- function(par.matrix,  ## u1 u2 t12 t22
                  spoint.cex = 1,
                  xlab = "1 - specificity",
                  ylab = "Sensitivity",
-
                  ...) {
 
-  if(nrow(par.matrix) < 5) stop("PLEASE CHECK THE INPUT MATRIX")
+  if(length(par) < 4) stop("PLEASE CHECK THE INPUT VECTOR")
+
+  if(length(par) == 4)  par <- as.matrix(par)
+
+  if(nrow(par) < 4) stop("PLEASE CHECK THE INPUT MATRIX")
 
   if (!add) plot(NULL, xlim=c(0,1), ylim=c(0,1), xlab = xlab, ylab = ylab)
 
-  if (is.null(ncols)) ncols <- gray.colors(ncol(par.matrix), gamma = 1, start = 0, end = 0.8)
+  if (is.null(ncols)) ncols <- gray.colors(ncol(par), gamma = 1, start = 0, end = 0.8)
 
-  for (i in 1:ncol(par.matrix)) {
+  for (i in 1:ncol(par)) {
 
-    u1 = par.matrix[1,i]
-    u2 = par.matrix[2,i]
-    t1 = par.matrix[3,i]
-    t2 = par.matrix[4,i]
-    r  = par.matrix[5,i]
+    u1  <- par[1,i]
+    u2  <- par[2,i]
+    t22 <- par[3,i]
+    t12 <- par[4,i]
 
-    roc <- function(x) plogis(u1 - (r*t1/t2) * (qlogis(x) + u2))
+    roc <- function(x) plogis(u1 - (t12/t22) * (qlogis(x) + u2))
     curve(roc, 0, 1, col = ncols[i], add = TRUE,
           lty = roc.lty, lwd = roc.lwd, ...)
   }
@@ -205,13 +216,13 @@ msROC <- function(par.matrix,  ## u1 u2 t12 t22
   if (legend) legend("bottomright",
                     legend = legend.text,
                     col = ncols,
-                    lty = rep(roc.lty, ncol(par.matrix)),
+                    lty = rep(roc.lty, ncol(par)),
                     cex = legend.cex,
                     ...)
 
   if (add.sum.point) {
-    sens <- plogis(par.matrix[1,])
-    spec <- plogis(par.matrix[2,])
+    sens <- plogis(par[1,])
+    spec <- plogis(par[2,])
     points(1-spec, sens, col=ncols, pch = spoint.pch, cex = spoint.cex, ...)
   }
 

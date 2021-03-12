@@ -1,9 +1,14 @@
-
 ##
-## LIKELIHOOD FUNCTION (OBSERVED)-----------------------------------------------
+## LIKELIHOOD OF THE OBSERVED (NEGATIVE)
 ##
 
-llk.o <- function(par, data, p, a.interval, a.root.extendInt, show.warn.message,...) {
+llk.o <- function(par,
+                  data,
+                  p,
+                  a.interval,
+                  a.root.extendInt,
+                  show.warn.message,
+                  ...) {
 
   n <- nrow(data)
 
@@ -14,24 +19,21 @@ llk.o <- function(par, data, p, a.interval, a.root.extendInt, show.warn.message,
 
   u1 <- par[1]
   u2 <- par[2]
+  t1 <- par[3]
+  t2 <- par[4]
+  r  <- par[5]
+  b  <- par[6]
+  c1 <- par[7]  ## CAN BE EITHER PAR OR GIVEN VALUE
 
-  t1  <- par[3]
   t11 <- t1^2
-  t2  <- par[4]
   t22 <- t2^2
-  r   <- par[5]
-
   t12 <- t1*t2*r
 
-  b  <- par[6]
-
-  c1  <- par[7]
   c11 <- c1^2
   c22 <- 1-c11
   c2  <- sqrt(c22)
 
   ldor     <- c1*y1 + c2*y2
-
   se.ldor2 <- c11*v1+c22*v2
   se.ldor  <- sqrt(se.ldor2)
 
@@ -41,7 +43,7 @@ llk.o <- function(par, data, p, a.interval, a.root.extendInt, show.warn.message,
   t        <- ldor/se.ldor
 
   ##
-  ## FUNCTOIN b(Sigma) -------------------------------------------------------
+  ## FUNCTOIN b(Sigma) ----
   ##
 
   f.b <- function(a){
@@ -54,7 +56,7 @@ llk.o <- function(par, data, p, a.interval, a.root.extendInt, show.warn.message,
 
 
   ##
-  ## FIND THE ROOT OF a = a.opt ----------------------------------------------
+  ## FIND THE ROOT OF a = a.opt ----
   ##
 
   a.p <- function(a) {sum(1/f.b(a), na.rm = TRUE) - n/p}
@@ -65,7 +67,7 @@ llk.o <- function(par, data, p, a.interval, a.root.extendInt, show.warn.message,
 
 
   ##
-  ##  LOGLIKELIHOOD-1 OF y|Sigma ---------------------------------------------
+  ##  LOGLIKELIHOOD-1 OF y|Sigma ----
   ##
 
   det.vec <- (v1+t11)*(v2+t22)-t12^2
@@ -78,7 +80,7 @@ llk.o <- function(par, data, p, a.interval, a.root.extendInt, show.warn.message,
 
 
   ##
-  ##  LOGLIKELIHOOD-2 OF a(a.opt) --------------------------------------------
+  ##  LOGLIKELIHOOD-2 OF a(a.opt) ----
   ##
 
 
@@ -88,7 +90,7 @@ llk.o <- function(par, data, p, a.interval, a.root.extendInt, show.warn.message,
 
 
   ##
-  ##  LOGLIKELIHOOD-3 OF b(a.opt) --------------------------------------------
+  ##  LOGLIKELIHOOD-3 OF b(a.opt) ----
   ##
 
   f.l3 <- f.b(a.opt)
@@ -97,7 +99,7 @@ llk.o <- function(par, data, p, a.interval, a.root.extendInt, show.warn.message,
 
 
   ##
-  ##  FINAL LOGLIKELIHOOD ----------------------------------------------------
+  ##  FINAL LOGLIKELIHOOD ----
   ##
 
   return(-(s.l1 + s.l2 - s.l3)) ## NEGATIVE
