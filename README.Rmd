@@ -31,6 +31,16 @@ You can install the released version from [GitHub](https://github.com/meta2020/d
 ``` r
 devtools::install_git("meta2020/dtametasa")
 ```
+## Data Format
+
+Two formats of data are applicable:
+
+- Number of TP/FN/FP/TN
+
+- After logit transformation: y1/y2/v1/v2
+
+**The colnames of data must be either of the above**
+
 
 ## Example
 
@@ -47,6 +57,9 @@ library(dtametasa)
 data(IVD)
 kable(head(IVD))
 
+
+data(IVD2)
+kable(head(IVD2))
 ```
 
 ### Main function 1: dtametasa.fc
