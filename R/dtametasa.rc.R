@@ -124,7 +124,7 @@ dtametasa.rc <- function(data,
 
     ## AUTO-SET START POINTS
 
-    start7 <- c(0, 0 , 0.1, 0.1, -0.1, b.init, sqrt(c1.sq.init))
+    c1 <- sqrt(c1.sq.init)
 
     if(is.null(brem.init)) {
 
@@ -138,11 +138,14 @@ dtametasa.rc <- function(data,
           p2 <- sqrt(fit.m$Psi[4])
           p.r<- fit.m$Psi[3]/(p1*p2)
 
-          start7[1:5] <- round(c(fit.m$coefficients, p1, p2, p.r), 2)
+          start7 <- c(fit.m$coefficients, p1, p2, p.r, b.init, c1)
 
-        }
-      }
-    }
+        } else start7 <- c(0, 0, 0.1, 0.1, -0.1, b.init, c1)
+
+      } else start7 <- c(0, 0, 0.1, 0.1, -0.1, b.init, c1)
+
+    } else start7 <- c(brem.init, b.init, c1)
+
 
     eps <- sqrt(.Machine$double.eps)
 
