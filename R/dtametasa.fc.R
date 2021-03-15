@@ -154,10 +154,10 @@ dtametasa.fc <- function(data,   ## 2 FORMAT: N OR Y, make data name as format
 
   if(positive.r) r.up <- 1 else  r.up <- eps
 
-  fn <- function(par) llk.o(c(par[1:6], c1.sq),
-                             data = data, p = p,
-                             a.root.extendInt = a.root.extendInt, a.interval = a.interval,
-                             show.warn.message = show.warn.message, ...)
+  fn <- function(par) llk.o(par = c(par[1:6], c1),
+                            data = data, p = p,
+                            a.root.extendInt = a.root.extendInt, a.interval = a.interval,
+                            show.warn.message = show.warn.message, ...)
 
   opt <- try(nlminb(start6,
                    fn,

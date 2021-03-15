@@ -124,7 +124,7 @@ dtametasa.rc <- function(data,
 
     ## AUTO-SET START POINTS
 
-    start7 <- c(0, 0 , 0.1, 0.1, -0.1, b.init, c1.sq.init)
+    start7 <- c(0, 0 , 0.1, 0.1, -0.1, b.init, sqrt(c1.sq.init))
 
     if(is.null(brem.init)) {
 
