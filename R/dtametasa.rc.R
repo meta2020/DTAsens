@@ -81,7 +81,7 @@ dtametasa.rc <- function(data,
                   p,
                   correct.value = 0.5,
                   correct.type = "all",
-                  brem.init = NA,  ## u1, u2, t1, t2, r
+                  brem.init = NULL,  ## u1, u2, t1, t2, r
                   b.init = 0.1,
                   c1.sq.init = 0.5,
                   b.interval = c(0, 2), ## SET A VALUE b.interval in [-5, 5]
@@ -126,7 +126,7 @@ dtametasa.rc <- function(data,
 
     start7 <- c(0, 0 , 0.1, 0.1, -0.1, b.init, c1.sq.init)
 
-    if(is.na(brem.init)) {
+    if(is.null(brem.init)) {
 
       fit.m <- mvmeta::mvmeta(cbind(y1,y2),S=cbind(v1, rep(0, n), v2), method="ml")
 

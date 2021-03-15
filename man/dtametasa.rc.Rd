@@ -9,7 +9,7 @@ dtametasa.rc(
   p,
   correct.value = 0.5,
   correct.type = "all",
-  brem.init = NA,
+  brem.init = NULL,
   b.init = 0.1,
   c1.sq.init = 0.5,
   b.interval = c(0, 2),
