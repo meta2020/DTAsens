@@ -15,4 +15,5 @@ Imports:
     doSNOW,
     snow,
     foreach,
-    doRNG
+    doRNG,
+    mvtnorm
