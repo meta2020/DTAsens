@@ -154,14 +154,14 @@ sAUC.ci <- function(object,
   stopCluster(cl)
 
   PAR <- as.matrix(par)
-  sauc.t   <- PAR[,5]
+  sauc.t   <- PAR[, 5]
 
   n <- length(sauc.t)
   se <- (n-1)/n * sd(sauc.t, na.rm = TRUE)
   sl.sauc.t <- (sauc.t - mean(sauc.t, na.rm = TRUE))/se
 
   s.sauc.r <- order(sl.sauc.t)
-  PAR.r <- PAR[, s.sauc.r]
+  #PAR.r <- PAR[, s.sauc.r]
 
   s.sauc.t <- sort(sl.sauc.t)
 
