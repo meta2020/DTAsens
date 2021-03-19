@@ -12,8 +12,8 @@ sAUC.ci(
   ci.level = 0.95,
   set.seed = NULL,
   hide.progress = FALSE,
-  plot.ROC.ci = FALSE,
-  add.plot.ROC.ci = FALSE,
+  plot.sROC.ci = FALSE,
+  add.plot.sROC = FALSE,
   add.sum.point = FALSE,
   roc.ci.col = "grey",
   roc.ci.lty = 1,
@@ -44,11 +44,10 @@ Default is NULL, which does not set any seed to fix the bootstrap results.}
 \item{hide.progress}{Whether to hide the progress bar in the calculation.
 Default is not to hide.}
 
-\item{plot.ROC.ci}{Whether to show the plot of sROC with the CIs lines.
+\item{plot.sROC.ci}{Whether to show the plot of sROC with the CIs lines.
 Default is not to plot.}
 
-\item{add.plot.ROC.ci}{Whether to add the plot of sROC with the CIs lines
-onto a new plot.
+\item{add.plot.sROC}{Whether to add the sROC onto a new plot.
 Default is not to add.}
 
 \item{add.sum.point}{Whether to add the summary point in the sROC plot.

@@ -7,10 +7,10 @@
 sROC(
   object,
   add = FALSE,
-  roc.col = 1,
-  roc.lty = 1,
-  roc.lwd = 1,
-  add.sum.point = TRUE,
+  sroc.col = 1,
+  sroc.lty = 1,
+  sroc.lwd = 1,
+  add.spoint = TRUE,
   spoint.pch = 19,
   spoint.col = 1,
   spoint.cex = 1,
@@ -26,16 +26,16 @@ or a vector of \code{c(u1, u2, t1, t2, r)}}
 \item{add}{Whether to add the plot into an existed plot.
 Default is \code{FALSE}, to create a new plot.}
 
-\item{roc.col}{The color of sROC.
+\item{sroc.col}{The color of sROC.
 Default is black.}
 
-\item{roc.lty}{The line type of sROC.
+\item{sroc.lty}{The line type of sROC.
 Default is solid.}
 
-\item{roc.lwd}{The line width of sROC.
+\item{sroc.lwd}{The line width of sROC.
 Default is 1.}
 
-\item{add.sum.point}{Whether to add the summary point in the sROC plot.
+\item{add.spoint}{Whether to add the summary point in the sROC plot.
 Default it not the add.}
 
 \item{spoint.pch}{The type of the point.

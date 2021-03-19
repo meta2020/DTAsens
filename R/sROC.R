@@ -8,16 +8,16 @@
 #' @param add Whether to add the plot into an existed plot.
 #' Default is \code{FALSE}, to create a new plot.
 #'
-#' @param roc.col The color of sROC.
+#' @param sroc.col The color of sROC.
 #' Default is black.
 #'
-#' @param roc.lty The line type of sROC.
+#' @param sroc.lty The line type of sROC.
 #' Default is solid.
 #'
-#' @param roc.lwd The line width of sROC.
+#' @param sroc.lwd The line width of sROC.
 #' Default is 1.
 #'
-#' @param add.sum.point Whether to add the summary point in the sROC plot.
+#' @param add.spoint Whether to add the summary point in the sROC plot.
 #' Default it not the add.
 #'
 #' @param spoint.pch The type of the point.
@@ -58,10 +58,10 @@
 
 sROC <- function(object,
                  add = FALSE,
-                 roc.col = 1,
-                 roc.lty = 1,
-                 roc.lwd = 1,
-                 add.sum.point = TRUE,
+                 sroc.col = 1,
+                 sroc.lty = 1,
+                 sroc.lwd = 1,
+                 add.spoint = TRUE,
                  spoint.pch = 19,
                  spoint.col = 1,
                  spoint.cex = 1,
@@ -84,10 +84,10 @@ sROC <- function(object,
 
   roc   <- function(x) plogis(u1 - (t12/t22) * (qlogis(x) + u2))
 
-  curve(roc, xlab = xlab, ylab = ylab, add = add, col = roc.col, lwd =roc.lwd,lty = roc.lty,
+  curve(roc, xlab = xlab, ylab = ylab, add = add, col = sroc.col, lwd =sroc.lwd,lty = sroc.lty,
         xlim = c(0,1), ylim = c(0,1), ...)
 
-  if(add.sum.point) points(plogis(-u2), plogis(u1), pch = spoint.pch, col = spoint.col, ...)
+  if(add.spoint) points(plogis(-u2), plogis(u1), pch = spoint.pch, col = spoint.col, ...)
 
 
 }
@@ -109,13 +109,13 @@ sROC <- function(object,
 #' @param ncols Set different colors for multiple sROC.
 #' Defult is \code{NULL}, that uses different grey's colors.
 #'
-#' @param roc.lty The line tyoe of sROC.
+#' @param sroc.lty The line tyoe of sROC.
 #' Default is solid lines.
 #'
-#' @param roc.lwd The line width of sROC.
+#' @param sroc.lwd The line width of sROC.
 #' Default is 1.
 #'
-#' @param add.sum.point Whether to add the summary point in the sROC plot.
+#' @param add.spoint Whether to add the summary point in the sROC plot.
 #' Default it not the add.
 #'
 #' @param legend Whether to add legend into the plot.
@@ -178,9 +178,9 @@ sROC <- function(object,
 sROC.matrix <- function(par,  ## u1 u2 t12 t22
                  add = FALSE,
                  ncols = NULL,
-                 roc.lty = 1,
-                 roc.lwd = 1,
-                 add.sum.point=TRUE,
+                 sroc.lty = 1,
+                 sroc.lwd = 1,
+                 add.spoint=TRUE,
                  legend = FALSE,
                  p.vec,
                  legend.text = paste0("p = ",p.vec),
@@ -210,17 +210,17 @@ sROC.matrix <- function(par,  ## u1 u2 t12 t22
 
     roc <- function(x) plogis(u1 - (t12/t22) * (qlogis(x) + u2))
     curve(roc, 0, 1, col = ncols[i], add = TRUE,
-          lty = roc.lty, lwd = roc.lwd, ...)
+          lty = sroc.lty, lwd = sroc.lwd, ...)
   }
 
   if (legend) legend("bottomright",
                     legend = legend.text,
                     col = ncols,
-                    lty = rep(roc.lty, ncol(par)),
+                    lty = rep(sroc.lty, ncol(par)),
                     cex = legend.cex,
                     ...)
 
-  if (add.sum.point) {
+  if (add.spoint) {
     sens <- plogis(par[1,])
     spec <- plogis(par[2,])
     points(1-spec, sens, col=ncols, pch = spoint.pch, cex = spoint.cex, ...)

@@ -24,11 +24,10 @@
 #' @param hide.progress Whether to hide the progress bar in the calculation.
 #' Default is not to hide.
 #'
-#' @param plot.ROC.ci Whether to show the plot of sROC with the CIs lines.
+#' @param plot.sROC.ci Whether to show the plot of sROC with the CIs lines.
 #' Default is not to plot.
 #'
-#' @param add.plot.ROC.ci Whether to add the plot of sROC with the CIs lines
-#' onto a new plot.
+#' @param add.plot.sROC Whether to add the sROC onto a new plot.
 #' Default is not to add.
 #'
 #' @param add.sum.point Whether to add the summary point in the sROC plot.
@@ -75,11 +74,12 @@
 
 sAUC.ci <- function(object,
                     B = 1000,
-                    ncores = 0, type = "SOCK", ci.level = 0.95,
+                    ncores = 0, type = "SOCK",
+                    ci.level = 0.95,
                     set.seed = NULL,
                     hide.progress = FALSE,
-                    plot.ROC.ci = FALSE,
-                    add.plot.ROC.ci = FALSE,
+                    plot.sROC.ci = FALSE,
+                    add.plot.sROC = FALSE,
                     add.sum.point = FALSE,
                     roc.ci.col = "grey",
                     roc.ci.lty = 1,
@@ -173,11 +173,11 @@ sAUC.ci <- function(object,
   list <- list(sauc = sauc,
        ci.l = max(sauc+q1*se, 0),
        ci.u = min(sauc+q2*se, 1),
-       bs.par  = PAR,
+       bootstrap.par  = PAR,
        cluster = cl)
 
 
-  if(plot.ROC.ci){
+  if(plot.sROC.ci){
 
     fpr.t <- seq(0,1,0.001)
     se.t  <- sapply(1:B, function(i){
@@ -192,7 +192,7 @@ sAUC.ci <- function(object,
     })
 
 
-    sROC(object, add.sum.point = add.sum.point, add = add.plot.ROC.ci, ...)
+    sROC(object, add.sum.point = add.sum.point, add = add.plot.sROC, ...)
 
     ci <- cbind(
 
@@ -242,5 +242,94 @@ print.sAUC.ci <- function(x, digits = 3, ...){
   names(sauc) <- c("sauc", "ci.l", "ci.u")
 
   print(sauc, digits = digits, ...)
+
+}
+
+#' @title Plot sROC.ci results
+#'
+#' @description Plot the sROC from function \code{\link{sAUC.ci}}
+#'
+#' @param x object from function \code{\link{sAUC.ci}}.
+#'
+#' @param roc.ci.col The color of the CIs of sROC.
+#' Default is grey.
+#'
+#' @param roc.ci.lty The line type of CIs.
+#' Default is solid line.
+#'
+#' @param roc.ci.lwd The line width of CIs.
+#' Defalt is 1.
+#'
+#' @param add.sROC.ci Whether to add the plot of sROC with the CIs lines
+#' onto a new plot.
+#' Default is not to add.
+#'
+#' @param ci.level The significant value for confidence interval.
+#' Default is 0.95, hence, a 2-tailed 95% CIs will be calculated by
+#' profile likelihood.
+#'
+#' @param ... Other augments in function \code{\link{sROC}}
+#'
+#' @seealso
+#' \code{\link{sAUC.ci}};
+#' \code{\link[graphics]{matplot}},
+#'
+#' @rdname plot.sAUC.ci
+#'
+#' @examples
+#'
+#' sa1 <- dtametasa.fc(IVD, p = 0.7)
+#'
+#' sROC(sa1)
+#' ci <- sAUC.ci(sa1, B = 5, set.seed = 1, plot.ROC.ci = FALSE)
+#'
+#' plot(ci)
+#' p <- plot(ci)
+#'
+#' @export
+#'
+
+plot.sAUC.ci <- function(x,
+                         roc.ci.col = "grey",
+                         roc.ci.lty = 1,
+                         roc.ci.lwd = 1,
+                         add.sROC.ci=TRUE,
+                         ci.level = 0.95,
+                         ...){
+
+  if(!inherits(x, "sAUC.ci")) stop("ONLY VALID FOR RESULTS OF sAUC.ci")
+
+  PAR <- x$bootstrap.par
+  B <- dim(PAR)[1]
+
+
+  fpr.t <- seq(0,1,0.001)
+  se.t  <- sapply(1:B, function(i){
+
+    u1  <- PAR[i,1]
+    u2  <- PAR[i,2]
+    t22 <- PAR[i,3]
+    t12 <- PAR[i,4]
+
+    plogis(u1 - (t12/t22) * (qlogis(fpr.t) + u2))
+
+  })
+
+
+  #sROC(object, add.sum.point = add.sum.point, add = add.plot.ROC.ci, ...)
+
+  ci <- cbind(
+
+    apply(se.t, 1, function(x) quantile(x, (1-ci.level)/2, na.rm = TRUE)),
+    apply(se.t, 1, function(x) quantile(x, probs = 1-(1-ci.level)/2, na.rm = TRUE))
+
+  )
+
+  matplot(x = fpr.t, y = ci, type = "l",
+          col = roc.ci.col, lty = roc.ci.lty, lwd = roc.ci.lwd,
+          add = TRUE)
+
+  list <- c(x, roc.ci <- list(x = fpr.t, y = ci))
+
 
 }

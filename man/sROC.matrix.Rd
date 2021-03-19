@@ -8,9 +8,9 @@ sROC.matrix(
   par,
   add = FALSE,
   ncols = NULL,
-  roc.lty = 1,
-  roc.lwd = 1,
-  add.sum.point = TRUE,
+  sroc.lty = 1,
+  sroc.lwd = 1,
+  add.spoint = TRUE,
   legend = FALSE,
   p.vec,
   legend.text = paste0("p = ", p.vec),
@@ -33,13 +33,13 @@ Default is \code{FALSE}, to create a new plot.}
 \item{ncols}{Set different colors for multiple sROC.
 Defult is \code{NULL}, that uses different grey's colors.}
 
-\item{roc.lty}{The line tyoe of sROC.
+\item{sroc.lty}{The line tyoe of sROC.
 Default is solid lines.}
 
-\item{roc.lwd}{The line width of sROC.
+\item{sroc.lwd}{The line width of sROC.
 Default is 1.}
 
-\item{add.sum.point}{Whether to add the summary point in the sROC plot.
+\item{add.spoint}{Whether to add the summary point in the sROC plot.
 Default it not the add.}
 
 \item{legend}{Whether to add legend into the plot.
