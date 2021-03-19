@@ -24,22 +24,22 @@
 #' @param hide.progress Whether to hide the progress bar in the calculation.
 #' Default is not to hide.
 #'
-#' @param plot.sROC.ci Whether to show the plot of sROC with the CIs lines.
+#' @param plot.sroc.ci Whether to show the plot of sROC with the CIs lines.
 #' Default is not to plot.
 #'
-#' @param add.plot.sROC Whether to add the sROC onto a new plot.
+#' @param add.plot.sroc Whether to add the sROC onto a new plot.
 #' Default is not to add.
 #'
-#' @param add.sum.point Whether to add the summary point in the sROC plot.
+#' @param add.spoint Whether to add the summary point in the sROC plot.
 #' Default it not the add.
 #'
-#' @param roc.ci.col The color of the CIs of sROC.
+#' @param sroc.ci.col The color of the CIs of sROC.
 #' Default is grey.
 #'
-#' @param roc.ci.lty The line type of CIs.
+#' @param sroc.ci.lty The line type of CIs.
 #' Default is solid line.
 #'
-#' @param roc.ci.lwd The line width of CIs.
+#' @param sroc.ci.lwd The line width of CIs.
 #' Defalt is 1.
 #'
 #' @param ... Other augments in function \code{\link{sROC}}.
@@ -78,12 +78,12 @@ sAUC.ci <- function(object,
                     ci.level = 0.95,
                     set.seed = NULL,
                     hide.progress = FALSE,
-                    plot.sROC.ci = FALSE,
-                    add.plot.sROC = FALSE,
-                    add.sum.point = FALSE,
-                    roc.ci.col = "grey",
-                    roc.ci.lty = 1,
-                    roc.ci.lwd = 1,
+                    plot.sroc.ci = FALSE,
+                    add.plot.sroc = FALSE,
+                    add.spoint = FALSE,
+                    sroc.ci.col = "grey",
+                    sroc.ci.lty = 1,
+                    sroc.ci.lwd = 1,
                     ...)
 {
   if(!requireNamespace("foreach"))  install.packages("foreach")   else requireNamespace("foreach")
@@ -177,7 +177,7 @@ sAUC.ci <- function(object,
        cluster = cl)
 
 
-  if(plot.sROC.ci){
+  if(plot.sroc.ci){
 
     fpr.t <- seq(0,1,0.001)
     se.t  <- sapply(1:B, function(i){
@@ -192,7 +192,7 @@ sAUC.ci <- function(object,
     })
 
 
-    sROC(object, add.sum.point = add.sum.point, add = add.plot.sROC, ...)
+    sROC(object, add.spoint = add.spoint, add = add.plot.sroc, ...)
 
     ci <- cbind(
 
@@ -202,10 +202,10 @@ sAUC.ci <- function(object,
       )
 
     matplot(x = fpr.t, y = ci, type = "l",
-            col = roc.ci.col, lty = roc.ci.lty, lwd = roc.ci.lwd,
+            col = sroc.ci.col, lty = sroc.ci.lty, lwd = sroc.ci.lwd,
             add = TRUE)
 
-    list <- c(list, roc.ci <- list(x = fpr.t, y = ci))
+    list <- c(list, sroc.ci <- list(x = fpr.t, y = ci))
 
 
   }
@@ -251,13 +251,13 @@ print.sAUC.ci <- function(x, digits = 3, ...){
 #'
 #' @param x object from function \code{\link{sAUC.ci}}.
 #'
-#' @param roc.ci.col The color of the CIs of sROC.
+#' @param sroc.ci.col The color of the CIs of sROC.
 #' Default is grey.
 #'
-#' @param roc.ci.lty The line type of CIs.
+#' @param sroc.ci.lty The line type of CIs.
 #' Default is solid line.
 #'
-#' @param roc.ci.lwd The line width of CIs.
+#' @param sroc.ci.lwd The line width of CIs.
 #' Defalt is 1.
 #'
 #' @param add.sROC.ci Whether to add the plot of sROC with the CIs lines
@@ -290,9 +290,9 @@ print.sAUC.ci <- function(x, digits = 3, ...){
 #'
 
 plot.sAUC.ci <- function(x,
-                         roc.ci.col = "grey",
-                         roc.ci.lty = 1,
-                         roc.ci.lwd = 1,
+                         sroc.ci.col = "grey",
+                         sroc.ci.lty = 1,
+                         sroc.ci.lwd = 1,
                          add.sROC.ci=TRUE,
                          ci.level = 0.95,
                          ...){
@@ -316,7 +316,7 @@ plot.sAUC.ci <- function(x,
   })
 
 
-  #sROC(object, add.sum.point = add.sum.point, add = add.plot.ROC.ci, ...)
+  #sROC(object, add.spoint = add.spoint, add = add.plot.ROC.ci, ...)
 
   ci <- cbind(
 
@@ -326,10 +326,10 @@ plot.sAUC.ci <- function(x,
   )
 
   matplot(x = fpr.t, y = ci, type = "l",
-          col = roc.ci.col, lty = roc.ci.lty, lwd = roc.ci.lwd,
+          col = sroc.ci.col, lty = sroc.ci.lty, lwd = sroc.ci.lty,
           add = TRUE)
 
-  list <- c(x, roc.ci <- list(x = fpr.t, y = ci))
+  list <- c(x, sroc.ci <- list(x = fpr.t, y = ci))
 
 
 }

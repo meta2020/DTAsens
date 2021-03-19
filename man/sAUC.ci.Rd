@@ -12,12 +12,12 @@ sAUC.ci(
   ci.level = 0.95,
   set.seed = NULL,
   hide.progress = FALSE,
-  plot.sROC.ci = FALSE,
-  add.plot.sROC = FALSE,
-  add.sum.point = FALSE,
-  roc.ci.col = "grey",
-  roc.ci.lty = 1,
-  roc.ci.lwd = 1,
+  plot.sroc.ci = FALSE,
+  add.plot.sroc = FALSE,
+  add.spoint = FALSE,
+  sroc.ci.col = "grey",
+  sroc.ci.lty = 1,
+  sroc.ci.lwd = 1,
   ...
 )
 }
@@ -44,22 +44,22 @@ Default is NULL, which does not set any seed to fix the bootstrap results.}
 \item{hide.progress}{Whether to hide the progress bar in the calculation.
 Default is not to hide.}
 
-\item{plot.sROC.ci}{Whether to show the plot of sROC with the CIs lines.
+\item{plot.sroc.ci}{Whether to show the plot of sROC with the CIs lines.
 Default is not to plot.}
 
-\item{add.plot.sROC}{Whether to add the sROC onto a new plot.
+\item{add.plot.sroc}{Whether to add the sROC onto a new plot.
 Default is not to add.}
 
-\item{add.sum.point}{Whether to add the summary point in the sROC plot.
+\item{add.spoint}{Whether to add the summary point in the sROC plot.
 Default it not the add.}
 
-\item{roc.ci.col}{The color of the CIs of sROC.
+\item{sroc.ci.col}{The color of the CIs of sROC.
 Default is grey.}
 
-\item{roc.ci.lty}{The line type of CIs.
+\item{sroc.ci.lty}{The line type of CIs.
 Default is solid line.}
 
-\item{roc.ci.lwd}{The line width of CIs.
+\item{sroc.ci.lwd}{The line width of CIs.
 Defalt is 1.}
 
 \item{...}{Other augments in function \code{\link{sROC}}.}

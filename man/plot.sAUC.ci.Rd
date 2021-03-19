@@ -6,9 +6,9 @@
 \usage{
 \method{plot}{sAUC.ci}(
   x,
-  roc.ci.col = "grey",
-  roc.ci.lty = 1,
-  roc.ci.lwd = 1,
+  sroc.ci.col = "grey",
+  sroc.ci.lty = 1,
+  sroc.ci.lwd = 1,
   add.sROC.ci = TRUE,
   ci.level = 0.95,
   ...
@@ -17,13 +17,13 @@
 \arguments{
 \item{x}{object from function \code{\link{sAUC.ci}}.}
 
-\item{roc.ci.col}{The color of the CIs of sROC.
+\item{sroc.ci.col}{The color of the CIs of sROC.
 Default is grey.}
 
-\item{roc.ci.lty}{The line type of CIs.
+\item{sroc.ci.lty}{The line type of CIs.
 Default is solid line.}
 
-\item{roc.ci.lwd}{The line width of CIs.
+\item{sroc.ci.lwd}{The line width of CIs.
 Defalt is 1.}
 
 \item{add.sROC.ci}{Whether to add the plot of sROC with the CIs lines
