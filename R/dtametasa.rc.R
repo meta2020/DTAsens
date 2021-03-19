@@ -82,7 +82,7 @@ dtametasa.rc <- function(data,
                   correct.value = 0.5,
                   correct.type = "all",
                   brem.init = NULL,  ## u1, u2, t1, t2, r
-                  b.init = 0.1,
+                  b.init = 1,
                   c1.sq.init = 0.5,
                   b.interval = c(0, 2), ## SET A VALUE b.interval in [-5, 5]
                   a.interval = c(-5, 3),

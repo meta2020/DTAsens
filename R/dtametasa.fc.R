@@ -85,7 +85,7 @@ dtametasa.fc <- function(data,   ## 2 FORMAT: N OR Y, make data name as format
                      correct.value = 0.5,
                      correct.type = "all",
                      brem.init = NULL,  ## u1, u2, t1, t2, r
-                     b.init = 0.1,
+                     b.init = 1,
                      b.interval = c(0, 2),
                      a.interval = c(-3, 3),
                      positive.r = TRUE,

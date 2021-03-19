@@ -11,7 +11,7 @@ dtametasa.fc(
   correct.value = 0.5,
   correct.type = "all",
   brem.init = NULL,
-  b.init = 0.1,
+  b.init = 1,
   b.interval = c(0, 2),
   a.interval = c(-3, 3),
   positive.r = TRUE,
