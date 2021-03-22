@@ -87,7 +87,7 @@ sROC <- function(object,
   curve(roc, xlab = xlab, ylab = ylab, add = add, col = sroc.col, lwd =sroc.lwd,lty = sroc.lty,
         xlim = c(0,1), ylim = c(0,1), ...)
 
-  if(add.spoint) points(plogis(-u2), plogis(u1), pch = spoint.pch, col = spoint.col, ...)
+  if(add.spoint) points(plogis(-u2), plogis(u1), pch = spoint.pch, col = spoint.col, cex = spoint.cex, ...)
 
 
 }
