@@ -62,9 +62,9 @@ sROC <- function(object,
                  sroc.lty = 1,
                  sroc.lwd = 1,
                  add.spoint = TRUE,
-                 spoint.pch = 19,
+                 spoint.pch = 18,
                  spoint.col = 1,
-                 spoint.cex = 1,
+                 spoint.cex = 2,
                  xlab = "1-specificity",
                  ylab = "Sensitivity",
                  ...) {
@@ -106,7 +106,7 @@ sROC <- function(object,
 #' @param add Whether to add the plot into an existed plot.
 #' Default is \code{FALSE}, to create a new plot.
 #'
-#' @param ncols Set different colors for multiple sROC.
+#' @param ncols Set a vector of different colors for multiple sROC.
 #' Defult is \code{NULL}, that uses different grey's colors.
 #'
 #' @param sroc.lty The line tyoe of sROC.
@@ -185,8 +185,8 @@ sROC.matrix <- function(par,  ## u1 u2 t12 t22
                  p.vec,
                  legend.text = paste0("p = ",p.vec),
                  legend.cex = 1,
-                 spoint.pch = 19,
-                 spoint.cex = 1,
+                 spoint.pch = 18,
+                 spoint.cex = 2,
                  xlab = "1 - specificity",
                  ylab = "Sensitivity",
                  ...) {
