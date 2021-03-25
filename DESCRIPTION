@@ -17,3 +17,5 @@ Imports:
     foreach,
     doRNG,
     mvtnorm
+URL: https://github.com/meta2020/dtametasa
+BugReports: https://github.com/meta2020/dtametasa/issues
