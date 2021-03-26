@@ -11,14 +11,7 @@ sAUC.ci(
   type = "SOCK",
   ci.level = 0.95,
   set.seed = NULL,
-  hide.progress = FALSE,
-  plot.sroc.ci = FALSE,
-  add.plot.sroc = FALSE,
-  add.spoint = FALSE,
-  sroc.ci.col = "grey",
-  sroc.ci.lty = 1,
-  sroc.ci.lwd = 1,
-  ...
+  hide.progress = FALSE
 )
 }
 \arguments{
@@ -43,29 +36,9 @@ Default is NULL, which does not set any seed to fix the bootstrap results.}
 
 \item{hide.progress}{Whether to hide the progress bar in the calculation.
 Default is not to hide.}
-
-\item{plot.sroc.ci}{Whether to show the plot of sROC with the CIs lines.
-Default is not to plot.}
-
-\item{add.plot.sroc}{Whether to add the sROC onto a new plot.
-Default is not to add.}
-
-\item{add.spoint}{Whether to add the summary point in the sROC plot.
-Default it not the add.}
-
-\item{sroc.ci.col}{The color of the CIs of sROC.
-Default is grey.}
-
-\item{sroc.ci.lty}{The line type of CIs.
-Default is solid line.}
-
-\item{sroc.ci.lwd}{The line width of CIs.
-Defalt is 1.}
-
-\item{...}{Other augments in function \code{\link{sROC}}.}
 }
 \value{
-CI of sAUC; sROC plot with CIs
+CI of sAUC
 }
 \description{
 Calculate the parametric bootstrap confidence interval (CI) for sAUC
@@ -76,12 +49,9 @@ Calculate the parametric bootstrap confidence interval (CI) for sAUC
 ## But, the results are not reliable.
 
 sa1 <- dtametasa.fc(IVD, p = 0.7)
-(ci <- sAUC.ci(sa1, B = 5, set.seed = 1, plot.ROC.ci = FALSE))
+(ci <- sAUC.ci(sa1, B = 5, set.seed = 1))
 
 }
 \seealso{
 \code{\link[parallel]{makeCluster}},
-\code{\link{sROC}},
-\code{\link[graphics]{matplot}},
-\code{\link[base]{plot}}.
 }

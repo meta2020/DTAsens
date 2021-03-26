@@ -24,27 +24,7 @@
 #' @param hide.progress Whether to hide the progress bar in the calculation.
 #' Default is not to hide.
 #'
-#' @param plot.sroc.ci Whether to show the plot of sROC with the CIs lines.
-#' Default is not to plot.
-#'
-#' @param add.plot.sroc Whether to add the sROC onto a new plot.
-#' Default is not to add.
-#'
-#' @param add.spoint Whether to add the summary point in the sROC plot.
-#' Default it not the add.
-#'
-#' @param sroc.ci.col The color of the CIs of sROC.
-#' Default is grey.
-#'
-#' @param sroc.ci.lty The line type of CIs.
-#' Default is solid line.
-#'
-#' @param sroc.ci.lwd The line width of CIs.
-#' Defalt is 1.
-#'
-#' @param ... Other augments in function \code{\link{sROC}}.
-#'
-#' @return CI of sAUC; sROC plot with CIs
+#' @return CI of sAUC
 #'
 #' @importFrom foreach foreach %dopar%
 #' @importFrom doSNOW registerDoSNOW
@@ -58,9 +38,6 @@
 #'
 #' @seealso
 #' \code{\link[parallel]{makeCluster}},
-#' \code{\link{sROC}},
-#' \code{\link[graphics]{matplot}},
-#' \code{\link[base]{plot}}.
 #'
 #' @examples
 #'
@@ -68,7 +45,7 @@
 #' ## But, the results are not reliable.
 #'
 #' sa1 <- dtametasa.fc(IVD, p = 0.7)
-#' (ci <- sAUC.ci(sa1, B = 5, set.seed = 1, plot.ROC.ci = FALSE))
+#' (ci <- sAUC.ci(sa1, B = 5, set.seed = 1))
 #'
 #' @export
 
@@ -77,14 +54,7 @@ sAUC.ci <- function(object,
                     ncores = 0, type = "SOCK",
                     ci.level = 0.95,
                     set.seed = NULL,
-                    hide.progress = FALSE,
-                    plot.sroc.ci = FALSE,
-                    add.plot.sroc = FALSE,
-                    add.spoint = FALSE,
-                    sroc.ci.col = "grey",
-                    sroc.ci.lty = 1,
-                    sroc.ci.lwd = 1,
-                    ...)
+                    hide.progress = FALSE)
 {
   if(!requireNamespace("foreach"))  install.packages("foreach")   else requireNamespace("foreach")
   if(!requireNamespace("parallel")) install.packages("parallel")  else requireNamespace("parallel")
@@ -177,39 +147,6 @@ sAUC.ci <- function(object,
        cluster = cl)
 
 
-  if(plot.sroc.ci){
-
-    fpr.t <- seq(0,1,0.001)
-    se.t  <- sapply(1:B, function(i){
-
-      u1  <- PAR[i,1]
-      u2  <- PAR[i,2]
-      t22 <- PAR[i,3]
-      t12 <- PAR[i,4]
-
-      plogis(u1 - (t12/t22) * (qlogis(fpr.t) + u2))
-
-    })
-
-
-    sROC(object, add.spoint = add.spoint, add = add.plot.sroc, ...)
-
-    ci <- cbind(
-
-      apply(se.t, 1, function(x) quantile(x, (1-ci.level)/2, na.rm = TRUE)),
-      apply(se.t, 1, function(x) quantile(x, probs = 1-(1-ci.level)/2, na.rm = TRUE))
-
-      )
-
-    matplot(x = fpr.t, y = ci, type = "l",
-            col = sroc.ci.col, lty = sroc.ci.lty, lwd = sroc.ci.lwd,
-            add = TRUE)
-
-    list <- c(list, sroc.ci <- list(x = fpr.t, y = ci))
-
-
-  }
-
   class(list) <- "sAUC.ci"
 
   list
@@ -281,10 +218,10 @@ print.sAUC.ci <- function(x, digits = 3, ...){
 #' sa1 <- dtametasa.fc(IVD, p = 0.7)
 #'
 #' sROC(sa1)
-#' ci <- sAUC.ci(sa1, B = 5, set.seed = 1, plot.ROC.ci = FALSE)
-#'
+#' ci <- sAUC.ci(sa1, B = 5, set.seed = 1)
 #' plot(ci)
-#' p <- plot(ci)
+#'
+#' (p <- plot(ci))
 #'
 #' @export
 #'

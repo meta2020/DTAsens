@@ -44,10 +44,10 @@ Plot the sROC from function \code{\link{sAUC.ci}}
 sa1 <- dtametasa.fc(IVD, p = 0.7)
 
 sROC(sa1)
-ci <- sAUC.ci(sa1, B = 5, set.seed = 1, plot.ROC.ci = FALSE)
-
+ci <- sAUC.ci(sa1, B = 5, set.seed = 1)
 plot(ci)
-p <- plot(ci)
+
+(p <- plot(ci))
 
 }
 \seealso{
