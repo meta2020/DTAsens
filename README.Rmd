@@ -228,6 +228,8 @@ Hence the results are not reliable.
 
 <span style="color:red">**In real analysis, please set `B = 1000`.**</span>
 
+If you donot hope to set the seed, please set `set.seed = NULL`
+
 #### 1. Single sROC
 
 ```{r, fig.width=12, fig.height=6}
@@ -258,14 +260,15 @@ par(mfrow = c(1,1))
 ## Calculate Parametric Bootstrap CI
 ## B (Bootstrapping times) is suggested to be 1000. To save computing time, we use B = 10 to show the functionality.
 
+
 par(mfrow = c(1,2))
 sROC(sa1)
-ci1 <- sAUC.ci(sa1, B=5, plot.ROC.ci = FALSE, hide.progress = TRUE)
+ci1 <- sAUC.ci(sa1, B=5, hide.progress = TRUE, set.seed=2021)
 plot(ci1)
 title("dtametasa.fc")
 
 sROC(sa2)
-ci2 <- sAUC.ci(sa2, B=5, plot.ROC.ci = FALSE, hide.progress = TRUE)
+ci2 <- sAUC.ci(sa2, B=5, hide.progress = TRUE, set.seed=2021)
 plot(ci2)
 title("dtametasa.rc")
 
@@ -286,14 +289,14 @@ p.seq <- seq(1, 0.1, -0.1)
 
 sauc1 <- sapply(p.seq, function(p) {
   sa1 <- dtametasa.fc(IVD, p)
-  sauc <- sAUC.ci(sa1, B=5, hide.progress = TRUE)
+  sauc <- sAUC.ci(sa1, B=5, hide.progress = TRUE, set.seed=2021)
   c(sauc[[1]], sauc[[2]], sauc[[3]])
   })
 
 
 sauc2 <- sapply(p.seq, function(p) {
   sa2 <- dtametasa.rc(IVD, p)
-  sauc <- sAUC.ci(sa2, B=5, hide.progress = TRUE)
+  sauc <- sAUC.ci(sa2, B=5, hide.progress = TRUE, set.seed=2021)
   c(sauc[[1]], sauc[[2]], sauc[[3]])
   })
 
