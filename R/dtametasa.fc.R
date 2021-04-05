@@ -273,9 +273,9 @@ dtametasa.fc <- function(data,   ## 2 FORMAT: N OR Y, make data name as format
 
     auc <- sAUC(c(u1,u2,t22,t12))
 
-    opt$par <- c(u1, u2, t11, t22, t12, b, a.opt, c11, c22, auc, se, sp)
+    opt$par <- c(u1, u2, t11, t22, t12, c11, c22, b, a.opt,  auc, se, sp)
 
-    names(opt$par) <- c("u1", "u2", "t11", "t22", "t12", "b", "a", "c11", "c22", "sauc", "se", "sp")
+    names(opt$par) <- c("u1", "u2", "t11", "t22", "t12", "c11", "c22", "b", "a","sauc", "se", "sp")
 
     ##
     ##  P.HAT CALC, FROM b FUNCTION ----------------------------------------
