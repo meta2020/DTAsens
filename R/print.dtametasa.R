@@ -24,6 +24,6 @@ print.dtametasa <- function(x, digits = 3, ...){
 
   if(!inherits(x, "dtametasa")) stop("ONLY VALID FOR RESULTS OF dtasens1 OR dtasens2")
 
-  print(list(par = x$par), ...)
+  print(list(par.all = x$par.all), ...)
 
 }

@@ -29,7 +29,7 @@
 #' @importFrom foreach foreach %dopar%
 #' @importFrom doSNOW registerDoSNOW
 #' @importFrom parallel makeCluster detectCores stopCluster
-#' @importFrom stats quantile rnorm sd
+#' @importFrom stats quantile rnorm var
 #' @importFrom utils setTxtProgressBar txtProgressBar install.packages
 #' @importFrom doRNG %dorng%
 #' @importFrom graphics matplot
@@ -71,6 +71,17 @@ sAUC.ci <- function(object,
   v1 <- data$v1
   v2 <- data$v2
 
+  ## >>
+  u <- object$par[c(1,2)]
+
+  SO <- lapply(1:S, function(s){
+
+    matrix(c(v1[s], 0, 0, v2[s]),2,2) + matrix(object$par[c(3,5,5,4)], 2,2)
+
+  })
+
+  ## <<
+
   if(ncores == 0) ncores <- detectCores() else ncores <- ceiling(ncores)
 
   cl <- makeCluster(ncores, type = type)
@@ -91,14 +102,17 @@ sAUC.ci <- function(object,
     set.seed(set.seed)
     par <- foreach(r=1:B, .combine=rbind, .packages = "dtametasa", .options.snow = opts)  %dorng%  {
 
-      y1.t <- sapply(1:S, function(i) rnorm(1,y1[i],sqrt(v1[i])))
-      y2.t <- sapply(1:S, function(i) rnorm(1,y2[i],sqrt(v2[i])))
+      # y1.t <- sapply(1:S, function(i) rnorm(1,y1[i],sqrt(v1[i])))
+      # y2.t <- sapply(1:S, function(i) rnorm(1,y2[i],sqrt(v2[i])))
+      # data.t <- data.frame(y1 = y1.t, y2 = y2.t, v1 = v1, v2 = v2)
 
-      data.t <- data.frame(y1 = y1.t, y2 = y2.t, v1 = v1, v2 = v2)
+      Y <- t(sapply(1:S, function(i) mvtnorm::rmvnorm(1, u, SO[[i]])))
+
+      data.t <- data.frame(y1 = Y[,1], y2 = Y[,2], v1 = v1, v2 = v2)
 
       args <- c(list(data = data.t), object$pars.info)
-      sa1 <- do.call("dtametasa.fc", args)
-      sa1$par[c(1,2,4,5, 10)]
+      sa1 <- try(do.call("dtametasa.fc", args), silent = TRUE)
+      if (!inherits(sa1,"try-error")) sa1$par[c(1,2,4,5, 10)] else rep(NA, 5)
 
     }
   }
@@ -109,13 +123,17 @@ sAUC.ci <- function(object,
 
     par <- foreach(r=1:B, .combine=rbind, .packages = "dtametasa", .options.snow = opts)  %dorng%  {
 
-      y1.t <- sapply(1:S, function(i) rnorm(1,y1[i], sqrt(v1[i])))
-      y2.t <- sapply(1:S, function(i) rnorm(1,y2[i], sqrt(v2[i])))
+      # y1.t <- sapply(1:S, function(i) rnorm(1,y1[i], sqrt(v1[i])))
+      # y2.t <- sapply(1:S, function(i) rnorm(1,y2[i], sqrt(v2[i])))
+      # data.t <- data.frame(y1 = y1.t, y2 = y2.t, v1 = v1, v2 = v2)
 
-      data.t <- data.frame(y1 = y1.t, y2 = y2.t, v1 = v1, v2 = v2)
+      Y <- t(sapply(1:S, function(i) mvtnorm::rmvnorm(1, u, SO[[i]])))
+
+      data.t <- data.frame(y1 = Y[,1], y2 = Y[,2], v1 = v1, v2 = v2)
+
       args <- c(list(data = data.t), object$pars.info)
-      opt2.t <- do.call("dtametasa.rc", args)
-      opt2.t$par[c(1,2,4,5, 10)]
+      sa2 <- try(do.call("dtametasa.rc", args), silent = FALSE)
+      if (!inherits(sa2,"try-error")) sa2$par[c(1,2,4,5, 10)] else rep(NA, 5)
 
   }
   }
@@ -126,17 +144,21 @@ sAUC.ci <- function(object,
   PAR <- as.matrix(par)
   sauc.t   <- PAR[, 5]
 
-  n <- length(sauc.t)
-  se <- (n-1)/n * sd(sauc.t, na.rm = TRUE)
+  # n <- length(sauc.t)
+  # se <- (n-1)/n * sd(sauc.t, na.rm = TRUE)
+
+  n <- sum(!is.na(sauc.t))
+  se <- sqrt((n-1)/n * var(sauc.t, na.rm = TRUE))
+
   sl.sauc.t <- (sauc.t - mean(sauc.t, na.rm = TRUE))/se
 
-  s.sauc.r <- order(sl.sauc.t)
+  # s.sauc.r <- order(sl.sauc.t)
   #PAR.r <- PAR[, s.sauc.r]
 
-  s.sauc.t <- sort(sl.sauc.t)
+  # s.sauc.t <- sort(sl.sauc.t)
 
-  q1 <- quantile(s.sauc.t, probs = (1-ci.level)/2, na.rm = TRUE)
-  q2 <- quantile(s.sauc.t, probs = 1-(1-ci.level)/2, na.rm = TRUE)
+  q1 <- quantile(sl.sauc.t, probs = (1-ci.level)/2, na.rm = TRUE)
+  q2 <- quantile(sl.sauc.t, probs = 1-(1-ci.level)/2, na.rm = TRUE)
 
   sauc <- object$par[10]
 

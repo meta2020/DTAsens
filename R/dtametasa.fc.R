@@ -171,7 +171,6 @@ dtametasa.fc <- function(data,   ## 2 FORMAT: N OR Y, make data name as format
 
   if(!inherits(opt,"try-error")) {
 
-
     # ##
     # ## CI ----------------------------------------------------
     # ##
@@ -273,9 +272,11 @@ dtametasa.fc <- function(data,   ## 2 FORMAT: N OR Y, make data name as format
 
     auc <- sAUC(c(u1,u2,t22,t12))
 
-    opt$par <- c(u1, u2, t11, t22, t12, c11, c22, b, a.opt,  auc, se, sp)
+    opt$par.all <- c(u1, u2, t11, t22, t12, c11, c22, b, a.opt,  auc, se, sp)
 
-    names(opt$par) <- c("u1", "u2", "t11", "t22", "t12", "c11", "c22", "b", "a","sauc", "se", "sp")
+    names(opt$par.all) <- c("u1", "u2", "t11", "t22", "t12", "c11", "c22", "b", "a","sauc", "se", "sp")
+
+    names(opt$par) <- c("u1", "u2", "t1", "t2", "r","b")
 
     ##
     ##  P.HAT CALC, FROM b FUNCTION ----------------------------------------
