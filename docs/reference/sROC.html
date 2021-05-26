@@ -126,12 +126,17 @@
   sroc.col <span class='op'>=</span> <span class='fl'>1</span>,
   sroc.lty <span class='op'>=</span> <span class='fl'>1</span>,
   sroc.lwd <span class='op'>=</span> <span class='fl'>1</span>,
+  xlab <span class='op'>=</span> <span class='st'>"1-specificity"</span>,
+  ylab <span class='op'>=</span> <span class='st'>"Sensitivity"</span>,
+  plot.ci <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  ci.level <span class='op'>=</span> <span class='fl'>0.95</span>,
+  sroc.ci.col <span class='op'>=</span> <span class='st'>"grey48"</span>,
+  sroc.ci.lwd <span class='op'>=</span> <span class='fl'>1</span>,
+  sroc.ci.lty <span class='op'>=</span> <span class='fl'>2</span>,
   add.spoint <span class='op'>=</span> <span class='cn'>TRUE</span>,
   spoint.pch <span class='op'>=</span> <span class='fl'>18</span>,
   spoint.col <span class='op'>=</span> <span class='fl'>1</span>,
   spoint.cex <span class='op'>=</span> <span class='fl'>2</span>,
-  xlab <span class='op'>=</span> <span class='st'>"1-specificity"</span>,
-  ylab <span class='op'>=</span> <span class='st'>"Sensitivity"</span>,
   <span class='va'>...</span>
 <span class='op'>)</span></pre>
 
@@ -161,7 +166,42 @@ Default is solid.</p></td>
     <tr>
       <th>sroc.lwd</th>
       <td><p>The line width of sROC.
+Default is 1, solid.</p></td>
+    </tr>
+    <tr>
+      <th>xlab</th>
+      <td><p>The label of x-axis.
+Default is: 1-specificity.</p></td>
+    </tr>
+    <tr>
+      <th>ylab</th>
+      <td><p>The label of y-axis.
+Default is Sensitivity.</p></td>
+    </tr>
+    <tr>
+      <th>plot.ci</th>
+      <td><p>Whether to plot confidence interval of sROC.
+Default is <code>TRUE</code>, to plot the CI.</p></td>
+    </tr>
+    <tr>
+      <th>ci.level</th>
+      <td><p>The significance level of confidence interval of sROC.
+Default is <code>0.95</code></p></td>
+    </tr>
+    <tr>
+      <th>sroc.ci.col</th>
+      <td><p>The color of confidence interval of sROC.
+Default is grey.</p></td>
+    </tr>
+    <tr>
+      <th>sroc.ci.lwd</th>
+      <td><p>The line width of confidence interval of sROC.
 Default is 1.</p></td>
+    </tr>
+    <tr>
+      <th>sroc.ci.lty</th>
+      <td><p>The line type of confidence interval of sROC.
+Default is 2, dashed.</p></td>
     </tr>
     <tr>
       <th>add.spoint</th>
@@ -182,16 +222,6 @@ Default is black.</p></td>
       <th>spoint.cex</th>
       <td><p>The size of the point.
 Default is 1.</p></td>
-    </tr>
-    <tr>
-      <th>xlab</th>
-      <td><p>The label of x-axis.
-Default is: 1-specificity.</p></td>
-    </tr>
-    <tr>
-      <th>ylab</th>
-      <td><p>The label of y-axis.
-Default is Sensitivity.</p></td>
     </tr>
     <tr>
       <th>...</th>

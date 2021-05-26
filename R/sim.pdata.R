@@ -11,6 +11,7 @@
 #' a simulation of logit transformed diagnostic study data
 #'
 #' @importFrom mvtnorm rmvnorm
+#' @importFrom stats rnorm
 #'
 #' @examples
 #'

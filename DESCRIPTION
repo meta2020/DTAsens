@@ -12,10 +12,7 @@ LazyData: true
 RoxygenNote: 7.1.1
 Imports: 
     mvmeta,
-    doSNOW,
-    snow,
-    foreach,
-    doRNG,
-    mvtnorm
+    mvtnorm,
+    numDeriv
 URL: https://github.com/meta2020/dtametasa
 BugReports: https://github.com/meta2020/dtametasa/issues

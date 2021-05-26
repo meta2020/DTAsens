@@ -40,10 +40,9 @@
 #' Default is in the interval \code{c(-3,3)}.
 #' then, the root of \eqn{\alpha}{a} will be searched within the interval.
 #'
-#' @param positive.r Whether to permit correlation parameter \eqn{\rho}{r} to be a positive value,
-#' though it is often a negative value
-#' Default \code{TRUE}, to permit positive, in which \eqn{\rho}{r} is in [-1, 1].
-#' If \code{FALSE}, \eqn{\rho}{r} is in [-1, 0)
+#' @param neg.r Whether to permit correlation parameter \eqn{\rho}{r} to be a negative value.
+#' Default is \code{FALSE}, \eqn{\rho}{r} in [-1, 1].
+#' If \code{TRUE}, \eqn{\rho}{r} is in [-1, 0)
 #'
 #' @param ci.level The significant value for confidence interval.
 #' Default is 0.95, hence, a 2-tailed 95% confidence interval will be calculated by
@@ -88,7 +87,7 @@ dtametasa.fc <- function(data,   ## 2 FORMAT: N OR Y, make data name as format
                      b.init = 1,
                      b.interval = c(0, 2),
                      a.interval = c(-3, 3),
-                     positive.r = TRUE,
+                     neg.r = FALSE,
                      ci.level = 0.95,
                      show.warn.message = FALSE,
                      a.root.extendInt = "downX",
@@ -155,7 +154,7 @@ dtametasa.fc <- function(data,   ## 2 FORMAT: N OR Y, make data name as format
 
   eps <- sqrt(.Machine$double.eps)
 
-  if(positive.r) r.up <- 1 else  r.up <- eps
+  if(neg.r) r.up <- eps else  neg.r <- 1
 
   fn <- function(par) llk.o(par = c(par[1:6], c1),
                             data = data, p = p,
@@ -165,68 +164,11 @@ dtametasa.fc <- function(data,   ## 2 FORMAT: N OR Y, make data name as format
   opt <- try(nlminb(start6,
                    fn,
                    lower = c(-5, -5, eps, eps, -1, b.interval[1]),
-                   upper = c( 5,  5, 3, 3, r.up , b.interval[2])
+                   upper = c( 5,  5, 3, 3, neg.r , b.interval[2])
   ), silent = TRUE)
 
 
   if(!inherits(opt,"try-error")) {
-
-    # ##
-    # ## CI ----------------------------------------------------
-    # ##
-    #
-    # # u1
-    # fx <- function(x) fn(par = c(x, opt$par[c(2:6)]))- opt$objective - qchisq(ci.level,1)/2
-    # u1.l <- try(uniroot(fx, c(-5, opt$par[1])), silent = TRUE)
-    # u1.u <- try(uniroot(fx, c(opt$par[1],  5)), silent = TRUE)
-    # if (!inherits(u1.l, "try-error")) u1.l <- u1.l$root else u1.l <- NA
-    # if (!inherits(u1.u, "try-error")) u1.u <- u1.u$root else u1.u <- NA
-    #
-    # # u2
-    # fx <- function(x) fn(par = c(opt$par[1], x, opt$par[3:6]))- opt$objective - qchisq(ci.level,1)/2
-    # u2.l <- try(uniroot(fx, c(-5, opt$par[2])), silent = TRUE)
-    # u2.u <- try(uniroot(fx, c(opt$par[2],  5)), silent = TRUE)
-    # if (!inherits(u2.l, "try-error")) u2.l <- u2.l$root else u2.l <- NA
-    # if (!inherits(u2.u, "try-error")) u2.u <- u2.u$root else u2.u <- NA
-    #
-    # # t1
-    # fx <- function(x) fn(par = c(opt$par[1:2], x, opt$par[4:6]))- opt$objective - qchisq(ci.level,1)/2
-    # t1.l <- try(uniroot(fx, c(0, opt$par[3])), silent = TRUE)
-    # t1.u <- try(uniroot(fx, c(opt$par[3], 3)), silent = TRUE)
-    # if (!inherits(t1.l, "try-error")) t1.l <- t1.l$root else t1.l <- NA #0
-    # if (!inherits(t1.u, "try-error")) t1.u <- t1.u$root else t1.u <- NA #3
-    #
-    # # t2
-    # fx <- function(x) fn(par = c(opt$par[1:3], x, opt$par[5:6]))- opt$objective - qchisq(ci.level,1)/2
-    # t2.l <- try(uniroot(fx, c(0, opt$par[4])), silent = TRUE)
-    # t2.u <- try(uniroot(fx, c(opt$par[4], 3)), silent = TRUE)
-    # if (!inherits(t2.l, "try-error")) t2.l <- t2.l$root else t2.l <- NA #0
-    # if (!inherits(t2.u, "try-error")) t2.u <- t2.u$root else t2.u <- NA #3
-    #
-    # # r
-    # fx <- function(x) fn(par = c(opt$par[1:4], x, opt$par[6]))- opt$objective - qchisq(ci.level,1)/2
-    # r.l <- try(uniroot(fx, c(-1,   opt$par[5])), silent = TRUE)
-    # r.u <- try(uniroot(fx, c(opt$par[5], r.up)), silent = TRUE)
-    # if (!inherits(r.l, "try-error")) r.l <- r.l$root else r.l <- NA #-1
-    # if (!inherits(r.u, "try-error")) r.u <- r.u$root else r.u <- NA #r.up
-    #
-    # # b
-    # fx <- function(x) fn(par = c(opt$par[1:5], x))- opt$objective - qchisq(ci.level,1)/2
-    # b.l <- try(uniroot(fx, c(b.interval[1], opt$par[6])), silent = TRUE)
-    # b.u <- try(uniroot(fx, c(opt$par[6], b.interval[2])), silent = TRUE)
-    # if (!inherits(b.l, "try-error")) b.l <- b.l$root else b.l <- NA #b.interval[1]
-    # if (!inherits(b.u, "try-error")) b.u <- b.u$root else b.u <- NA #b.interval[2]
-    #
-    #
-    # opt$ci <- matrix(
-    #   c(opt$par[1], u1.l, u1.u,
-    #     opt$par[2], u2.l, u2.u,
-    #     opt$par[3], t1.l, t1.u,
-    #     opt$par[4], t2.l, t2.u,
-    #     opt$par[5], r.l,  r.u,
-    #     opt$par[6], b.l,  b.u), byrow = TRUE, ncol = 3,
-    #   dimnames = list(c("u1","u2","t1", "t2", "r", "b"), c("estimate", "ci.low", "ci.up")))
-
 
     ##
     ##  OUTPUT: ALL PARAMETERS -------------------------------------------------
@@ -266,15 +208,68 @@ dtametasa.fc <- function(data,   ## 2 FORMAT: N OR Y, make data name as format
 
     a.opt <- a.opt.try$root
 
+
     ##
-    ## AUC CALC----------------------------------------
+    ##  HESSIANS -------------------------------------------------
     ##
 
-    auc <- sAUC(c(u1,u2,t22,t12))
+    opt$num.hessian <- numDeriv::hessian(fn, opt$par)
+    rownames(opt$num.hessian) <- c("u1", "u2", "t1", "t2", "r", "b")
+    colnames(opt$num.hessian) <- c("u1", "u2", "t1", "t2", "r", "b")
 
-    opt$par.all <- c(u1, u2, t11, t22, t12, c11, c22, b, a.opt,  auc, se, sp)
+    ##
+    ## SAUC CI -------------------------------------------------
+    ##
 
-    names(opt$par.all) <- c("u1", "u2", "t11", "t22", "t12", "c11", "c22", "b", "a","sauc", "se", "sp")
+    hes <- opt$num.hessian
+
+    if(p==1) inv.I.fun.m <- solve(hes[1:5,1:5]) else inv.I.fun.m <- solve(hes)
+
+    opt$var.ml <- inv.I.fun.m
+
+    f <- function(x) plogis(u1 - (t1*t2*r/(t2^2)) * (qlogis(x) + u2))
+
+
+    sauc.try <- try(integrate(f, 0, 1))
+
+    if(!inherits(sauc.try, "try-error")) sauc <- sauc.try$value else sauc <- NA
+
+    sauc.lb2 <-  plogis(qlogis(sauc) + qnorm((1-ci.level)/2, lower.tail = TRUE) *
+                          suppressWarnings(
+                            sqrt(QIQ1(u1, u2, t1, t2, r, inv.I.fun.m[1:5,1:5]))/(sauc*(1-sauc))) )
+
+    sauc.ub2 <-  plogis(qlogis(sauc) + qnorm((1-ci.level)/2, lower.tail = FALSE)*
+                          suppressWarnings(
+                            sqrt(QIQ1(u1, u2, t1, t2, r, inv.I.fun.m[1:5,1:5]))/(sauc*(1-sauc))) )
+
+    opt$sauc.ci <- c(sauc, sauc.lb2, sauc.ub2)
+    names(opt$sauc.ci) <- c("sauc", "sauc.lb", "sauc.ub")
+
+    #
+    # b CI -------------------------------------------------
+    #
+
+
+    if(p==1) opt$b.ci <- c(NA, NA, NA) else {
+
+      b.se <- suppressWarnings(sqrt(inv.I.fun.m[6,6]))
+      b.lb <- b + qnorm((1-ci.level)/2, lower.tail = TRUE)*b.se
+      b.ub <- b + qnorm((1-ci.level)/2, lower.tail = FALSE)*b.se
+
+      opt$b.ci <- c(b, b.lb, b.ub)
+
+    }
+
+    names(opt$b.ci) <- c("b", "b.lb", "b.ub")
+
+
+    #s
+    ## PAR AND ALL PAR ----------------------------------------
+    ##
+
+    opt$par.all <- c(u1, u2, t11, t22, t12, c1, c2,  b, a.opt, sauc, se, sp)
+
+    names(opt$par.all) <- c("u1", "u2", "t11", "t22", "t12", "c1", "c2", "b", "a","sauc", "se", "sp")
 
     names(opt$par) <- c("u1", "u2", "t1", "t2", "r","b")
 
@@ -287,22 +282,7 @@ dtametasa.fc <- function(data,   ## 2 FORMAT: N OR Y, make data name as format
     opt$p.hat <- n/sum(1/bp)
 
 
-    opt$data <- data
-
-    opt$func.name <- "dtametasa.fc"
-
-    opt$pars.info <- list(p = p,
-                          c1.sq = c1.sq, ##  0<=c11<=1
-                          correct.value = correct.value,
-                          correct.type  = correct.type,
-                          brem.init = brem.init,  ## u1, u2, t1, t2, r, b
-                          b.init = b.init,
-                          b.interval = b.interval,
-                          a.interval = a.interval,
-                          positive.r = positive.r,
-                          ci.level = ci.level,
-                          show.warn.message = show.warn.message,
-                          a.root.extendInt = a.root.extendInt)
+    opt$t.data <- data
 
     class(opt) <- "dtametasa"
 }

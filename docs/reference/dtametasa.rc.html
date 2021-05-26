@@ -130,7 +130,7 @@
   c1.sq.init <span class='op'>=</span> <span class='fl'>0.5</span>,
   b.interval <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>2</span><span class='op'>)</span>,
   a.interval <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>5</span>, <span class='fl'>3</span><span class='op'>)</span>,
-  positive.r <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  neg.r <span class='op'>=</span> <span class='cn'>FALSE</span>,
   ci.level <span class='op'>=</span> <span class='fl'>0.95</span>,
   show.warn.message <span class='op'>=</span> <span class='cn'>FALSE</span>,
   a.root.extendInt <span class='op'>=</span> <span class='st'>"downX"</span>,
@@ -198,11 +198,10 @@ Default is in the interval <code><a href='https://rdrr.io/r/base/c.html'>c(-3,3)
 then, the root of \(\alpha\) will be searched within the interval.</p></td>
     </tr>
     <tr>
-      <th>positive.r</th>
-      <td><p>Whether to permit correlation parameter \(\rho\) to be a positive value,
-though it is often a negative value
-Default <code>TRUE</code>, to permit positive, in which \(\rho\) is in [-1, 1].
-If <code>FALSE</code>, \(\rho\) is in [-1, 0)</p></td>
+      <th>neg.r</th>
+      <td><p>Whether to permit correlation parameter \(\rho\) to be a negative value.
+Default is <code>FALSE</code>, \(\rho\) in [-1, 1].
+If <code>TRUE</code>, \(\rho\) is in [-1, 0)</p></td>
     </tr>
     <tr>
       <th>ci.level</th>
@@ -247,11 +246,11 @@ logit transformed data</p>
     <pre class="examples"><div class='input'>
 <span class='va'>sa2</span> <span class='op'>&lt;-</span> <span class='fu'>dtametasa.rc</span><span class='op'>(</span><span class='va'>IVD</span>, p <span class='op'>=</span> <span class='fl'>0.7</span><span class='op'>)</span>
 <span class='va'>sa2</span>
-</div><div class='output co'>#&gt; $par
-#&gt;         u1         u2        t11        t22        t12          b          a 
-#&gt;  1.2965651  1.7186190  0.3052501  0.7071248 -0.1589768  2.0000000 -4.2565811 
-#&gt;        c11        c22       sauc         se         sp 
-#&gt;  0.5135749  0.4864251  0.8360147  0.7852563  0.8479509 
+</div><div class='output co'>#&gt; $par.all
+#&gt;         u1         u2        t11        t22        t12         c1         c2 
+#&gt;  1.2965651  1.7186190  0.3052501  0.7071248 -0.1589768  0.7166414  0.6974418 
+#&gt;          b          a       sauc         se         sp 
+#&gt;  2.0000000 -4.2565811  0.8360147  0.7852563  0.8479509 
 #&gt; </div><div class='input'>
 </div></pre>
   </div>

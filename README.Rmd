@@ -77,7 +77,7 @@ This function need to pre-specify the c contrast in the selection function.
 ## Use default parameters setting
 ## Print parameters' estimates
 
-(sa1 <- dtametasa.fc(IVD, p = 0.7))
+(sa1 <- dtametasa.fc(IVD, p = 0.7, b.interval = c(0, 2)))
 
 ## If we change b.interval
 
@@ -102,7 +102,7 @@ p.seq <- seq(1, 0.1, -0.1)
 
 ## Get estimations for each p in p.seq vector
 
-est1 <- sapply(p.seq, function(p) dtametasa.fc(IVD, p)$par)
+est1 <- sapply(p.seq, function(p) dtametasa.fc(IVD, p, b.interval = c(0, 2))$par.all)
 
 ## Print estimation
 
@@ -138,7 +138,7 @@ p.seq <- seq(1, 0.1, -0.1)
 
 ## Get estimations for each p in p.seq vector
 
-est2 <- sapply(p.seq, function(p) dtametasa.rc(IVD, p)$par)
+est2 <- sapply(p.seq, function(p) dtametasa.rc(IVD, p, b.interval = c(0, 2))$par.all)
 
 ## Print estimation
 
@@ -159,37 +159,30 @@ par(mfrow = c(1,2))
 library(mada)
 fit <- reitsma(IVD, correction.control = "all", method = "ml")
 plot(sroc(fit, type = "naive"), type = "l", ylim = c(0,1), xlim = c(0,1), col = "red")
-title("Reistma model from mada")
 
 ## Extact the estimation from Reistma model
 
-par0 <- c(c(1,-1)*fit$coefficients, c(1,-1)*fit$Psi[c(4,3)])
+par0 <- c(c(1,-1)*fit$coefficients, sqrt(fit$Psi[c(1,4)]), -fit$Psi[2]/prod(sqrt(fit$Psi[c(1,4)])))
 
-## Our model that takes PB into consideration
+## Add sROC
+sROC(sa1, add = TRUE, sroc.col = "black", sroc.lty = 1, spoint.pch = 1, spoint.col = "black")
+with(IVD, points(FP/(FP+TN), TP/(TP+FN), pch = 4, cex = 0.5))
+legend("bottomright", c("Reistma", "dtametasa.fc", "IVD"), 
+       col = c("red", "black", "black"), lty = c(1,2, 0), pch = c(19,1, 4))
+title("When selection prob = 0.7, c1 = c2")
 
-# sa1 <- dtametasa.fc(IVD, p = 0.5)
-# sa2 <- dtametasa.rc(IVD, p = 0.5)
 
-## Plot ROC from Reistma model
+
 sROC(par0, sroc.col = "red", spoint.col ="red")
 
 ## Add sROC
-sROC(sa1, add = TRUE, sroc.col = "black", sroc.lty = 2, spoint.pch = 1, spoint.col = "black")
-sROC(sa2, add = TRUE, sroc.col = "darkgray", sroc.lty = 2, spoint.col = "darkgray")
-
-## Also works by using the extracted parameters, but attention the pars
-
-par1 <- sa1$par[c(1,2,4,5)]
-par2 <- sa2$par[c(1,2,4,5)]
-sROC(par1, add = TRUE, sroc.col = "black", sroc.lty = 2, spoint.pch = 1, spoint.col = "black")
-sROC(par2, add = TRUE, sroc.col = "darkgray", sroc.lty = 2, spoint.col = "darkgray")
-
-## Calculate the data points (fpr, sens) of IVD
+sROC(sa2, add = TRUE, sroc.col = "darkgray", sroc.lty = 1, spoint.col = "darkgray")
 
 with(IVD, points(FP/(FP+TN), TP/(TP+FN), pch = 4, cex = 0.5))
-legend("bottomright", c("Reistma", "dtametasa.fc", "dtametasa.rc", "IVD"), 
-       col = c("red", "black", "darkgray", "black"), lty = c(1,2,2, 0), pch = c(19,1,19, 4))
-title("When selection prob = 0.0.5")
+legend("bottomright", c("Reistma", "dtametasa.rc", "IVD"), 
+       col = c("red", "darkgray", "black"), lty = c(1, 2, 0), pch = c(19,19, 4))
+title("When selection prob = 0.7, estimate c1 c2")
+
 par(mfrow = c(1,1))
 
 ```
@@ -199,19 +192,22 @@ par(mfrow = c(1,1))
 ```{r, fig.height=5, fig.width=10}
 ## p vector and model
 
-# p.seq <- seq(1, 0.1, -0.1)
-# est1 <- sapply(p.seq, function(p) dtametasa.fc(IVD, p)$par)
-# est2 <- sapply(p.seq, function(p) dtametasa.rc(IVD, p)$par)
+p.seq <- seq(1, 0.1, -0.1)
+est1 <- sapply(p.seq, function(p) dtametasa.fc(IVD, p)$par)
+est2 <- sapply(p.seq, function(p) dtametasa.rc(IVD, p)$par)
 
 ## Plot multiple sROC
 par(mfrow = c(1,2))
-sROC.matrix(est1[c(1,2,4,5), ], legend = TRUE, p.vec = p.seq, legend.cex = 0.5)
+
+sROC.matrix(est1[1:5, ])
 sROC(par0, add = TRUE, sroc.col = "red")
 title("dtametasa.fc")
 
-sROC.matrix(est2[c(1,2,4,5), ], legend = TRUE, p.vec = p.seq, legend.cex = 0.5)
+sROC.matrix(est1[1:5, ])
 sROC(par0, add = TRUE, sroc.col = "red")
 title("dtametasa.rc")
+
+
 par(mfrow = c(1,1))
 
 
@@ -219,27 +215,14 @@ par(mfrow = c(1,1))
 
 ### Calculate sAUC and confident interval
 
-Although sAUC has output together with the parameters in `dtametasa.fc` and `dtametasa.rc` functions. We can still calculate by using `sAUC()` function.
 
-The confidence interval (CI) is calculated by parametric bootstrapping. 
-
-To save computing time, we set bootstrapping times as 5 (`B = 5`).
-Hence the results are not reliable.
-
-<span style="color:red">**In real analysis, please set `B = 1000`.**</span>
-
-If you donot hope to set the seed, please set `set.seed = NULL`
-
-#### 1. Single sROC
+#### 1. Single sROC with CI
 
 ```{r, fig.width=12, fig.height=6}
 
 ## Use parameter vector
-par1 <- sa1$par
-par2 <- sa2$par
-sAUC(par1[c(1,2,4,5)])
-sAUC(par2[c(1,2,4,5)])
-
+sa1 <- dtametasa.fc(IVD, p = 0.5, b.interval = c(0, 2))
+sa2 <- dtametasa.rc(IVD, p = 0.5, b.interval = c(0, 2))
 
 par(mfrow = c(1,2))
 
@@ -253,59 +236,21 @@ par(mfrow = c(1,1))
 
 ```
 
-#### 2. Single sROC with CI
 
-```{r, fig.width=12, fig.height=6}
-
-## Calculate Parametric Bootstrap CI
-## B (Bootstrapping times) is suggested to be 1000. To save computing time, we use B = 10 to show the functionality.
-
-
-par(mfrow = c(1,2))
-sROC(sa1)
-ci1 <- sAUC.ci(sa1, B=5, hide.progress = TRUE, set.seed=2021)
-plot(ci1)
-title("dtametasa.fc")
-
-sROC(sa2)
-ci2 <- sAUC.ci(sa2, B=5, hide.progress = TRUE, set.seed=2021)
-plot(ci2)
-title("dtametasa.rc")
-
-par(mfrow = c(1,1))
-
-```
-
-
-#### 3. Multiple sAUC
+#### 2. Multiple sAUC
 
 ```{r}
 
-## Calculate Parametric Bootstrap CI
-
-## B (Bootstrapping times) is suggested to be 1000. To save computing time, we use B = 5 to show the functionality.
 
 p.seq <- seq(1, 0.1, -0.1)
 
-sauc1 <- sapply(p.seq, function(p) {
-  sa1 <- dtametasa.fc(IVD, p)
-  sauc <- sAUC.ci(sa1, B=5, hide.progress = TRUE, set.seed=2021)
-  c(sauc[[1]], sauc[[2]], sauc[[3]])
-  })
-
-
-sauc2 <- sapply(p.seq, function(p) {
-  sa2 <- dtametasa.rc(IVD, p)
-  sauc <- sAUC.ci(sa2, B=5, hide.progress = TRUE, set.seed=2021)
-  c(sauc[[1]], sauc[[2]], sauc[[3]])
-  })
+sauc1 <- sapply(p.seq, function(p) dtametasa.fc(IVD, p)$sauc.ci)
+sauc2 <- sapply(p.seq, function(p) dtametasa.rc(IVD, p)$sauc.ci)
 
 colnames(sauc1)<- paste0("p = ", p.seq)
-rownames(sauc1)<- c("sAUC", "CI.L", "CI.U")
 kable(sauc1)
 
 colnames(sauc2)<- paste0("p = ", p.seq)
-rownames(sauc2)<- c("sAUC", "CI.L", "CI.U")
 kable(sauc2)
 ```
 

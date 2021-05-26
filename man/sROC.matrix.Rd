@@ -7,14 +7,10 @@
 sROC.matrix(
   par,
   add = FALSE,
-  ncols = NULL,
+  ncols = gray.colors(ncol(par), gamma = 1, start = 0.8, end = 0),
   sroc.lty = 1,
   sroc.lwd = 1,
   add.spoint = TRUE,
-  legend = FALSE,
-  p.vec,
-  legend.text = paste0("p = ", p.vec),
-  legend.cex = 1,
   spoint.pch = 18,
   spoint.cex = 2,
   xlab = "1 - specificity",
@@ -31,7 +27,7 @@ Each column is the vector \code{c(u1, u2, t22, t12)}.}
 Default is \code{FALSE}, to create a new plot.}
 
 \item{ncols}{Set a vector of different colors for multiple sROC.
-Defult is \code{NULL}, that uses different grey's colors.}
+Defult uses different grey's colors.}
 
 \item{sroc.lty}{The line tyoe of sROC.
 Default is solid lines.}
@@ -41,17 +37,6 @@ Default is 1.}
 
 \item{add.spoint}{Whether to add the summary point in the sROC plot.
 Default it not the add.}
-
-\item{legend}{Whether to add legend into the plot.
-Default is not to add.}
-
-\item{p.vec}{If add the legend (\code{legend = TRUE}),
-define the probability sequence.}
-
-\item{legend.text}{If add the legend (\code{legend = TRUE}),
-define the legend context.}
-
-\item{legend.cex}{The font size of legend.}
 
 \item{spoint.pch}{The point type of the summary point in sROC.}
 
@@ -72,24 +57,12 @@ sROC plot
 Plot multiple ROC curves
 }
 \examples{
+p.seq <- seq(0.5, 0.9, 0.1)
+sa1.seq <- sapply(p.seq, function (p) dtametasa.fc(IVD, p)$par)
+sROC.matrix(sa1.seq)
 
-# Use matrix
 
-par.matrix <-cbind(c(1, 1.5, 0.5, -0.2),
-                   c(1, 1, 1, -0.6),
-                   c(1.8, 2, 1,-0.6))
 
-sROC.matrix(par.matrix, legend = TRUE, p.vec = seq(0.2,0.6,0.2), legend.cex = 0.9)
-
-sROC.matrix(par.matrix, legend = TRUE,
-      legend.text = c("l1", "l2", "l3"),
-      legend.cex = 0.9, ncols = 1:3)
-
-# Use vector
-
-par.vec <- c(1,1.5,0.5,-0.2)
-
-sROC.matrix(par.vec)
 
 }
 \seealso{

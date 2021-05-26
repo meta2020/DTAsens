@@ -14,7 +14,7 @@ dtametasa.rc(
   c1.sq.init = 0.5,
   b.interval = c(0, 2),
   a.interval = c(-5, 3),
-  positive.r = TRUE,
+  neg.r = FALSE,
   ci.level = 0.95,
   show.warn.message = FALSE,
   a.root.extendInt = "downX",
@@ -61,10 +61,9 @@ The estimation of \eqn{\beta}{b} will be searched within the interval.}
 Default is in the interval \code{c(-3,3)}.
 then, the root of \eqn{\alpha}{a} will be searched within the interval.}
 
-\item{positive.r}{Whether to permit correlation parameter \eqn{\rho}{r} to be a positive value,
-though it is often a negative value
-Default \code{TRUE}, to permit positive, in which \eqn{\rho}{r} is in [-1, 1].
-If \code{FALSE}, \eqn{\rho}{r} is in [-1, 0)}
+\item{neg.r}{Whether to permit correlation parameter \eqn{\rho}{r} to be a negative value.
+Default is \code{FALSE}, \eqn{\rho}{r} in [-1, 1].
+If \code{TRUE}, \eqn{\rho}{r} is in [-1, 0)}
 
 \item{ci.level}{The significant value for confidence interval.
 Default is 0.95, hence, a 2-tailed 95% confidence interval will be calculated by

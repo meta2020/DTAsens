@@ -10,12 +10,17 @@ sROC(
   sroc.col = 1,
   sroc.lty = 1,
   sroc.lwd = 1,
+  xlab = "1-specificity",
+  ylab = "Sensitivity",
+  plot.ci = TRUE,
+  ci.level = 0.95,
+  sroc.ci.col = "grey48",
+  sroc.ci.lwd = 1,
+  sroc.ci.lty = 2,
   add.spoint = TRUE,
   spoint.pch = 18,
   spoint.col = 1,
   spoint.cex = 2,
-  xlab = "1-specificity",
-  ylab = "Sensitivity",
   ...
 )
 }
@@ -33,7 +38,28 @@ Default is black.}
 Default is solid.}
 
 \item{sroc.lwd}{The line width of sROC.
+Default is 1, solid.}
+
+\item{xlab}{The label of x-axis.
+Default is: 1-specificity.}
+
+\item{ylab}{The label of y-axis.
+Default is Sensitivity.}
+
+\item{plot.ci}{Whether to plot confidence interval of sROC.
+Default is \code{TRUE}, to plot the CI.}
+
+\item{ci.level}{The significance level of confidence interval of sROC.
+Default is \code{0.95}}
+
+\item{sroc.ci.col}{The color of confidence interval of sROC.
+Default is grey.}
+
+\item{sroc.ci.lwd}{The line width of confidence interval of sROC.
 Default is 1.}
+
+\item{sroc.ci.lty}{The line type of confidence interval of sROC.
+Default is 2, dashed.}
 
 \item{add.spoint}{Whether to add the summary point in the sROC plot.
 Default it not the add.}
@@ -46,12 +72,6 @@ Default is black.}
 
 \item{spoint.cex}{The size of the point.
 Default is 1.}
-
-\item{xlab}{The label of x-axis.
-Default is: 1-specificity.}
-
-\item{ylab}{The label of y-axis.
-Default is Sensitivity.}
 
 \item{...}{Other augments in function \code{\link{points}} or function \code{\link{curve}}}
 }

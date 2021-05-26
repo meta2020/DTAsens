@@ -15,7 +15,22 @@
 #' Default is solid.
 #'
 #' @param sroc.lwd The line width of sROC.
+#' Default is 1, solid.
+#'
+#' @param plot.ci Whether to plot confidence interval of sROC.
+#' Default is \code{TRUE}, to plot the CI.
+#'
+#' @param ci.level The significance level of confidence interval of sROC.
+#' Default is \code{0.95}
+#'
+#' @param sroc.ci.col The color of confidence interval of sROC.
+#' Default is grey.
+#'
+#' @param sroc.ci.lwd The line width of confidence interval of sROC.
 #' Default is 1.
+#'
+#' @param sroc.ci.lty The line type of confidence interval of sROC.
+#' Default is 2, dashed.
 #'
 #' @param add.spoint Whether to add the summary point in the sROC plot.
 #' Default it not the add.
@@ -61,31 +76,56 @@ sROC <- function(object,
                  sroc.col = 1,
                  sroc.lty = 1,
                  sroc.lwd = 1,
+                 xlab = "1-specificity",
+                 ylab = "Sensitivity",
+                 plot.ci = TRUE,
+                 ci.level = 0.95,
+                 sroc.ci.col = "grey48",
+                 sroc.ci.lwd = 1,
+                 sroc.ci.lty = 2,
                  add.spoint = TRUE,
                  spoint.pch = 18,
                  spoint.col = 1,
                  spoint.cex = 2,
-                 xlab = "1-specificity",
-                 ylab = "Sensitivity",
                  ...) {
 
-  if(inherits(object,"dtametasa")) par.vec <- object$par[c(1,2,4,5)] else {
+  if(inherits(object,"dtametasa")) par.vec <- object$par[1:5] else {
 
-    if (is.vector(object) & length(object) >= 4) {
+    if (is.vector(object) & length(object) >= 5) {
 
-      par.vec <- object} else stop("PLEASE INPUT EITHER dtametasa OBJECTS OR A VECTOR OF c(u1, u2, t22, t12)")
+      par.vec <- object} else stop("PLEASE INPUT EITHER dtametasa OBJECT OR A VECTOR OF c(u1, u2, t1, t2, r)")
 
   }
 
   u1  <- par.vec[1]
   u2  <- par.vec[2]
-  t22 <- par.vec[3]
-  t12 <- par.vec[4]
+  t1  <- par.vec[3]
+  t2  <- par.vec[4]
+  r   <- par.vec[5]
 
-  roc   <- function(x) plogis(u1 - (t12/t22) * (qlogis(x) + u2))
 
-  curve(roc, xlab = xlab, ylab = ylab, add = add, col = sroc.col, lwd =sroc.lwd,lty = sroc.lty,
+  f <- function(x) plogis(u1 - (t1*t2*r/(t2^2)) * (qlogis(x) + u2))
+
+  curve(f, xlab = xlab, ylab = ylab, add = add, col = sroc.col, lwd =sroc.lwd,lty = sroc.lty,
         xlim = c(0,1), ylim = c(0,1), ...)
+
+  if(inherits(object,"dtametasa") & plot.ci){
+
+  f.lb <- function(x) plogis( u1 - (t1*t2*r/t2^2) * (qlogis(x) + u2) +
+                                qnorm((1-ci.level)/2, lower.tail = TRUE)*
+                                suppressWarnings(
+                                  sqrt(QIQ(x, u1, u2, t1, t2, r, object$var.ml[1:5,1:5]))))
+
+  f.ub <- function(x) plogis( u1 - (t1*t2*r/t2^2) * (qlogis(x) + u2) +
+                                qnorm((1-ci.level)/2, lower.tail = FALSE)*
+                                suppressWarnings(
+                                  sqrt(QIQ(x, u1, u2, t1, t2, r, object$var.ml[1:5,1:5]))))
+
+  curve(f.lb, add = TRUE, col = sroc.ci.col, lwd =sroc.ci.lwd, lty = sroc.ci.lty)
+
+  curve(f.ub, add = TRUE, col = sroc.ci.col, lwd =sroc.ci.lwd, lty = sroc.ci.lty)
+
+  }
 
   if(add.spoint) points(plogis(-u2), plogis(u1), pch = spoint.pch, col = spoint.col, cex = spoint.cex, ...)
 
@@ -107,7 +147,7 @@ sROC <- function(object,
 #' Default is \code{FALSE}, to create a new plot.
 #'
 #' @param ncols Set a vector of different colors for multiple sROC.
-#' Defult is \code{NULL}, that uses different grey's colors.
+#' Defult uses different grey's colors.
 #'
 #' @param sroc.lty The line tyoe of sROC.
 #' Default is solid lines.
@@ -117,17 +157,6 @@ sROC <- function(object,
 #'
 #' @param add.spoint Whether to add the summary point in the sROC plot.
 #' Default it not the add.
-#'
-#' @param legend Whether to add legend into the plot.
-#' Default is not to add.
-#'
-#' @param p.vec If add the legend (\code{legend = TRUE}),
-#' define the probability sequence.
-#'
-#' @param legend.text If add the legend (\code{legend = TRUE}),
-#' define the legend context.
-#'
-#' @param legend.cex The font size of legend.
 #'
 #' @param spoint.pch The point type of the summary point in sROC.
 #'
@@ -154,71 +183,46 @@ sROC <- function(object,
 #'
 #'
 #' @examples
+#' p.seq <- seq(0.5, 0.9, 0.1)
+#' sa1.seq <- sapply(p.seq, function (p) dtametasa.fc(IVD, p)$par)
+#' sROC.matrix(sa1.seq)
 #'
-#' # Use matrix
 #'
-#' par.matrix <-cbind(c(1, 1.5, 0.5, -0.2),
-#'                    c(1, 1, 1, -0.6),
-#'                    c(1.8, 2, 1,-0.6))
 #'
-#' sROC.matrix(par.matrix, legend = TRUE, p.vec = seq(0.2,0.6,0.2), legend.cex = 0.9)
-#'
-#' sROC.matrix(par.matrix, legend = TRUE,
-#'       legend.text = c("l1", "l2", "l3"),
-#'       legend.cex = 0.9, ncols = 1:3)
-#'
-#' # Use vector
-#'
-#' par.vec <- c(1,1.5,0.5,-0.2)
-#'
-#' sROC.matrix(par.vec)
+
 #'
 #' @export
 
 sROC.matrix <- function(par,  ## u1 u2 t12 t22
                  add = FALSE,
-                 ncols = NULL,
+                 ncols = gray.colors(ncol(par), gamma = 1, start = 0.8, end = 0),
                  sroc.lty = 1,
                  sroc.lwd = 1,
                  add.spoint=TRUE,
-                 legend = FALSE,
-                 p.vec,
-                 legend.text = paste0("p = ",p.vec),
-                 legend.cex = 1,
                  spoint.pch = 18,
                  spoint.cex = 2,
                  xlab = "1 - specificity",
                  ylab = "Sensitivity",
                  ...) {
 
-  if(length(par) < 4) stop("PLEASE CHECK THE INPUT VECTOR")
+  if(nrow(par) < 5) stop("PLEASE CHECK THE INPUT MATRIX")
 
-  if(length(par) == 4)  par <- as.matrix(par)
-
-  if(nrow(par) < 4) stop("PLEASE CHECK THE INPUT MATRIX")
+  if(length(par) == 5)  par <- as.matrix(par)
 
   if (!add) plot(NULL, xlim=c(0,1), ylim=c(0,1), xlab = xlab, ylab = ylab)
-
-  if (is.null(ncols)) ncols <- gray.colors(ncol(par), gamma = 1, start = 0, end = 0.8)
 
   for (i in 1:ncol(par)) {
 
     u1  <- par[1,i]
     u2  <- par[2,i]
-    t22 <- par[3,i]
-    t12 <- par[4,i]
+    t1  <- par[3,i]
+    t2  <- par[4,i]
+    r   <- par[5,i]
 
-    roc <- function(x) plogis(u1 - (t12/t22) * (qlogis(x) + u2))
-    curve(roc, 0, 1, col = ncols[i], add = TRUE,
+    f <- function(x) plogis(u1 - (t1*t2*r/(t2^2)) * (qlogis(x) + u2))
+    curve(f, 0, 1, col = ncols[i], add = TRUE,
           lty = sroc.lty, lwd = sroc.lwd, ...)
   }
-
-  if (legend) legend("bottomright",
-                    legend = legend.text,
-                    col = ncols,
-                    lty = rep(sroc.lty, ncol(par)),
-                    cex = legend.cex,
-                    ...)
 
   if (add.spoint) {
     sens <- plogis(par[1,])
