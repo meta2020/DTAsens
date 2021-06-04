@@ -1,6 +1,5 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-[![Downloads](https://github.com/meta2020/dtametasa/archive/refs/heads/main.zip)](https://github.com/meta2020/dtametasa/archive/refs/heads/main.zip)
 
 # DTA-META-SA
 
