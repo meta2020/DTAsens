@@ -282,7 +282,7 @@ dtametasa.fc <- function(data,   ## 2 FORMAT: N OR Y, make data name as format
     opt$p.hat <- n/sum(1/bp)
 
 
-    opt$t.data <- data
+    opt$l.data <- data
 
     class(opt) <- "dtametasa"
 }
