@@ -139,9 +139,8 @@ sROC <- function(object,
 #'
 #' @description Plot multiple ROC curves
 #'
-#' @param par It can be a vector of (u1 u2 t22 t12),
-#' or a matrix with 4 rows.
-#' Each column is the vector \code{c(u1, u2, t22, t12)}.
+#' @param par The object from function \code{dtametasa.fc} or \code{dtametasa.rc};
+#' or a matrix with rows of \code{c(u1, u2, t1, t2, r)}
 #'
 #' @param add Whether to add the plot into an existed plot.
 #' Default is \code{FALSE}, to create a new plot.
