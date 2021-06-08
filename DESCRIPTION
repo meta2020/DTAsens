@@ -2,8 +2,9 @@ Package: dtametasa
 Type: Package
 Title: Sensitivity Analysis for Meta-analysis of Diagnostic Test Accuracy 
 Version: 0.1.0
-Authors@R: person("Yi", " ", email = "zhouyi0426@126.com",
-                  role = c("aut", "cre"))
+Authors@R: person("Yi", "Zhou", email = "zhouyi0426@hotmail.com",
+                  role = c("aut", "cre"),
+		 comment = c(ORCID = "0000-0001-9254-3245"))
 Description: Sensitivity analysis for meta-analysis of diagnostic test accuracy.
 License: GPL-3 + file LICENSE
 Depends: R (>= 3.1.0)
