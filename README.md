@@ -6,7 +6,7 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of `dtametasa` is to conduct sensitivity analysis on the
+The goal of [`dtametasa`](https://meta2020.github.io/dtametasa/) is to conduct sensitivity analysis on the
 publication bias of meta-analysis of diagnostic test accuracy
 
 ## Installation
