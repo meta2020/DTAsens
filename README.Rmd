@@ -22,7 +22,7 @@ options(knitr.kable.NA = '.', digits = 3)
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of `dtametasa` is to conduct sensitivity analysis on the publication bias of meta-analysis of diagnostic test accuracy
+The goal of [`dtametasa`](https://meta2020.github.io/dtametasa/) is to conduct sensitivity analysis on the publication bias of meta-analysis of diagnostic test accuracy
 
 ## Installation
 
