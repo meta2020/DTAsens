@@ -5,6 +5,7 @@
 - Update Description and Readme
 
 - Update `sROC` and `sROC.matrix` functions into `sroc.vec` and `sroc.mat`
+
 ## 2021-05-26
 
 - Update CI of SAUC
