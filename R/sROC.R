@@ -52,7 +52,7 @@
 #'
 #' @param ... Other augments in function \code{\link{points}} or function \code{\link{curve}}
 #'
-#' @return sROC plot
+#' @return SROC plot
 #'
 #' @importFrom grDevices gray.colors
 #' @importFrom graphics curve lines points matplot
@@ -67,27 +67,27 @@
 #' @examples
 #'
 #' sa1 <- dtametasa.fc(IVD, p = 0.7)
-#' sROC(sa1)
+#' sroc.vec(sa1)
 #'
 #' @export
 
-sROC <- function(object,
-                 add = FALSE,
-                 sroc.col = 1,
-                 sroc.lty = 1,
-                 sroc.lwd = 1,
-                 xlab = "1-specificity",
-                 ylab = "Sensitivity",
-                 plot.ci = TRUE,
-                 ci.level = 0.95,
-                 sroc.ci.col = "grey48",
-                 sroc.ci.lwd = 1,
-                 sroc.ci.lty = 2,
-                 add.spoint = TRUE,
-                 spoint.pch = 18,
-                 spoint.col = 1,
-                 spoint.cex = 2,
-                 ...) {
+sroc.vec <- function(object,
+                     add = FALSE,
+                     sroc.col = 1,
+                     sroc.lty = 1,
+                     sroc.lwd = 1,
+                     xlab = "1-specificity",
+                     ylab = "Sensitivity",
+                     plot.ci = TRUE,
+                     ci.level = 0.95,
+                     sroc.ci.col = "grey48",
+                     sroc.ci.lwd = 1,
+                     sroc.ci.lty = 2,
+                     add.spoint = TRUE,
+                     spoint.pch = 18,
+                     spoint.col = 1,
+                     spoint.cex = 2,
+                     ...) {
 
   if(inherits(object,"dtametasa")) par.vec <- object$par[1:5] else {
 
@@ -145,21 +145,21 @@ sROC <- function(object,
 #' @param add Whether to add the plot into an existed plot.
 #' Default is \code{FALSE}, to create a new plot.
 #'
-#' @param ncols Set a vector of different colors for multiple sROC.
+#' @param ncols Set a vector of different colors for multiple sroc.
 #' Defult uses different grey's colors.
 #'
-#' @param sroc.lty The line tyoe of sROC.
+#' @param sroc.lty The line tyoe of sroc.
 #' Default is solid lines.
 #'
-#' @param sroc.lwd The line width of sROC.
+#' @param sroc.lwd The line width of sroc.
 #' Default is 1.
 #'
-#' @param add.spoint Whether to add the summary point in the sROC plot.
+#' @param add.spoint Whether to add the summary point in the sroc plot.
 #' Default it not the add.
 #'
-#' @param spoint.pch The point type of the summary point in sROC.
+#' @param spoint.pch The point type of the summary point in sroc.
 #'
-#' @param spoint.cex The point size of the summary point in sROC.
+#' @param spoint.cex The point size of the summary point in sroc.
 #'
 #' @param xlab The label of x-axis.
 #' Default is: 1-specificity.
@@ -172,7 +172,7 @@ sROC <- function(object,
 #' @importFrom grDevices gray.colors
 #' @importFrom graphics curve points
 #'
-#' @return sROC plot
+#' @return SROC plot
 #'
 #' @seealso
 #' \code{\link[graphics]{points}},
@@ -184,7 +184,7 @@ sROC <- function(object,
 #' @examples
 #' p.seq <- seq(0.5, 0.9, 0.1)
 #' sa1.seq <- sapply(p.seq, function (p) dtametasa.fc(IVD, p)$par)
-#' sROC.matrix(sa1.seq)
+#' sroc.mat(sa1.seq)
 #'
 #'
 #'
@@ -192,17 +192,17 @@ sROC <- function(object,
 #'
 #' @export
 
-sROC.matrix <- function(par,  ## u1 u2 t12 t22
-                 add = FALSE,
-                 ncols = gray.colors(ncol(par), gamma = 1, start = 0.8, end = 0),
-                 sroc.lty = 1,
-                 sroc.lwd = 1,
-                 add.spoint=TRUE,
-                 spoint.pch = 18,
-                 spoint.cex = 2,
-                 xlab = "1 - specificity",
-                 ylab = "Sensitivity",
-                 ...) {
+sroc.mat <- function(par,  ## u1 u2 t12 t22
+                     add = FALSE,
+                     ncols = gray.colors(ncol(par), gamma = 1, start = 0.8, end = 0),
+                     sroc.lty = 1,
+                     sroc.lwd = 1,
+                     add.spoint=TRUE,
+                     spoint.pch = 18,
+                     spoint.cex = 2,
+                     xlab = "1 - specificity",
+                     ylab = "Sensitivity",
+                     ...) {
 
   if(nrow(par) < 5) stop("PLEASE CHECK THE INPUT MATRIX")
 

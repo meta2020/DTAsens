@@ -17,12 +17,12 @@ knitr::opts_chunk$set(
 options(knitr.kable.NA = '.', digits = 3)
 ```
 
-# DTA-META-SA
+# DTA Meta-analysis Sensitivity Analysis
 
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of [`dtametasa`](https://meta2020.github.io/dtametasa/) is to conduct sensitivity analysis on the publication bias of meta-analysis of diagnostic test accuracy
+[`dtametasa`](https://meta2020.github.io/dtametasa/) is a likelihood-based sensitivity analysis for publication bias on SROC/SAUC in meta-analysis of diagnostic studies
 
 ## Installation
 
@@ -146,9 +146,9 @@ colnames(est2)<- paste0("p = ", p.seq)
 kable(est2)
 ```
 
-### Plot sROC
+### Plot sroc
 
-##### 1. Single sROC
+##### 1. Single sroc
 
 ```{r, fig.height=5, fig.width=10}
 par(mfrow = c(1,2))
@@ -164,8 +164,8 @@ plot(sroc(fit, type = "naive"), type = "l", ylim = c(0,1), xlim = c(0,1), col = 
 
 par0 <- c(c(1,-1)*fit$coefficients, sqrt(fit$Psi[c(1,4)]), -fit$Psi[2]/prod(sqrt(fit$Psi[c(1,4)])))
 
-## Add sROC
-sROC(sa1, add = TRUE, sroc.col = "black", sroc.lty = 1, spoint.pch = 1, spoint.col = "black")
+## Add sroc
+sroc.vec(sa1, add = TRUE, sroc.col = "black", sroc.lty = 1, spoint.pch = 1, spoint.col = "black")
 with(IVD, points(FP/(FP+TN), TP/(TP+FN), pch = 4, cex = 0.5))
 legend("bottomright", c("Reistma", "dtametasa.fc", "IVD"), 
        col = c("red", "black", "black"), lty = c(1,2, 0), pch = c(19,1, 4))
@@ -173,10 +173,10 @@ title("When selection prob = 0.7, c1 = c2")
 
 
 
-sROC(par0, sroc.col = "red", spoint.col ="red")
+sroc.vec(par0, sroc.col = "red", spoint.col ="red")
 
-## Add sROC
-sROC(sa2, add = TRUE, sroc.col = "darkgray", sroc.lty = 1, spoint.col = "darkgray")
+## Add sroc
+sroc.vec(sa2, add = TRUE, sroc.col = "darkgray", sroc.lty = 1, spoint.col = "darkgray")
 
 with(IVD, points(FP/(FP+TN), TP/(TP+FN), pch = 4, cex = 0.5))
 legend("bottomright", c("Reistma", "dtametasa.rc", "IVD"), 
@@ -187,7 +187,7 @@ par(mfrow = c(1,1))
 
 ```
 
-##### 2. Multiple sROC
+##### 2. Multiple sroc
 
 ```{r, fig.height=5, fig.width=10}
 ## p vector and model
@@ -196,15 +196,15 @@ p.seq <- seq(1, 0.1, -0.1)
 est1 <- sapply(p.seq, function(p) dtametasa.fc(IVD, p)$par)
 est2 <- sapply(p.seq, function(p) dtametasa.rc(IVD, p)$par)
 
-## Plot multiple sROC
+## Plot multiple sroc
 par(mfrow = c(1,2))
 
-sROC.matrix(est1[1:5, ])
-sROC(par0, add = TRUE, sroc.col = "red")
+sroc.mat(est1[1:5, ])
+sroc.vec(par0, add = TRUE, sroc.col = "red")
 title("dtametasa.fc")
 
-sROC.matrix(est1[1:5, ])
-sROC(par0, add = TRUE, sroc.col = "red")
+sroc.mat(est1[1:5, ])
+sroc.vec(par0, add = TRUE, sroc.col = "red")
 title("dtametasa.rc")
 
 
@@ -216,7 +216,7 @@ par(mfrow = c(1,1))
 ### Calculate sAUC and confident interval
 
 
-#### 1. Single sROC with CI
+#### 1. Single sroc with CI
 
 ```{r, fig.width=12, fig.height=6}
 
@@ -226,9 +226,9 @@ sa2 <- dtametasa.rc(IVD, p = 0.5, b.interval = c(0, 2))
 
 par(mfrow = c(1,2))
 
-sROC(sa1)
+sroc.vec(sa1)
 title("dtametasa.fc")
-sROC(sa2)
+sroc.vec(sa2)
 title("dtametasa.rc")
 
 par(mfrow = c(1,1))
