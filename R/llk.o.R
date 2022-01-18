@@ -1,14 +1,17 @@
 ##
 ## LIKELIHOOD OF THE OBSERVED (NEGATIVE)
+## NOT OUTPUT
 ##
 
-llk.o <- function(par,
-                  data,
-                  p,
-                  a.interval,
-                  a.root.extendInt,
-                  show.warn.message,
-                  ...) {
+.llk.o <- function(
+  par,
+  data,
+  p,
+  alpha.interval,
+  alpha.root.extendInt,
+  show.warn.message,
+  ...
+){
 
   n <- nrow(data)
 
@@ -61,7 +64,7 @@ llk.o <- function(par,
 
   a.p <- function(a) {sum(1/f.b(a), na.rm = TRUE) - n/p}
 
-  if (!show.warn.message) a.opt.try <- suppressWarnings(try(uniroot(a.p, a.interval, extendInt=a.root.extendInt,...), silent = TRUE)) else a.opt.try <- try(uniroot(a.p, a.interval, extendInt=a.root.extendInt), silent = FALSE)
+  if (!show.warn.message) a.opt.try <- suppressWarnings(try(uniroot(a.p, alpha.interval, extendInt=alpha.root.extendInt,...), silent = TRUE)) else a.opt.try <- try(uniroot(a.p, alpha.interval, extendInt=alpha.root.extendInt), silent = FALSE)
 
   a.opt <- a.opt.try$root
 

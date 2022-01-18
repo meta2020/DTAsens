@@ -1,20 +1,19 @@
 Package: dtametasa
 Type: Package
 Title: Sensitivity Analysis for Publication Bias on SROC/SAUC in Meta-analysis of Diagnostic Studies
-Version: 0.1.0
+Version: 1.0.0
 Authors@R: person("Yi", "Zhou", email = "zhouyi0426@hotmail.com",
                   role = c("aut", "cre"),
 		 comment = c(ORCID = "0000-0001-9254-3245"))
 Maintainer: Yi Zhou <zhouyi0426@hotmail.com>
-Description: It is a likelihood-based sensitivity analysis on publication bias for SROC or SAUC in meta-analysis of diagnostic studies.
+Description: A likelihood-based sensitivity analysis on publication bias for SROC or SAUC in meta-analysis of diagnostic studies.
 License: GPL-3 + file LICENSE
 Depends: R (>= 3.1.0)
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 Imports: 
-    mvmeta,
-    mvtnorm,
+    mixmeta,
     numDeriv
 URL: https://github.com/meta2020/dtametasa
 BugReports: https://github.com/meta2020/dtametasa/issues

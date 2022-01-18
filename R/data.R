@@ -3,14 +3,17 @@
 #'
 #' @description {``To identify the most accurate methods for diagnosis of IVD-related bloodstream infection.''}
 #'
-#' @format A data frame with 33 rows and 5 variables:
+#' @format A data frame with 33 rows (studies) and 8 variables:
 #' \describe{
 #'   \item{study}{study ID}
 #'   \item{TP}{True positive}
 #'   \item{FN}{False negative}
 #'   \item{FP}{False positive}
 #'   \item{TN}{True negative}
-#' }
+#'   \item{cutoff.grp}{Cutoff value by group}
+#'   \item{type}{Diagnostic type}
+#'   \item{cutoff}{Cutoff information}
+#'   #' }
 #'@source \url{http://www.ncbi.nlm.nih.gov/pubmed/9315770}
 
 "IVD"
@@ -19,7 +22,7 @@
 #'
 #' @description {Logit-transformed IVD data (after continuity correction)}
 #'
-#' @format A data frame with 33 rows and 7 variables:
+#' @format A data frame with 33 rows and 6 variables:
 #' \describe{
 #'   \item{sens}{Sensitivity}
 #'   \item{spec}{Sepcificity}
@@ -27,7 +30,6 @@
 #'   \item{y2}{logit transformed specificity}
 #'   \item{v1}{variance of logit transformed sensitivity}
 #'   \item{v2}{variance of logit transformed specificity}
-#'   \item{ldor.t}{t-statistic of log diagnostic odds ratio}
 #' }
 #'@source \url{http://www.ncbi.nlm.nih.gov/pubmed/9315770}
 #'@seealso \code{\link{IVD}}
@@ -35,33 +37,34 @@
 "IVD2"
 
 
-#' @title Example data 2: Scheidler data
+#' @title Example data 2: CD64 data
 #'
-#' @description {``To apply meta-analysis to compare the utility of
-#' lymphangiography (LAG), computed tomography (CT), and magnetic resonance (MR) imaging
-#' for the diagnosis of lymph node metastasis in patients with cervical cancer.''}
+#' @description {``To comprehensively and quantitatively summarize the accuracy of neutrophil CD64 in the early diagnosis of bacterial infection.''}
 #'
-#' @format A data frame with 44 rows and 5 variables:
+#' @format A data frame with 27 rows (studies) and 11 variables:
 #' \describe{
-#'   \item{ID}{study ID}
-#'   \item{author}{authors of studies}
-#'   \item{year}{publication years}
-#'   \item{method}{1 is CT, 2 is LAG, 3 is MR}
+#'   \item{study}{study ID}
+#'   \item{Author}{authors of studies}
 #'   \item{TP}{True positive}
 #'   \item{FN}{False negative}
 #'   \item{FP}{False positive}
 #'   \item{TN}{True negative}
+#'   \item{cutoff}{Cutoff values}
+#'   \item{unit}{Unit of cutoff}
+#'   \item{unit.grp}{Unit group}
+#'   \item{cutoff.grp}{Cutoff group}
+#'   \item{subgroup}{Subgroup}
 #' }
-#'@source \url{http://annals.org/article.aspx?doi=10.7326/0003-4819-142-6-200503150-00011}
+#'@source \url{https://pubmed.ncbi.nlm.nih.gov/22940278/}
 
-"Scheidler"
+"CD64"
 
 
-#' @title Scheidler data after logit transformation
+#' @title CD64 data after logit transformation
 #'
-#' @description Logit-transformed Scheidler data (after continuity correction)
+#' @description Logit-transformed CD64 data (after continuity correction)
 #'
-#' @format A data frame with 44 rows and 7 variables:
+#' @format A data frame with 27 rows and 6 variables:
 #' \describe{
 #'   \item{sens}{Sensitivity}
 #'   \item{spec}{Sepcificity}
@@ -69,10 +72,10 @@
 #'   \item{y2}{logit transformed specificity}
 #'   \item{v1}{variance of logit transformed sensitivity}
 #'   \item{v2}{variance of logit transformed specificity}
-#'   \item{ldor.t}{t-statistic of log diagnostic odds ratio}
-
 #' }
-#'@source \url{http://annals.org/article.aspx?doi=10.7326/0003-4819-142-6-200503150-00011}
-#'@seealso \code{\link{Scheidler}}
+#'@source \url{https://pubmed.ncbi.nlm.nih.gov/22940278/}
+#'@seealso \code{\link{CD64}}
 
-"Scheidler2"
+"CD64_2"
+
+

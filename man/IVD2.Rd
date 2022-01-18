@@ -5,7 +5,7 @@
 \alias{IVD2}
 \title{IVD data after logit transformation}
 \format{
-A data frame with 33 rows and 7 variables:
+A data frame with 33 rows and 6 variables:
 \describe{
   \item{sens}{Sensitivity}
   \item{spec}{Sepcificity}
@@ -13,7 +13,6 @@ A data frame with 33 rows and 7 variables:
   \item{y2}{logit transformed specificity}
   \item{v1}{variance of logit transformed sensitivity}
   \item{v2}{variance of logit transformed specificity}
-  \item{ldor.t}{t-statistic of log diagnostic odds ratio}
 }
 }
 \source{

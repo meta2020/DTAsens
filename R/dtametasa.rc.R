@@ -1,6 +1,6 @@
-#' @title Sensitivity analysis of diagnostic meta-analysis with released c
+#' @title Sensitivity analysis of diagnostic meta-analysis without prespecified contrast vector
 #'
-#' @description DTA sensitivity analysis without pre-specified (with released) c1 and c2
+#' @description Sensitivity analysis of diagnostic meta-analysis without prespecified (with released) c1 and c2
 #'
 #' @param data Data with variable names either
 #' \{TP, FN, TN, FP\} or \{y1, y2, v1, v2\}.
@@ -9,50 +9,42 @@
 #'
 #' @param p Specified probability of selection (or publication); Pr(select) = p
 #'
-#' @param correct.value Imputation value for ``continuity correction''.
-#' Default is 0.5;
-#' When zero cell exists, add some value.
+#' @param c1.square0 Initial value of \eqn{c_1^2}{c1-square}.
+#' Avoid to start from 0.
+#' Bad initial value will cause non-convergence results.
 #'
-#' @param correct.type 2 ways for ``continuity correction''.
-#' Default is \code{all}: add \code{correct.value} into all the cells of the row with zero value;
-#' if \code{single}: add \code{correct.value} into only the cells with zero value.
+#' @param beta0 An initial value of \eqn{\beta}{b}.
+#' Avoid to start from 0.
+#' Bad initial value will cause non-convergence results.
 #'
-#' @param brem.init Initial values used for estimating the parameters in the bivariate random effects model.
-#' Default is \code{NA}, which set the estimation without considering publication bias as initial values;
-#' It should be changed by a vector of u1 u2 t1 t2 r, \code{c(u1, u2, t1, t2, r)}.
+#' @param reitsma.par0 Initial values used for estimating the parameters in the bivariate random effects model (Reitsma's model).
+#' It should be changed by a vector of \code{c(mu1, mu2, tau1, tau2, rho)}.
 #' Bad initial values will cause non-convergence results.
+#' Default is \code{NULL}, which uses estimated results from Reitsma's model without taking into account the publication bias.
 #'
-#' @param b.init An initial value of \eqn{\beta}{b}.
-#' Default is 0.1.
-#' Avoid to start from 0.
-#' Bad initial value will cause non-convergence results.
-#'
-#' @param c1.sq.init An initial value of \eqn{c_1^2}{c1-square}.
-#' Default is 0.5.
-#' Avoid to start from 0.
-#' Bad initial value will cause non-convergence results.
-#'
-#' @param b.interval The constraint interval for \eqn{\beta}{b}.
-#' Default is in the interval \code{c(0,2)}.
-#' Positive side (>0) is recommended to be adopted.
+#' @param beta.interval The constraint interval for \eqn{\beta}{beta}.
 #' The estimation of \eqn{\beta}{b} will be searched within the interval.
+#' Take either the positive interval (>0) or the negative interval (<0).
 #'
-#' @param a.interval The constraint interval for \eqn{\alpha}{a}.
-#' Default is in the interval \code{c(-3,3)}.
+#' @param alpha.interval The constraint interval for \eqn{\alpha}{alpha}.
 #' then, the root of \eqn{\alpha}{a} will be searched within the interval.
 #'
-#' @param neg.r Whether to permit correlation parameter \eqn{\rho}{r} to be a negative value.
-#' Default is \code{FALSE}, \eqn{\rho}{r} in [-1, 1].
-#' If \code{TRUE}, \eqn{\rho}{r} is in [-1, 0)
+#' @param ci.level The significant value for confidence interval of SAUC.
 #'
-#' @param ci.level The significant value for confidence interval.
-#' Default is 0.95, hence, a 2-tailed 95% confidence interval will be calculated by
-#' profile likelihood.
+#' @param correct.value Imputation value for ``continuity correction''.
+#'
+#' @param correct.type Two types of ``continuity correction''.
+#' \code{"single"}: input value for single study.
+#' \code{"all"}: input value for all the cells.
 #'
 #' @param show.warn.message Whether to show the warning messages.
-#' Default is to hide warning messages.
 #'
-#' @param a.root.extendInt See \code{extendInt} augments in function \code{\link[stats]{uniroot}}.
+#' @param alpha.root.extendInt See \code{extendInt} augments in function \code{\link[stats]{uniroot}}.
+#'
+#' @param eps A minimum positive value.
+#'
+#' @param sauc.type Two types of SAUC values.
+#' Area under the Reitsma's SROC curve(\code{"sroc"}) or under the Rutter's HSROC curve (\code{"hsroc"}).
 #'
 #' @param ... See other augments in function \code{\link[stats]{uniroot}}.
 #'
@@ -63,8 +55,14 @@
 #'
 #' @examples
 #'
-#' sa2 <- dtametasa.rc(IVD, p = 0.7)
-#' sa2
+#' sa2.fit1 <- dtametasa.rc(IVD, p = 0.7)
+#' sa2.fit1
+#'
+#' sa2.fit2 <- dtametasa.rc(IVD, p = 0.7, sauc.type = "sroc)
+#' sa2.fit2
+#'
+#' sa2.fit3 <- dtametasa.rc(IVD, p = 0.7, sauc.type = "hsroc")
+#' sa2.fit3
 #'
 #' @details
 #' \describe{
@@ -76,21 +74,23 @@
 #'
 #' @export
 
-dtametasa.rc <- function(data,
-                  p,
-                  correct.value = 0.5,
-                  correct.type = "all",
-                  brem.init = NULL,  ## u1, u2, t1, t2, r
-                  b.init = 1,
-                  c1.sq.init = 0.5,
-                  b.interval = c(0, 2), ## SET A VALUE b.interval in [-5, 5]
-                  a.interval = c(-5, 3),
-                  neg.r = FALSE,
-                  ci.level = 0.95,
-                  show.warn.message = FALSE,
-                  a.root.extendInt = "downX",
-                  ...
-                  ){
+dtametasa.rc <- function(
+  data,
+  p,
+  c1.square0 = 0.5,
+  beta0 = 1,
+  reitsma.par0 = NULL,
+  beta.interval = c(0, 2),
+  alpha.interval = c(-5, 3),
+  ci.level = 0.95,
+  correct.value = 0.5,
+  correct.type = c("single", "all")[1],
+  show.warn.message = FALSE,
+  alpha.root.extendInt = "downX",
+  eps = sqrt(.Machine$double.eps),
+  sauc.type = c("sroc", "hsroc")[1],
+  ...
+){
 
   ##
   ## INPUT: DATA PREPROCESS ----------------------------------------------------------
@@ -100,13 +100,14 @@ dtametasa.rc <- function(data,
 
   if (!any(c("y1","y1", "v1", "v2", "TP", "FN", "TN", "FP") %in% names(data))) stop("DATA' COLNAMES MUST BE 'TP/FN/TN/FP' OR 'y1/y2/v1/v2'", call. = FALSE)
 
+
   n <- nrow(data)
 
   if ("TP" %in% names(data)){
 
-    data <- correction(data, value = correct.value, type=correct.type)
+    data <- .correction(data, value = correct.value, type=correct.type)
 
-    data <- logit.data(data)
+    data <- .logit.data(data)
 
   }
 
@@ -123,11 +124,13 @@ dtametasa.rc <- function(data,
 
     ## AUTO-SET START POINTS
 
-    c1 <- sqrt(c1.sq.init)
+    c1 <- sqrt(c1.square0)
 
-    if(is.null(brem.init)) {
+    if(!length(reitsma.par0)==5) {
 
-      fit.m <- mvmeta::mvmeta(cbind(y1,y2),S=cbind(v1, rep(0, n), v2), method="ml")
+      start7 <- c(0, 0, 0.1, 0.1, -0.1, beta0, c1)
+
+      fit.m <- mixmeta::mixmeta(cbind(y1,y2),S=cbind(v1, rep(0, n), v2), method="ml")
 
       if(!inherits(fit.m, "try-error")) {
 
@@ -137,29 +140,29 @@ dtametasa.rc <- function(data,
           p2 <- sqrt(fit.m$Psi[4])
           p.r<- fit.m$Psi[3]/(p1*p2)
 
-          start7 <- c(fit.m$coefficients, p1, p2, p.r, b.init, c1)
+          start7 <- c(fit.m$coefficients, p1, p2, p.r, beta0, c1)
 
-        } else start7 <- c(0, 0, 0.1, 0.1, -0.1, b.init, c1)
+        }
 
-      } else start7 <- c(0, 0, 0.1, 0.1, -0.1, b.init, c1)
+      }
 
-    } else start7 <- c(brem.init, b.init, c1)
+    } else start7 <- c(reitsma.par0, beta0, c1)
 
+    names(start7) <- c("mu1", "mu2", "tau1", "tau2", "rho", "beta", "c1")
 
-    eps <- sqrt(.Machine$double.eps)
-
-    if(neg.r) neg.r <- eps else  neg.r <- 1
-
-    fn <- function(par) llk.o(par,
-                              data = data,
-                              p = p,
-                              a.root.extendInt = a.root.extendInt, a.interval = a.interval,
-                              show.warn.message = show.warn.message, ...)
+    fn <- function(par) .llk.o(
+      par,
+      data = data,
+      p = p,
+      alpha.interval = alpha.interval,
+      alpha.root.extendInt = alpha.root.extendInt,
+      show.warn.message = show.warn.message,
+      ...)
 
     opt <- try(nlminb(start7,
                      fn,
-                     lower = c(-5, -5, eps, eps,-1, b.interval[1], 0),
-                     upper = c( 5,  5, 3, 3,  neg.r, b.interval[2], 1)
+                     lower = c(-5, -5, eps, eps,-1, beta.interval[1], 0),
+                     upper = c( 5,  5,   3,   3, 1, beta.interval[2], 1)
     ),silent = TRUE)
 
   if(!inherits(opt,"try-error")) {
@@ -201,84 +204,90 @@ dtametasa.rc <- function(data,
     ##  HESSIANS -------------------------------------------------
     ##
 
-    opt$num.hessian <- numDeriv::hessian(fn, opt$par)
-    rownames(opt$num.hessian) <- c("u1", "u2", "t1", "t2", "r", "b", "c1")
-    colnames(opt$num.hessian) <- c("u1", "u2", "t1", "t2", "r", "b", "c1")
+    hes <- numDeriv::hessian(fn, opt$par)
+    rownames(hes) <- colnames(hes) <- c("mu1", "mu2", "tau1", "tau2", "rho", "beta", "c1")
 
     ##
     ## SAUC CI -------------------------------------------------
     ##
-    hes <- opt$num.hessian
 
     if(p==1) inv.I.fun.m <- solve(hes[1:5,1:5]) else inv.I.fun.m <- solve(hes)
 
     opt$var.ml <- inv.I.fun.m
 
-    f <- function(x) plogis(u1 - (t1*t2*r/(t2^2)) * (qlogis(x) + u2))
+    var.matrix <-  inv.I.fun.m[1:5, 1:5]
 
+    opt$sauc.ci <- SAUC.ci(u1 = u1, u2 = u2, t1 = t1, t2 = t2, r = r, var.matrix = var.matrix, sauc.type = sauc.type, ci.level = ci.level)
 
-    sauc.try <- try(integrate(f, 0, 1))
-
-    if(!inherits(sauc.try, "try-error")) sauc <- sauc.try$value else sauc <- NA
-
-    sauc.lb2 <-  plogis(qlogis(sauc) + qnorm((1-ci.level)/2, lower.tail = TRUE) *
-                          suppressWarnings(
-                            sqrt(QIQ1(u1, u2, t1, t2, r, inv.I.fun.m[1:5,1:5]))/(sauc*(1-sauc))) )
-
-    sauc.ub2 <-  plogis(qlogis(sauc) + qnorm((1-ci.level)/2, lower.tail = FALSE)*
-                          suppressWarnings(
-                            sqrt(QIQ1(u1, u2, t1, t2, r, inv.I.fun.m[1:5,1:5]))/(sauc*(1-sauc))) )
-
-    opt$sauc.ci <- c(sauc, sauc.lb2, sauc.ub2)
-    names(opt$sauc.ci) <- c("sauc", "sauc.lb", "sauc.ub")
-
+    sauc <- opt$sauc.ci[1]
     #
     # b CI -------------------------------------------------
     #
-    if(p==1) opt$b.ci <- c(NA, NA, NA) else {
+    if(p==1) opt$beta.ci <- c(NA, NA, NA) else {
 
-      b.se <- suppressWarnings(sqrt(inv.I.fun.m[6,6]))
+      b.se <- suppressWarnings(sqrt(solve(hes)[6,6]))
       b.lb <- b + qnorm((1-ci.level)/2, lower.tail = TRUE)*b.se
       b.ub <- b + qnorm((1-ci.level)/2, lower.tail = FALSE)*b.se
 
-      opt$b.ci <- c(b, b.lb, b.ub)
+      opt$beta.ci <- c(b, b.lb, b.ub)
 
     }
 
-    names(opt$b.ci) <- c("b", "b.lb", "b.ub")
-
+    names(opt$beta.ci) <- c("beta", "beta.lb", "beta.ub")
 
     ##
     ## ALPHA CALC --------------------------------------------------------
     ##
 
-    a.p <- function(a){ sum(1/ pnorm( (a + b * u.ldor/se.ldor) / sq ), na.rm = TRUE) - n/p }
+    if(p==1) a.opt <- NA else {
 
-    if (!show.warn.message) a.opt.try <- suppressWarnings(try(uniroot(a.p, a.interval, extendInt=a.root.extendInt,...), silent = TRUE)) else a.opt.try <- try(uniroot(a.p, a.interval, extendInt=a.root.extendInt,...), silent = FALSE)
+      .a.p <- function(a) { sum(1/ pnorm( (a + b * u.ldor/se.ldor) / sq ), na.rm = TRUE) - n/p }
 
-    a.opt <- a.opt.try$root
+      if (!show.warn.message) a.opt.try <- suppressWarnings(try(uniroot(.a.p, interval = alpha.interval, extendInt = alpha.root.extendInt), silent = TRUE)) else a.opt.try <- try(uniroot(.a.p, interval = alpha.interval, extendInt=alpha.root.extendInt), silent = TRUE)
+
+      a.opt <- a.opt.try$root
+
+    }
+
+    opt$alpha <- c(alpha = a.opt)
+
+    ##
+    ## mu1 CI -------------------------------------------------
+    ##
+
+    u1.se <- suppressWarnings(sqrt(inv.I.fun.m[1,1]))
+    u1.lb <- u1 + qnorm((1-ci.level)/2, lower.tail = TRUE)*u1.se
+    u1.ub <- u1 + qnorm((1-ci.level)/2, lower.tail = FALSE)*u1.se
+
+    opt$mu1.ci <- c(u1, u1.lb, u1.ub, se, plogis(u1.lb), plogis(u1.ub))
+    names(opt$mu1.ci) <- c("mu1", "mu1.lb", "mu1.ub", "sens", "se.lb", "se.ub")
+
+    ##
+    ## mu2 CI -------------------------------------------------
+    ##
+
+    u2.se <- suppressWarnings(sqrt(inv.I.fun.m[2,2]))
+    u2.lb <- u2 + qnorm((1-ci.level)/2, lower.tail = TRUE)*u2.se
+    u2.ub <- u2 + qnorm((1-ci.level)/2, lower.tail = FALSE)*u2.se
+
+    opt$mu2.ci <- c(u2, u2.lb, u2.ub, sp, plogis(u2.lb), plogis(u2.ub))
+    names(opt$mu2.ci) <- c("mu2", "mu2.lb", "mu2.ub", "spec", "sp.lb", "sp.ub")
+
 
 
     ##
     ## PAR AND PAR.ALL  ----------------------------------------
     ##
 
-    opt$par.all   <- c(u1, u2, t11, t22, t12, c1, c2, b, a.opt,  sauc, se, sp)
-    names(opt$par.all) <- c("u1", "u2", "t11", "t22", "t12","c1", "c2", "b", "a",  "sauc", "se", "sp")
+    opt$par.all <- c(u1, u2, t11, t22, t12, c1^2, c2^2,  b, a.opt, sauc, se, sp)
+    names(opt$par.all) <- c("mu1", "mu2", "tau1^2", "tau2^2", "tau12", "c1^2", "c2^2", "beta", "alpha", sauc.type, "sens", "spec")
 
-    names(opt$par) <- c("u1", "u2", "t1", "t2", "r", "b", "c1")
 
     ##
-    ##  show.p.hat CALC, FROM b FUNCTION ----------------------------------------
+    ## LOGIT-DATA  ----------------------------------------
     ##
 
-    ##show.p.hat <- mean(pnorm(a.opt + opt$par[6]*t))
-
-      bp <- pnorm( (a.opt + b * u.ldor/se.ldor) / sq )
-
-      opt$p.hat <- n/sum(1/bp)
-
-      opt$l.data <- data
+    opt$l.data <- data
 
     class(opt) <- "dtametasa"
 

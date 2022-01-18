@@ -5,14 +5,17 @@
 \alias{IVD}
 \title{Example data 1: IVD data}
 \format{
-A data frame with 33 rows and 5 variables:
+A data frame with 33 rows (studies) and 8 variables:
 \describe{
   \item{study}{study ID}
   \item{TP}{True positive}
   \item{FN}{False negative}
   \item{FP}{False positive}
   \item{TN}{True negative}
-}
+  \item{cutoff.grp}{Cutoff value by group}
+  \item{type}{Diagnostic type}
+  \item{cutoff}{Cutoff information}
+  #' }
 }
 \source{
 \url{http://www.ncbi.nlm.nih.gov/pubmed/9315770}

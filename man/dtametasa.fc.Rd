@@ -2,22 +2,23 @@
 % Please edit documentation in R/dtametasa.fc.R
 \name{dtametasa.fc}
 \alias{dtametasa.fc}
-\title{Sensitivity analysis of diagnostic meta-analysis with fixed c}
+\title{Sensitivity analysis of diagnostic meta-analysis with prespecified contrast vector}
 \usage{
 dtametasa.fc(
   data,
   p,
-  c1.sq = 0.5,
-  correct.value = 0.5,
-  correct.type = "all",
-  brem.init = NULL,
-  b.init = 1,
-  b.interval = c(0, 2),
-  a.interval = c(-3, 3),
-  neg.r = FALSE,
+  c1.square = 0.5,
+  beta0 = 1,
+  reitsma.par0 = NULL,
+  beta.interval = c(0, 2),
+  alpha.interval = c(-3, 3),
   ci.level = 0.95,
+  correct.value = 0.5,
+  correct.type = c("single", "all")[1],
   show.warn.message = FALSE,
-  a.root.extendInt = "downX",
+  alpha.root.extendInt = "downX",
+  eps = sqrt(.Machine$double.eps),
+  sauc.type = c("sroc", "hsroc")[1],
   ...
 )
 }
@@ -29,49 +30,41 @@ Either data with the number of subjects or logit transformed data works.}
 
 \item{p}{Specified probability of selection (or publication); Pr(select) = p}
 
-\item{c1.sq}{Pre-specified \eqn{c_1^2}{c1-square}.
-Default value is 0.5;
-hence, \eqn{c_2^2 = 1 - c_1^2}{c2-square = 1-c1-square}}
+\item{c1.square}{Pre-specified \eqn{c_1^2}{c1-square}.
+\eqn{c_2^2 = 1 - c_1^2}{c2-square = 1-c1-square}}
 
-\item{correct.value}{Imputation value for ``continuity correction''.
-Default is 0.5;
-When zero cell exists, add some value.}
-
-\item{correct.type}{2 ways for ``continuity correction''.
-Default is \code{all}: add \code{correct.value} into all the cells of the row with zero value;
-if \code{single}: add \code{correct.value} into only the cells with zero value.}
-
-\item{brem.init}{Initial values used for estimating the parameters in the bivariate random effects model.
-Default is \code{NA}, which set the estimation without considering publication bias as initial values;
-It should be changed by a vector of u1 u2 t1 t2 r, \code{c(u1, u2, t1, t2, r)}.
-Bad initial values will cause non-convergence results.}
-
-\item{b.init}{An initial value of \eqn{\beta}{b}.
-Default is 0.1.
+\item{beta0}{An initial value of \eqn{\beta}{b}.
 Avoid to start from 0.
 Bad initial value will cause non-convergence results.}
 
-\item{b.interval}{The constraint interval for \eqn{\beta}{b}.
-Default is in the interval \code{c(0,2)}.
-Positive side (>0) is recommended to be adopted.
-The estimation of \eqn{\beta}{b} will be searched within the interval.}
+\item{reitsma.par0}{Initial values used for estimating the parameters in the bivariate random effects model (Reitsma's model).
+It should be changed by a vector of \code{c(mu1, mu2, tau1, tau2, rho)}.
+Bad initial values will cause non-convergence results.
+Default is \code{NULL}, which uses estimated results from Reitsma's model without taking into account the publication bias.}
 
-\item{a.interval}{The constraint interval for \eqn{\alpha}{a}.
-Default is in the interval \code{c(-3,3)}.
+\item{beta.interval}{The constraint interval for \eqn{\beta}{beta}.
+The estimation of \eqn{\beta}{b} will be searched within the interval.
+Take either the positive interval (>0) or the negative interval (<0).}
+
+\item{alpha.interval}{The constraint interval for \eqn{\alpha}{alpha}.
 then, the root of \eqn{\alpha}{a} will be searched within the interval.}
 
-\item{neg.r}{Whether to permit correlation parameter \eqn{\rho}{r} to be a negative value.
-Default is \code{FALSE}, \eqn{\rho}{r} in [-1, 1].
-If \code{TRUE}, \eqn{\rho}{r} is in [-1, 0)}
+\item{ci.level}{The significant value for confidence interval of SAUC.s}
 
-\item{ci.level}{The significant value for confidence interval.
-Default is 0.95, hence, a 2-tailed 95% confidence interval will be calculated by
-profile likelihood.}
+\item{correct.value}{Imputation value for ``continuity correction''.}
 
-\item{show.warn.message}{Whether to show the warning messages.
-Default is to hide warning messages.}
+\item{correct.type}{Two types of ``continuity correction''.
+\code{"single"}: input value for single study.
+\code{"all"}: input value for all the cells.}
 
-\item{a.root.extendInt}{See \code{extendInt} augment in function \code{\link[stats]{uniroot}}.}
+\item{show.warn.message}{Whether to show the warning messages.}
+
+\item{alpha.root.extendInt}{See \code{extendInt} augment in function \code{\link[stats]{uniroot}}.}
+
+\item{eps}{A minimum positive value.}
+
+\item{sauc.type}{Two types of SAUC values.
+Area under the Reitsma's SROC curve(\code{"sroc"}) or under the Rutter's HSROC curve (\code{"hsroc"}).}
 
 \item{...}{See other augments in function \code{\link[stats]{uniroot}}.}
 }
@@ -81,7 +74,7 @@ convergence list,
 logit transformed data
 }
 \description{
-DTA sensitivity analysis with pre-specified (fixed) c1 and c2
+Sensitivity analysis with pre-specified (fixed) contrast vector \eqn{\boldsymbol{c} = (c_1, c_2)}
 }
 \details{
 \describe{
@@ -90,8 +83,14 @@ DTA sensitivity analysis with pre-specified (fixed) c1 and c2
 }
 \examples{
 
-sa1 <- dtametasa.fc(IVD, p = 0.7)
-sa1
+sa.fit1 <- dtametasa.fc(IVD, p = 0.7)
+sa.fit1
+
+sa.fit2 <- dtametasa.fc(IVD, p = 0.7, sauc.type = "sroc", correct.type = "all")
+sa.fit2
+
+sa.fit3 <- dtametasa.fc(IVD, p = 0.7, sauc.type = "hsroc")
+sa.fit3
 
 }
 \seealso{

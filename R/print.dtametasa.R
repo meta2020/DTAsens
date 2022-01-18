@@ -6,10 +6,9 @@
 #' @param digits digits of the results
 #' @param ... other parameters in function \code{\link{print}}
 #'
-#' @examples
+#' @importFrom stats integrate nlminb plogis pnorm qlogis uniroot qchisq qnorm
+#' @importFrom mixmeta mixmeta
 #'
-#' (sa1 <- dtametasa.fc(IVD, p = 0.7))
-#' (sa2 <- dtametasa.rc(IVD, p = 0.7))
 #'
 #' @seealso
 #' \code{\link{dtametasa.fc}},
@@ -22,8 +21,8 @@
 
 print.dtametasa <- function(x, digits = 3, ...){
 
-  if(!inherits(x, "dtametasa")) stop("ONLY VALID FOR RESULTS OF dtasens1 OR dtasens2")
+  if(!inherits(x, "dtametasa")) stop("ONLY VALID FOR RESULTS FROM dtametasa.fc OR dtametasa.rc FUNCTIONS")
 
-  print(list(par.all = x$par.all), ...)
+  print(list(par.all = x$par.all), digits = digits, ...)
 
 }

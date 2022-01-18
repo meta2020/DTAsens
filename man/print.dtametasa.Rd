@@ -16,12 +16,6 @@
 \description{
 Print results from function \code{\link{dtametasa.fc}} or \code{\link{dtametasa.rc}}
 }
-\examples{
-
-(sa1 <- dtametasa.fc(IVD, p = 0.7))
-(sa2 <- dtametasa.rc(IVD, p = 0.7))
-
-}
 \seealso{
 \code{\link{dtametasa.fc}},
 \code{\link{dtametasa.rc}},

@@ -1,180 +1,53 @@
-#' @title Plot a summary ROC plot for dtametasa object
+#' @title Summary ROC curves
 #'
-#' @description Plot a single sROC plot
+#' @description Plot the SROC curves
 #'
-#' @param object The object from function \code{dtametasa.fc} or \code{dtametasa.rc};
-#' or a vector of \code{c(u1, u2, t1, t2, r)}
+#' @param object (1) The result from function \code{dtametasa.fc} or \code{dtametasa.rc} (single curve);
+#' (2) a matrix of which the rows are \code{c(u1, u2, t1, t2, r)} (multiple curves);
+#' (3) a vector of \code{c(u1, u2, t1, t2, r)} (single curve).
 #'
-#' @param add Whether to add the plot into an existed plot.
-#' Default is \code{FALSE}, to create a new plot.
+#' @param sroc.type Plot Reitsma's SROC curve(\code{"sroc"}) or Rutter's HSROC curve (\code{"hsroc"}),
 #'
-#' @param sroc.col The color of sROC.
-#' Default is black.
+#' @param sroc.cols Set a vector of colors for single/multiple SROC curves.
+#' Default uses grey's colors.
 #'
-#' @param sroc.lty The line type of sROC.
-#' Default is solid.
+#' @param sroc.lty Line type of SROC curve.
 #'
-#' @param sroc.lwd The line width of sROC.
-#' Default is 1, solid.
+#' @param sroc.lwd Line width of SROC curve.
 #'
-#' @param plot.ci Whether to plot confidence interval of sROC.
-#' Default is \code{TRUE}, to plot the CI.
+#' @param add.spoint Whether to add the summary point on the SROC curve.
 #'
-#' @param ci.level The significance level of confidence interval of sROC.
-#' Default is \code{0.95}
+#' @param sp.pch Type of the summary point.
 #'
-#' @param sroc.ci.col The color of confidence interval of sROC.
-#' Default is grey.
+#' @param sp.cex Size of the summary point.
+#' 
+#' @param plot.ci Whether to plot the confidence intervals of the SROC curve.
+#' It is only for the result from function \code{dtametasa.fc} or \code{dtametasa.rc}
 #'
-#' @param sroc.ci.lwd The line width of confidence interval of sROC.
-#' Default is 1.
+#' @param sroc.ci.col Colors of the confidence intervals.
+#' 
+#' @param sroc.ci.lty Line type of the confidence intervals.
+#' 
+#' @param sroc.ci.lwd Line width of the confidence intervals.
+#' 
+#' @param ci.level Significant level of the confidence intervals.
+#' 
+#' @param xlab Label of x-axis.
 #'
-#' @param sroc.ci.lty The line type of confidence interval of sROC.
-#' Default is 2, dashed.
+#' @param ylab Label of y-axis.
+#' 
+#' @param addon Whether to add the SROC curves onto an existed plot.
+#' Default is \code{FALSE}, to start from a new plot.
 #'
-#' @param add.spoint Whether to add the summary point in the sROC plot.
-#' Default it not the add.
-#'
-#' @param spoint.pch The type of the point.
-#' Default is 19.
-#'
-#' @param spoint.col The color of the point.
-#' Default is black.
-#'
-#' @param spoint.cex The size of the point.
-#' Default is 1.
-#'
-#' @param xlab The label of x-axis.
-#' Default is: 1-specificity.
-#'
-#' @param ylab The label of y-axis.
-#' Default is Sensitivity.
-#'
-#' @param ... Other augments in function \code{\link{points}} or function \code{\link{curve}}
-#'
-#' @return SROC plot
-#'
-#' @importFrom grDevices gray.colors
-#' @importFrom graphics curve lines points matplot
-#' @importFrom stats qnorm
-#'
-#' @seealso
-#' \code{\link[graphics]{points}},
-#' \code{\link[graphics]{curve}},
-#' \code{\link{dtametasa.fc}},
-#' \code{\link{dtametasa.rc}}.
-#'
-#' @examples
-#'
-#' sa1 <- dtametasa.fc(IVD, p = 0.7)
-#' sroc.vec(sa1)
-#'
-#' @export
-
-sroc.vec <- function(object,
-                     add = FALSE,
-                     sroc.col = 1,
-                     sroc.lty = 1,
-                     sroc.lwd = 1,
-                     xlab = "1-specificity",
-                     ylab = "Sensitivity",
-                     plot.ci = TRUE,
-                     ci.level = 0.95,
-                     sroc.ci.col = "grey48",
-                     sroc.ci.lwd = 1,
-                     sroc.ci.lty = 2,
-                     add.spoint = TRUE,
-                     spoint.pch = 18,
-                     spoint.col = 1,
-                     spoint.cex = 2,
-                     ...) {
-
-  if(inherits(object,"dtametasa")) par.vec <- object$par[1:5] else {
-
-    if (is.vector(object) & length(object) >= 5) {
-
-      par.vec <- object} else stop("PLEASE INPUT EITHER dtametasa OBJECT OR A VECTOR OF c(u1, u2, t1, t2, r)")
-
-  }
-
-  u1  <- par.vec[1]
-  u2  <- par.vec[2]
-  t1  <- par.vec[3]
-  t2  <- par.vec[4]
-  r   <- par.vec[5]
-
-
-  f <- function(x) plogis(u1 - (t1*t2*r/(t2^2)) * (qlogis(x) + u2))
-
-  curve(f, xlab = xlab, ylab = ylab, add = add, col = sroc.col, lwd =sroc.lwd,lty = sroc.lty,
-        xlim = c(0,1), ylim = c(0,1), ...)
-
-  if(inherits(object,"dtametasa") & plot.ci){
-
-  f.lb <- function(x) plogis( u1 - (t1*t2*r/t2^2) * (qlogis(x) + u2) +
-                                qnorm((1-ci.level)/2, lower.tail = TRUE)*
-                                suppressWarnings(
-                                  sqrt(QIQ(x, u1, u2, t1, t2, r, object$var.ml[1:5,1:5]))))
-
-  f.ub <- function(x) plogis( u1 - (t1*t2*r/t2^2) * (qlogis(x) + u2) +
-                                qnorm((1-ci.level)/2, lower.tail = FALSE)*
-                                suppressWarnings(
-                                  sqrt(QIQ(x, u1, u2, t1, t2, r, object$var.ml[1:5,1:5]))))
-
-  curve(f.lb, add = TRUE, col = sroc.ci.col, lwd =sroc.ci.lwd, lty = sroc.ci.lty)
-
-  curve(f.ub, add = TRUE, col = sroc.ci.col, lwd =sroc.ci.lwd, lty = sroc.ci.lty)
-
-  }
-
-  if(add.spoint) points(plogis(-u2), plogis(u1), pch = spoint.pch, col = spoint.col, cex = spoint.cex, ...)
-
-
-}
-
-
-
-
-#' @title Plot summary ROC curves
-#'
-#' @description Plot multiple ROC curves
-#'
-#' @param par The object from function \code{dtametasa.fc} or \code{dtametasa.rc};
-#' or a matrix with rows of \code{c(u1, u2, t1, t2, r)}
-#'
-#' @param add Whether to add the plot into an existed plot.
-#' Default is \code{FALSE}, to create a new plot.
-#'
-#' @param ncols Set a vector of different colors for multiple sroc.
-#' Defult uses different grey's colors.
-#'
-#' @param sroc.lty The line tyoe of sroc.
-#' Default is solid lines.
-#'
-#' @param sroc.lwd The line width of sroc.
-#' Default is 1.
-#'
-#' @param add.spoint Whether to add the summary point in the sroc plot.
-#' Default it not the add.
-#'
-#' @param spoint.pch The point type of the summary point in sroc.
-#'
-#' @param spoint.cex The point size of the summary point in sroc.
-#'
-#' @param xlab The label of x-axis.
-#' Default is: 1-specificity.
-#'
-#' @param ylab The label of y-axis.
-#' Default is Sensitivity.
-#'
-#' @param ... Other augments in function \code{\link{points}} or function \code{\link{curve}}
+#' @param ... Other augments in function \code{\link{plot.default}} or function \code{\link{curve}}
 #'
 #' @importFrom grDevices gray.colors
 #' @importFrom graphics curve points
 #'
-#' @return SROC plot
+#' @return SROC curves
 #'
 #' @seealso
+#' \code{\link[graphics]{plot.default}},
 #' \code{\link[graphics]{points}},
 #' \code{\link[graphics]{curve}},
 #' \code{\link{dtametasa.fc}},
@@ -182,33 +55,46 @@ sroc.vec <- function(object,
 #'
 #'
 #' @examples
-#' p.seq <- seq(0.5, 0.9, 0.1)
+#' p.seq <- seq(1, 0.5, -0.1)
 #' sa1.seq <- sapply(p.seq, function (p) dtametasa.fc(IVD, p)$par)
-#' sroc.mat(sa1.seq)
 #'
+#' SROC(sa1.seq, sroc.type = "sroc")
+#' SROC(sa1.seq, sroc.type = "hsroc")
 #'
-#'
-
+#' sa.fit <- dtametasa.fc(IVD, p = 0.7, sauc.type = "sroc")
+#' sa.fit
+#' SROC(sa.fit, sroc.type = "sroc", pch = 19, plot.ci = TRUE)
+#' SROC(sa.fit, sroc.type = "hsroc", pch = 19, plot.ci = TRUE)
 #'
 #' @export
 
-sroc.mat <- function(par,  ## u1 u2 t12 t22
-                     add = FALSE,
-                     ncols = gray.colors(ncol(par), gamma = 1, start = 0.8, end = 0),
-                     sroc.lty = 1,
-                     sroc.lwd = 1,
-                     add.spoint=TRUE,
-                     spoint.pch = 18,
-                     spoint.cex = 2,
-                     xlab = "1 - specificity",
-                     ylab = "Sensitivity",
-                     ...) {
+SROC <- function(
+  object,  
+  sroc.type = c("sroc", "hsroc"),
+  sroc.cols = gray.colors(ncol(as.matrix(object)), gamma = 1, start = 0, end = 0.5),
+  sroc.lty = 1,
+  sroc.lwd = 1,
+  add.spoint = TRUE,
+  sp.pch = 19,
+  sp.cex = 1,
+  plot.ci = FALSE,
+  sroc.ci.col = "red",
+  sroc.ci.lty = 2,
+  sroc.ci.lwd = 1,
+  ci.level = 0.95,
+  xlab = "FPR",
+  ylab = "TPR",
+  addon = FALSE,
+  ...
+){
+
+  if(inherits(object,"dtametasa")) par <- as.matrix(object$par[1:5]) else par <- as.matrix(object)
 
   if(nrow(par) < 5) stop("PLEASE CHECK THE INPUT MATRIX")
 
-  if(length(par) == 5)  par <- as.matrix(par)
+  sroc.type <- match.arg(sroc.type)
 
-  if (!add) plot(NULL, xlim=c(0,1), ylim=c(0,1), xlab = xlab, ylab = ylab)
+  if (!addon) plot(NULL, xlim=c(0,1), ylim=c(0,1), xlab = xlab, ylab = ylab, ...)
 
   for (i in 1:ncol(par)) {
 
@@ -216,18 +102,46 @@ sroc.mat <- function(par,  ## u1 u2 t12 t22
     u2  <- par[2,i]
     t1  <- par[3,i]
     t2  <- par[4,i]
-    r   <- par[5,i]
+
+    if(sroc.type =="sroc") r <- par[5, i] else r <- -1
 
     f <- function(x) plogis(u1 - (t1*t2*r/(t2^2)) * (qlogis(x) + u2))
-    curve(f, 0, 1, col = ncols[i], add = TRUE,
-          lty = sroc.lty, lwd = sroc.lwd, ...)
+    curve(f, 0, 1,
+          col = sroc.cols[i],
+          add = TRUE,
+          lty = sroc.lty,
+          lwd = sroc.lwd,
+          ...)
   }
 
   if (add.spoint) {
+
     sens <- plogis(par[1,])
     spec <- plogis(par[2,])
-    points(1-spec, sens, col=ncols, pch = spoint.pch, cex = spoint.cex, ...)
-  }
+    points(1-spec, sens, col=sroc.cols, pch = sp.pch, cex = sp.cex)
+
+    }
+
+  if(plot.ci & inherits(object,"dtametasa")){
+
+    u1 <- object$par[1]
+    u2 <- object$par[2]
+    t1 <- object$par[3]
+    t2 <- object$par[4]
+
+    if(sroc.type=="sroc") r  <- object$par[5] else r <- -1
+
+
+      f.lb <- function(x) plogis( u1 - (t1*t2*r/t2^2) * (qlogis(x) + u2) + qnorm((1-ci.level)/2, lower.tail = TRUE) * suppressWarnings(sqrt(.QIQ.sroc(x, u1, u2, t1, t2, r, object$var.ml[1:5,1:5]))))
+
+      f.ub <- function(x) plogis( u1 - (t1*t2*r/t2^2) * (qlogis(x) + u2) + qnorm((1-ci.level)/2, lower.tail = FALSE) * suppressWarnings(sqrt(.QIQ.sroc(x, u1, u2, t1, t2, r, object$var.ml[1:5,1:5]))))
+
+      curve(f.lb, add = TRUE, col = sroc.ci.col, lty = sroc.ci.lty, lwd = sroc.ci.lwd)
+
+      curve(f.ub, add = TRUE, col = sroc.ci.col, lty = sroc.ci.lty, lwd = sroc.ci.lwd)
+
+      }
+
 
 }
 
