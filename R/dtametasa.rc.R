@@ -1,6 +1,6 @@
-#' @title Sensitivity analysis of diagnostic meta-analysis without prespecified contrast vector
+#' @title Sensitivity analysis of diagnostic meta-analysis with estimated contrast vector
 #'
-#' @description Sensitivity analysis of diagnostic meta-analysis without prespecified (with released) c1 and c2
+#' @description Sensitivity analysis of diagnostic meta-analysis with estimated (with released) c1 and c2
 #'
 #' @param data Data with variable names either
 #' \{TP, FN, TN, FP\} or \{y1, y2, v1, v2\}.

@@ -34,7 +34,7 @@
 #'@source \url{http://www.ncbi.nlm.nih.gov/pubmed/9315770}
 #'@seealso \code{\link{IVD}}
 
-"IVD2"
+"IVD_2"
 
 
 #' @title Example data 2: CD64 data

@@ -2,7 +2,7 @@
 % Please edit documentation in R/dtametasa.rc.R
 \name{dtametasa.rc}
 \alias{dtametasa.rc}
-\title{Sensitivity analysis of diagnostic meta-analysis without prespecified contrast vector}
+\title{Sensitivity analysis of diagnostic meta-analysis with estimated contrast vector}
 \usage{
 dtametasa.rc(
   data,
@@ -75,7 +75,7 @@ convergence list,
 logit transformed data
 }
 \description{
-Sensitivity analysis of diagnostic meta-analysis without prespecified (with released) c1 and c2
+Sensitivity analysis of diagnostic meta-analysis with estimated (with released) c1 and c2
 }
 \details{
 \describe{
