@@ -53,23 +53,23 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">dtametasa.rc</span><span class="op">(</span>
-  <span class="va">data</span>,
-  <span class="va">p</span>,
-  c1.square0 <span class="op">=</span> <span class="fl">0.5</span>,
-  beta0 <span class="op">=</span> <span class="fl">1</span>,
-  reitsma.par0 <span class="op">=</span> <span class="cn">NULL</span>,
-  beta.interval <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">2</span><span class="op">)</span>,
-  alpha.interval <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">5</span>, <span class="fl">3</span><span class="op">)</span>,
-  ci.level <span class="op">=</span> <span class="fl">0.95</span>,
-  correct.value <span class="op">=</span> <span class="fl">0.5</span>,
-  correct.type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"single"</span>, <span class="st">"all"</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,
-  show.warn.message <span class="op">=</span> <span class="cn">FALSE</span>,
-  alpha.root.extendInt <span class="op">=</span> <span class="st">"downX"</span>,
-  eps <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">.Machine</span><span class="op">$</span><span class="va">double.eps</span><span class="op">)</span>,
-  sauc.type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sroc"</span>, <span class="st">"hsroc"</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,
-  <span class="va">...</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">dtametasa.rc</span><span class="op">(</span></span>
+<span>  <span class="va">data</span>,</span>
+<span>  <span class="va">p</span>,</span>
+<span>  c1.square0 <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span>  beta0 <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  reitsma.par0 <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  beta.interval <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">2</span><span class="op">)</span>,</span>
+<span>  alpha.interval <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">5</span>, <span class="fl">3</span><span class="op">)</span>,</span>
+<span>  ci.level <span class="op">=</span> <span class="fl">0.95</span>,</span>
+<span>  correct.value <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span>  correct.type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"single"</span>, <span class="st">"all"</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,</span>
+<span>  show.warn.message <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  alpha.root.extendInt <span class="op">=</span> <span class="st">"downX"</span>,</span>
+<span>  eps <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">.Machine</span><span class="op">$</span><span class="va">double.eps</span><span class="op">)</span>,</span>
+<span>  sauc.type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sroc"</span>, <span class="st">"hsroc"</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -79,51 +79,82 @@
 {TP, FN, TN, FP} or {y1, y2, v1, v2}.
 If not, please change the variable names.
 Either data with the number of subjects or logit transformed data works.</p></dd>
+
+
 <dt>p</dt>
 <dd><p>Specified probability of selection (or publication); Pr(select) = p</p></dd>
+
+
 <dt>c1.square0</dt>
 <dd><p>Initial value of \(c_1^2\).
 Avoid to start from 0.
 Bad initial value will cause non-convergence results.</p></dd>
+
+
 <dt>beta0</dt>
 <dd><p>An initial value of \(\beta\).
 Avoid to start from 0.
 Bad initial value will cause non-convergence results.</p></dd>
+
+
 <dt>reitsma.par0</dt>
 <dd><p>Initial values used for estimating the parameters in the bivariate random effects model (Reitsma's model).
 It should be changed by a vector of <code>c(mu1, mu2, tau1, tau2, rho)</code>.
 Bad initial values will cause non-convergence results.
 Default is <code>NULL</code>, which uses estimated results from Reitsma's model without taking into account the publication bias.</p></dd>
+
+
 <dt>beta.interval</dt>
 <dd><p>The constraint interval for \(\beta\).
 The estimation of \(\beta\) will be searched within the interval.
 Take either the positive interval (&gt;0) or the negative interval (&lt;0).</p></dd>
+
+
 <dt>alpha.interval</dt>
 <dd><p>The constraint interval for \(\alpha\).
 then, the root of \(\alpha\) will be searched within the interval.</p></dd>
+
+
 <dt>ci.level</dt>
 <dd><p>The significant value for confidence interval of SAUC.</p></dd>
+
+
 <dt>correct.value</dt>
 <dd><p>Imputation value for ``continuity correction''.</p></dd>
+
+
 <dt>correct.type</dt>
 <dd><p>Two types of ``continuity correction''.
 <code>"single"</code>: input value for single study.
 <code>"all"</code>: input value for all the cells.</p></dd>
+
+
 <dt>show.warn.message</dt>
 <dd><p>Whether to show the warning messages.</p></dd>
+
+
 <dt>alpha.root.extendInt</dt>
 <dd><p>See <code>extendInt</code> augments in function <code><a href="https://rdrr.io/r/stats/uniroot.html" class="external-link">uniroot</a></code>.</p></dd>
+
+
 <dt>eps</dt>
 <dd><p>A minimum positive value.</p></dd>
+
+
 <dt>sauc.type</dt>
 <dd><p>Two types of SAUC values.
 Area under the Reitsma's SROC curve(<code>"sroc"</code>) or under the Rutter's HSROC curve (<code>"hsroc"</code>).</p></dd>
+
+
 <dt>...</dt>
 <dd><p>See other augments in function <code><a href="https://rdrr.io/r/stats/uniroot.html" class="external-link">uniroot</a></code>.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>confidence interval,
+    
+
+<p>confidence interval,
 convergence list,
 logit transformed data</p>
     </div>
@@ -141,6 +172,38 @@ logit transformed data</p>
 <code><a href="dtametasa.fc.html">dtametasa.fc</a></code>.</p></div>
     </div>
 
+    <div id="ref-examples">
+    <h2>Examples</h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">sa2.fit1</span> <span class="op">&lt;-</span> <span class="fu">dtametasa.rc</span><span class="op">(</span><span class="va">IVD</span>, p <span class="op">=</span> <span class="fl">0.7</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">sa2.fit1</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $par.all</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    mu1    mu2 tau1^2 tau2^2  tau12   c1^2   c2^2   beta  alpha   sroc   sens </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1.379  1.741  0.356  0.712 -0.178  0.509  0.491  2.000 -4.254  0.851  0.799 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   spec </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  0.851 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">sa2.fit2</span> <span class="op">&lt;-</span> <span class="fu">dtametasa.rc</span><span class="op">(</span><span class="va">IVD</span>, p <span class="op">=</span> <span class="fl">0.7</span>, sauc.type <span class="op">=</span> <span class="st">"sroc"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">sa2.fit2</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $par.all</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    mu1    mu2 tau1^2 tau2^2  tau12   c1^2   c2^2   beta  alpha   sroc   sens </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1.379  1.741  0.356  0.712 -0.178  0.509  0.491  2.000 -4.254  0.851  0.799 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   spec </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  0.851 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">sa2.fit3</span> <span class="op">&lt;-</span> <span class="fu">dtametasa.rc</span><span class="op">(</span><span class="va">IVD</span>, p <span class="op">=</span> <span class="fl">0.7</span>, sauc.type <span class="op">=</span> <span class="st">"hsroc"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">sa2.fit3</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $par.all</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    mu1    mu2 tau1^2 tau2^2  tau12   c1^2   c2^2   beta  alpha  hsroc   sens </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1.379  1.741  0.356  0.712 -0.178  0.509  0.491  2.000 -4.254  0.889  0.799 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   spec </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  0.851 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
+    </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top"><h2 data-toc-skip>Contents</h2>
@@ -153,7 +216,7 @@ logit transformed data</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

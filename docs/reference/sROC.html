@@ -44,7 +44,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Summary ROC curves</h1>
-    <small class="dont-index">Source: <a href="https://github.com/meta2020/dtametasa/blob/HEAD/R/SROC.R" class="external-link"><code>R/SROC.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/meta2020/dtametasa/blob/HEAD/R/sROC.R" class="external-link"><code>R/sROC.R</code></a></small>
     <div class="hidden name"><code>SROC.Rd</code></div>
     </div>
 
@@ -53,25 +53,25 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">SROC</span><span class="op">(</span>
-  <span class="va">object</span>,
-  sroc.type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sroc"</span>, <span class="st">"hsroc"</span><span class="op">)</span>,
-  sroc.cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/gray.colors.html" class="external-link">gray.colors</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">object</span><span class="op">)</span><span class="op">)</span>, gamma <span class="op">=</span> <span class="fl">1</span>, start <span class="op">=</span> <span class="fl">0</span>, end <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>,
-  sroc.lty <span class="op">=</span> <span class="fl">1</span>,
-  sroc.lwd <span class="op">=</span> <span class="fl">1</span>,
-  add.spoint <span class="op">=</span> <span class="cn">TRUE</span>,
-  sp.pch <span class="op">=</span> <span class="fl">19</span>,
-  sp.cex <span class="op">=</span> <span class="fl">1</span>,
-  plot.ci <span class="op">=</span> <span class="cn">FALSE</span>,
-  sroc.ci.col <span class="op">=</span> <span class="st">"red"</span>,
-  sroc.ci.lty <span class="op">=</span> <span class="fl">2</span>,
-  sroc.ci.lwd <span class="op">=</span> <span class="fl">1</span>,
-  ci.level <span class="op">=</span> <span class="fl">0.95</span>,
-  xlab <span class="op">=</span> <span class="st">"FPR"</span>,
-  ylab <span class="op">=</span> <span class="st">"TPR"</span>,
-  addon <span class="op">=</span> <span class="cn">FALSE</span>,
-  <span class="va">...</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">SROC</span><span class="op">(</span></span>
+<span>  <span class="va">object</span>,</span>
+<span>  sroc.type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"sroc"</span>, <span class="st">"hsroc"</span><span class="op">)</span>,</span>
+<span>  sroc.cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/gray.colors.html" class="external-link">gray.colors</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">object</span><span class="op">)</span><span class="op">)</span>, gamma <span class="op">=</span> <span class="fl">1</span>, start <span class="op">=</span> <span class="fl">0</span>, end <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>,</span>
+<span>  sroc.lty <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  sroc.lwd <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  add.spoint <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  sp.pch <span class="op">=</span> <span class="fl">19</span>,</span>
+<span>  sp.cex <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  plot.ci <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  sroc.ci.col <span class="op">=</span> <span class="st">"red"</span>,</span>
+<span>  sroc.ci.lty <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  sroc.ci.lwd <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  ci.level <span class="op">=</span> <span class="fl">0.95</span>,</span>
+<span>  xlab <span class="op">=</span> <span class="st">"FPR"</span>,</span>
+<span>  ylab <span class="op">=</span> <span class="st">"TPR"</span>,</span>
+<span>  addon <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -80,45 +80,80 @@
 <dd><p>(1) The result from function <code>dtametasa.fc</code> or <code>dtametasa.rc</code> (single curve);
 (2) a matrix of which the rows are <code>c(u1, u2, t1, t2, r)</code> (multiple curves);
 (3) a vector of <code>c(u1, u2, t1, t2, r)</code> (single curve).</p></dd>
+
+
 <dt>sroc.type</dt>
 <dd><p>Plot Reitsma's SROC curve(<code>"sroc"</code>) or Rutter's HSROC curve (<code>"hsroc"</code>),</p></dd>
+
+
 <dt>sroc.cols</dt>
 <dd><p>Set a vector of colors for single/multiple SROC curves.
 Default uses grey's colors.</p></dd>
+
+
 <dt>sroc.lty</dt>
 <dd><p>Line type of SROC curve.</p></dd>
+
+
 <dt>sroc.lwd</dt>
 <dd><p>Line width of SROC curve.</p></dd>
+
+
 <dt>add.spoint</dt>
 <dd><p>Whether to add the summary point on the SROC curve.</p></dd>
+
+
 <dt>sp.pch</dt>
 <dd><p>Type of the summary point.</p></dd>
+
+
 <dt>sp.cex</dt>
 <dd><p>Size of the summary point.</p></dd>
+
+
 <dt>plot.ci</dt>
 <dd><p>Whether to plot the confidence intervals of the SROC curve.
 It is only for the result from function <code>dtametasa.fc</code> or <code>dtametasa.rc</code></p></dd>
+
+
 <dt>sroc.ci.col</dt>
 <dd><p>Colors of the confidence intervals.</p></dd>
+
+
 <dt>sroc.ci.lty</dt>
 <dd><p>Line type of the confidence intervals.</p></dd>
+
+
 <dt>sroc.ci.lwd</dt>
 <dd><p>Line width of the confidence intervals.</p></dd>
+
+
 <dt>ci.level</dt>
 <dd><p>Significant level of the confidence intervals.</p></dd>
+
+
 <dt>xlab</dt>
 <dd><p>Label of x-axis.</p></dd>
+
+
 <dt>ylab</dt>
 <dd><p>Label of y-axis.</p></dd>
+
+
 <dt>addon</dt>
 <dd><p>Whether to add the SROC curves onto an existed plot.
 Default is <code>FALSE</code>, to start from a new plot.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Other augments in function <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot.default</a></code> or function <code><a href="https://rdrr.io/r/graphics/curve.html" class="external-link">curve</a></code></p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>SROC curves</p>
+    
+
+<p>SROC curves</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
@@ -131,27 +166,27 @@ Default is <code>FALSE</code>, to start from a new plot.</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">p.seq</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0.5</span>, <span class="op">-</span><span class="fl">0.1</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">sa1.seq</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="va">p.seq</span>, <span class="kw">function</span> <span class="op">(</span><span class="va">p</span><span class="op">)</span> <span class="fu"><a href="dtametasa.fc.html">dtametasa.fc</a></span><span class="op">(</span><span class="va">IVD</span>, <span class="va">p</span><span class="op">)</span><span class="op">$</span><span class="va">par</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">SROC</span><span class="op">(</span><span class="va">sa1.seq</span>, sroc.type <span class="op">=</span> <span class="st">"sroc"</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">p.seq</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0.5</span>, <span class="op">-</span><span class="fl">0.1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">sa1.seq</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="va">p.seq</span>, <span class="kw">function</span> <span class="op">(</span><span class="va">p</span><span class="op">)</span> <span class="fu"><a href="dtametasa.fc.html">dtametasa.fc</a></span><span class="op">(</span><span class="va">IVD</span>, <span class="va">p</span><span class="op">)</span><span class="op">$</span><span class="va">par</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">SROC</span><span class="op">(</span><span class="va">sa1.seq</span>, sroc.type <span class="op">=</span> <span class="st">"sroc"</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="SROC-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span class="fu">SROC</span><span class="op">(</span><span class="va">sa1.seq</span>, sroc.type <span class="op">=</span> <span class="st">"hsroc"</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">SROC</span><span class="op">(</span><span class="va">sa1.seq</span>, sroc.type <span class="op">=</span> <span class="st">"hsroc"</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="SROC-2.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">sa.fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="dtametasa.fc.html">dtametasa.fc</a></span><span class="op">(</span><span class="va">IVD</span>, p <span class="op">=</span> <span class="fl">0.7</span>, sauc.type <span class="op">=</span> <span class="st">"sroc"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">sa.fit</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">sa.fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="dtametasa.fc.html">dtametasa.fc</a></span><span class="op">(</span><span class="va">IVD</span>, p <span class="op">=</span> <span class="fl">0.7</span>, sauc.type <span class="op">=</span> <span class="st">"sroc"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">sa.fit</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $par.all</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    mu1    mu2 tau1^2 tau2^2  tau12   c1^2   c2^2   beta  alpha   sroc   sens </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  1.380  1.740  0.355  0.713 -0.178  0.500  0.500  2.000 -4.290  0.851  0.799 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   spec </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  0.851 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span class="fu">SROC</span><span class="op">(</span><span class="va">sa.fit</span>, sroc.type <span class="op">=</span> <span class="st">"sroc"</span>, pch <span class="op">=</span> <span class="fl">19</span>, plot.ci <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">SROC</span><span class="op">(</span><span class="va">sa.fit</span>, sroc.type <span class="op">=</span> <span class="st">"sroc"</span>, pch <span class="op">=</span> <span class="fl">19</span>, plot.ci <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="SROC-3.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span class="fu">SROC</span><span class="op">(</span><span class="va">sa.fit</span>, sroc.type <span class="op">=</span> <span class="st">"hsroc"</span>, pch <span class="op">=</span> <span class="fl">19</span>, plot.ci <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">SROC</span><span class="op">(</span><span class="va">sa.fit</span>, sroc.type <span class="op">=</span> <span class="st">"hsroc"</span>, pch <span class="op">=</span> <span class="fl">19</span>, plot.ci <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="SROC-4.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -166,7 +201,7 @@ Default is <code>FALSE</code>, to start from a new plot.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

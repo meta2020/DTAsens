@@ -4,13 +4,13 @@
     <loc>/404.html</loc>
   </url>
   <url>
-    <loc>/LICENSE-text.html</loc>
-  </url>
-  <url>
     <loc>/authors.html</loc>
   </url>
   <url>
     <loc>/index.html</loc>
+  </url>
+  <url>
+    <loc>/LICENSE-text.html</loc>
   </url>
   <url>
     <loc>/news/index.html</loc>
@@ -20,21 +20,6 @@
   </url>
   <url>
     <loc>/reference/CD64_2.html</loc>
-  </url>
-  <url>
-    <loc>/reference/IVD.html</loc>
-  </url>
-  <url>
-    <loc>/reference/IVD2.html</loc>
-  </url>
-  <url>
-    <loc>/reference/IVD_2.html</loc>
-  </url>
-  <url>
-    <loc>/reference/Scheidler.html</loc>
-  </url>
-  <url>
-    <loc>/reference/Scheidler2.html</loc>
   </url>
   <url>
     <loc>/reference/correction.html</loc>
@@ -59,6 +44,15 @@
   </url>
   <url>
     <loc>/reference/index.html</loc>
+  </url>
+  <url>
+    <loc>/reference/IVD.html</loc>
+  </url>
+  <url>
+    <loc>/reference/IVD2.html</loc>
+  </url>
+  <url>
+    <loc>/reference/IVD_2.html</loc>
   </url>
   <url>
     <loc>/reference/logit.data.html</loc>
@@ -88,10 +82,10 @@
     <loc>/reference/plot.sAUC.ci.html</loc>
   </url>
   <url>
-    <loc>/reference/print.DTAsens.html</loc>
+    <loc>/reference/print.dtametasa.html</loc>
   </url>
   <url>
-    <loc>/reference/print.dtametasa.html</loc>
+    <loc>/reference/print.DTAsens.html</loc>
   </url>
   <url>
     <loc>/reference/print.sAUC.ci.html</loc>
@@ -103,19 +97,25 @@
     <loc>/reference/sAUC.html</loc>
   </url>
   <url>
+    <loc>/reference/Scheidler.html</loc>
+  </url>
+  <url>
+    <loc>/reference/Scheidler2.html</loc>
+  </url>
+  <url>
+    <loc>/reference/sim.pdata.html</loc>
+  </url>
+  <url>
     <loc>/reference/sROC.bunch.html</loc>
   </url>
   <url>
     <loc>/reference/sROC.html</loc>
   </url>
   <url>
-    <loc>/reference/sROC.matrix.html</loc>
-  </url>
-  <url>
-    <loc>/reference/sim.pdata.html</loc>
-  </url>
-  <url>
     <loc>/reference/sroc.mat.html</loc>
+  </url>
+  <url>
+    <loc>/reference/sROC.matrix.html</loc>
   </url>
   <url>
     <loc>/reference/sroc.vec.html</loc>

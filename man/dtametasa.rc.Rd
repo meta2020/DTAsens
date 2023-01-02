@@ -82,6 +82,18 @@ Sensitivity analysis of diagnostic meta-analysis with estimated (with released) 
 \item{Continuity correction}{\url{https://en.wikipedia.org/wiki/Continuity_correction}}
 }
 }
+\examples{
+
+sa2.fit1 <- dtametasa.rc(IVD, p = 0.7)
+sa2.fit1
+
+sa2.fit2 <- dtametasa.rc(IVD, p = 0.7, sauc.type = "sroc")
+sa2.fit2
+
+sa2.fit3 <- dtametasa.rc(IVD, p = 0.7, sauc.type = "hsroc")
+sa2.fit3
+
+}
 \seealso{
 \code{\link[stats]{uniroot}},
 \code{\link{dtametasa.fc}}.
