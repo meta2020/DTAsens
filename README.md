@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# DTA Meta-analysis Sensitivity Analysis
+# DTAmetasa: Sensitivity Analysis for Publication Bias in Meta-analysis of Diagnostic Test Accuracy
 
 <!-- badges: start -->
 <!-- badges: end -->

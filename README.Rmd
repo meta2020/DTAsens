@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 options(knitr.kable.NA = '.', digits = 3)
 ```
 
-# DTA Meta-analysis Sensitivity Analysis
+# DTAmetasa: Sensitivity Analysis for Publication Bias in Meta-analysis of Diagnostic Test Accuracy
 
 <!-- badges: start -->
 <!-- badges: end -->
