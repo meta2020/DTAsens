@@ -7,7 +7,7 @@
 
 <!-- badges: end -->
 
-[`dtametasa`](https://meta2020.github.io/dtametasa/) is a
+[`dtametasa`](https://meta2020.github.io/dtametasa/) is for
 likelihood-based sensitivity analysis for publication bias on SROC/SAUC
 in meta-analysis of diagnostic studies
 
@@ -27,11 +27,11 @@ library(dtametasa)
 
 Two formats of data are applicable:
 
-  - Number of TP/FN/FP/TN
+  - Data with `TP, FN, FP, TN` as column names
 
-  - After logit transformation: y1/y2/v1/v2
+  - Data after logit-transformation with `y1, y2, v1, v2` as column names
 
-<span style="color:red">**Attention: the column names of data must be
+<span style="color:red">**The column names of data must be
 either of the above.**</span>
 
 <!-- ## Example -->
