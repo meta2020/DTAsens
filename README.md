@@ -30,6 +30,8 @@ Two formats of data are applicable:
 
 - Data after logit-transformation with `y1, y2, v1, v2` as column names
 
+- The Rshiny application can be found [here](https://alain003.phs.osaka-u.ac.jp/mephas_web/11DTA-Meta/).
+
 <span style="color:red">**The column names of data must be either of the
 above.**</span>
 
